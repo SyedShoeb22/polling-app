@@ -1,0 +1,19 @@
+-- polling_app/schema.sql
+
+DROP TABLE IF EXISTS options;
+DROP TABLE IF EXISTS polls;
+
+CREATE TABLE polls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question TEXT NOT NULL,
+    poll_type TEXT NOT NULL DEFAULT 'radio',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE options (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    poll_id INTEGER NOT NULL,
+    option_text TEXT NOT NULL,
+    votes INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (poll_id) REFERENCES polls (id) ON DELETE CASCADE
+);

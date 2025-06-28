@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Poll{% endblock %}
+
+{% block content %}
+    <h1>Create a New Poll</h1>
+    <form method="POST" action="{{ url_for('create_poll') }}">
+        <div>
+            <label for="question">Question:</label>
+            <input type="text" id="question" name="question" required size="50">
+        </div>
+
+        <div>
+            <label for="poll_type">Poll Type:</label>
+            <select class="large-select" id="poll_type" name="poll_type" onchange="onPollTypeChange()" required>
+                <option value="dropdown">dynamic</option>
+                <option value="yesno">Yes/No</option>
+            </select>
+        </div>
+
+        <div id="options-container">
+            <label>Options:</label>
+            <div id="options-list">
+                <!-- Option inputs will be generated dynamically -->
+            </div>
+            <small id="optionNote">Add at least two options.</small><br>
+            <button type="button" onclick="addOption()">+ Add Option</button>
+        </div>
+
+        <button type="submit">Create Poll</button>
+    </form>
+
+    <script>
+        function addOption(value = "") {
+            const optionsList = document.getElementById("options-list");
+
+            const optionWrapper = document.createElement("div");
+            optionWrapper.className = "option-wrapper";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = "options";
+            input.required = true;
+            input.placeholder = "Option " + (optionsList.children.length + 1);
+            input.value = value;
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "Remove";
+            removeBtn.onclick = function () {
+                optionWrapper.remove();
+            };
+
+            optionWrapper.appendChild(input);
+            optionWrapper.appendChild(removeBtn);
+            optionsList.appendChild(optionWrapper);
+        }
+
+        function onPollTypeChange() {
+            const pollType = document.getElementById("poll_type").value;
+            const optionsList = document.getElementById("options-list");
+            const optionNote = document.getElementById("optionNote");
+
+            // Reset options
+            optionsList.innerHTML = '';
+
+            if (pollType === "yesno") {
+                optionNote.textContent = "Exactly two options required: Yes and No.";
+
+                addOption("Yes");
+                addOption("No");
+
+                // Disable remove buttons for Yes/No
+                document.querySelectorAll('.option-wrapper button').forEach(btn => btn.disabled = true);
+            } else {
+                optionNote.textContent = "Add at least two options.";
+                addOption();
+                addOption();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", onPollTypeChange);
+    </script>
+
+    <style>
+        .option-wrapper {
+            margin-bottom: 5px;
+        }
+        .option-wrapper input {
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}

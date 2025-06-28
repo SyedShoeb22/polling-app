@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Vote: {{ poll.question }}{% endblock %}
+
+{% block content %}
+    <h1>{{ poll.question }}</h1>
+    <form method="POST" action="{{ url_for('poll_detail', poll_id=poll.id) }}">
+        {% if poll.poll_type == 'dropdown' %}
+            <select class="large-select" name="option" required>
+                {% for option_item in options_list %}
+                    <option value="{{ option_item.id }}">{{ option_item.option_text }}</option>
+                {% endfor %}
+            </select>
+
+        {% elif poll.poll_type == 'yesno' %}
+            {% if options_list|length >= 2 %}
+                <div style="display: flex;">
+                    <input type="radio" id="yes" name="option" value="{{ options_list[0].id }}" required>
+                    <label for="yes">{{ options_list[0].option_text }}</label>
+                </div>
+                <div style="display: flex;">
+                    <input type="radio" id="no" name="option" value="{{ options_list[1].id }}" required>
+                    <label for="no">{{ options_list[1].option_text }}</label>
+                </div>
+            {% else %}
+                <p>Error: Not enough options for Yes/No poll.</p>
+            {% endif %}
+
+        {% else %} {# Default: radio buttons #}
+            {% for option_item in options_list %}
+                <div style="display: flex;">
+                    <input type="radio" id="option{{ option_item.id }}" name="option" value="{{ option_item.id }}" required>
+                    <label for="option{{ option_item.id }}">{{ option_item.option_text }}</label>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+        <button type="submit">Vote</button>
+    </form>
+    <p><a href="{{ url_for('results', poll_id=poll.id) }}">View Current Results</a></p>
+{% endblock %}
