@@ -23,6 +23,6 @@ jobs:
             cd ~/polling/polling-app/
             git pull origin main
             source .venv/bin/activate
-            pip install -r requirements.txt
+            pip install -r req.txt
             sudo systemctl restart polling
           EOF
