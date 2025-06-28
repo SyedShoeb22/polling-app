@@ -2,7 +2,7 @@ name: Deploy Flask App
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }} | grep "BEGIN"
           script: |
             cd ~/polling-app
             git pull origin main
