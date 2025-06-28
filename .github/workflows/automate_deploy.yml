@@ -20,7 +20,7 @@ jobs:
       - name: Deploy via native SSH
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ 'ubuntu' }}@${{ secrets.SSH_IP }} << 'EOF'
-            cd ~/polling-app
+            cd ~/polling/polling-app/
             git pull origin main
             source .venv/bin/activate
             pip install -r requirements.txt
