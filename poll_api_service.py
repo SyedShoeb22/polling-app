@@ -66,39 +66,38 @@ import re
 
 def parse_mcqs(raw: str) -> List[PollQuestion]:
     questions = []
-    # Split by questions starting with Q1:, Q2:, etc.
-    blocks = re.split(r"\nQ\d+:", "\n" + raw.strip())
-    
+    blocks = re.split(r"\nQ\d+:\s*", "\n" + raw.strip())  # Split on Q1:, Q2:, etc.
+
     for block in blocks:
         if not block.strip():
             continue
+
         lines = block.strip().split("\n")
-        question_line = lines[0].strip()
-        option_lines = lines[1:5]
-        answer_line = [l for l in lines if l.lower().startswith("answer")]
-        
-        # Sanitize
-        if len(option_lines) != 4 or not answer_line:
+        if len(lines) < 6:
             continue
-        
-        opts = []
-        for l in option_lines:
-            if ". " in l:
-                opts.append(l.split(". ", 1)[1].strip())
-        
-        match = re.match(r"Answer:\s*([A-Da-d])", answer_line[0])
-        if not match:
-            continue
-        index = {"A": 0, "B": 1, "C": 2, "D": 3}.get(match.group(1).upper(), -1)
 
-        if len(opts) == 4 and 0 <= index < 4:
-            questions.append(PollQuestion(
-                question=question_line,
-                options=opts,
-                answer_index=index
-            ))
+        question = lines[0].strip()
+        options = []
+        for line in lines[1:5]:
+            if ". " in line:
+                options.append(line.split(". ", 1)[1].strip())
+
+        # Find answer line
+        answer_line = next((l for l in lines if l.lower().startswith("answer")), "")
+        answer_match = re.match(r"Answer:\s*([A-Da-d])", answer_line)
+
+        if answer_match and len(options) == 4:
+            answer_letter = answer_match.group(1).upper()
+            answer_index = {"A": 0, "B": 1, "C": 2, "D": 3}.get(answer_letter, -1)
+
+            if 0 <= answer_index < 4:
+                questions.append(PollQuestion(
+                    question=question,
+                    options=options,
+                    answer_index=answer_index
+                ))
+
     return questions
-
 
 # Endpoint
 @app.post("/generate-poll", response_model=PollResponse)
