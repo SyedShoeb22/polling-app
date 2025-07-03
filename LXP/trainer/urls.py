@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('trainer-dashboard', views.trainer_dashboard_view,name='trainer-dashboard'),
     
+    path("polls/save/", poll_views.save_selected_polls, name="save_selected_polls"),
     path("polls/generate/", poll_views.trainer_generate_polls, name="trainer-generate-polls"),
     
     path('trainer-view-material', views.trainer_view_material_view,name='trainer-view-material'),

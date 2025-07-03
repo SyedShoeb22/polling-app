@@ -4,6 +4,7 @@ import re
 from typing import List
 from dotenv import load_dotenv
 
+
 load_dotenv(dotenv_path="/workspaces/polling-app/.env")
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")

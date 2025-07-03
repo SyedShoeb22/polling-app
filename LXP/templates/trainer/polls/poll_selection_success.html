@@ -1,0 +1,10 @@
+{% extends "trainer/trainerbase.html" %}
+{% block content %}
+  <h2>Selected Questions Saved to Poll</h2>
+  <ol>
+    {% for q in selected_questions %}
+      <li><strong>{{ q.question }}</strong></li>
+    {% endfor %}
+  </ol>
+  <a href="{% url 'trainer-generate-polls' %}">← Back to Poll Generator</a>
+{% endblock %}

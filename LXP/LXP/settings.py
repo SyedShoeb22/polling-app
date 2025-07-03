@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['http://127.0.0.1/:8001','lxp.nubeera.com','*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'polls',           # ✅ Make sure this is added
+    'polls',           
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
