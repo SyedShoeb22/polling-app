@@ -1,0 +1,68 @@
+{% extends base_template %}
+
+{% load widget_tweaks %}
+{% block content %}
+  <link rel="stylesheet" href="/static/dreamlms/css/style.css" />
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <h3 style="display: flex; justify-content: space-between; align-items: center;">Edit Profile : {{user.first_name}} {{user.last_name}}</h3>
+              </div>
+              <div class="checkout-form personal-address">
+                <form method="post" action="{% url 'user-profile-update' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="regdate">Registerion Date</label>
+                        <input type="date" class="form-control" id="regdate" name="regdate" value="{{ userdetails.userprofile_set.first.regdate|date:'Y-m-d' }}" />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="regdate">Phone No.</label>
+                        <input type="text" class="form-control" id="contactno" name="contactno" value="{{ userdetails.userprofile_set.first.contactno }}" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="skills">Skills</label>
+                        <input type="text" class="form-control" id="skills" name="skills" value="{{ userdetails.userprofile_set.first.skills }}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <input type="text" class="form-control" id="bio" name="bio" value="{{ userdetails.userprofile_set.first.bio }}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="mb-3 col-md-2">
+                      <label class="form-control-label">Profile Picture</label>
+                      {% if userdetails.userprofile_set.first.profile_img %}
+                          <img class="img-fluid" src="{{ userdetails.userprofile_set.first.profile_img.url }}" alt="Profile Picture" style="max-width: 150px; max-height: 150px; display: block; margin-bottom: 10px;">
+                      {% endif %}
+                      <input type="file" id="profile_img" name="profile_img" class="form-control" {% if not userdetails.userprofile_set.first.profile_img %} required {% endif %}>
+                  </div>
+                  </div>
+                  <button class="btn btn-primary" type="submit">update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

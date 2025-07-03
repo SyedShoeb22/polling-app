@@ -1,0 +1,392 @@
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+
+	<title>NubeEra (LXP)</title>
+	<!-- FAVICONS ICON -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+	<link href="/static/getskills/vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+	<link href="/static/getskills/vendor/swiper/css/swiper-bundle.min.css" rel="stylesheet">
+	<!-- Style css -->
+	<link href="/static/getskills/css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css">
+	<!--*******************
+        Preloader start
+    ********************-->
+	<div id="preloader">
+		<div class="lds-ripple">
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<!--*******************
+        Preloader end
+    ********************-->
+
+	<!-- ckeditor -->
+	<script src="/static/ckeditor/ckeditor.js"></script>
+	<script src="/static/ckeditor/js/sample.js"></script>
+	<link rel="stylesheet" href="/static/ckeditor/toolbarconfigurator/lib/codemirror/neo.css">
+
+	<!-- Tree View -->
+	<link href="/static/treeview/kendo.default-main.min.css" rel="stylesheet">
+	<script src="/static/treeview/jquery.min.js"></script>
+	<script src="/static/treeview/kendo.all.min.js"></script>
+
+	<style>
+		html {
+			font-size: 14px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.tag {
+			display: inline-block;
+			background-color: #eee;
+			padding: 3px 5px;
+			margin-right: 5px;
+			margin-bottom: 5px;
+			border-radius: 5px;
+		}
+
+		.close {
+			margin-left: 5px;
+			cursor: pointer;
+			color: red;
+		}
+
+		ul.breadcrumb li+li:before {
+			content: '\f061';
+			display: inline-block;
+			font-family: 'fontAwesome';
+			padding: 0 10px;
+		}
+	</style>
+</head>
+
+<div id="main-wrapper">
+
+	<!--**********************************
+            Nav header start
+        ***********************************-->
+	<div class="nav-header">
+		<div class="nav-control">
+			<div class="hamburger">
+				<span class="line"></span><span class="line"></span><span class="line"></span>
+			</div>
+		</div>
+	</div>
+	<!--**********************************
+            Nav header end
+        ***********************************-->
+
+	<!--**********************************
+            Header start
+        ***********************************-->
+	<div class="header">
+		<div class="header-content">
+			<nav class="navbar navbar-expand">
+				<div class="collapse navbar-collapse justify-content-between">
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+	<!--**********************************
+            Sidebar start
+        ***********************************-->
+
+	{% include "cto/layout/sidebar.html" %}
+
+	<div class="content-body">
+		<div class="container-fluid" style="overflow: auto;">
+			<div>
+				<nav aria-label="breadcrumb">
+					<ul class="breadcrumb">
+						<li><a href="{% url 'cto-dashboard'%}">Dashboard</a></li>
+						<li><a href="../../../../cto/cto-view-course">View Course</a></li>
+						{% if 'Edit' in page_title %}
+						<li><a href="../../../../cto/cto-add-course">Add Course</a></li>
+						{% endif %}
+						<li aria-current="page">{{page_title}}</li>
+					</ul>
+				</nav>
+			</div>
+			
+			<div class="card" >
+				<div class="card-header">
+					<h4 style="text-align:center;">{{page_title}}</h4>
+				</div>
+				<div class="card-body">
+					<form method="post" id="courseForm" data-subheads-url="{% url 'ajax_load_subheads' %}"
+						autocomplete="off">
+						{%csrf_token%}
+						<div class="form-group">
+							<div class="">
+								<div class="row mb-3">
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="course_name">Course Name</label>
+										<input type="text" name="course_name" id="course_name" class="form-control"
+											placeholder="Course Name" required value={{mod_name}}>
+									</div>
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="description">Description</label>
+										<input type="text" name="description" id="description" class="form-control"
+											placeholder="Description" required value={{description}}>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="mainhead_name">Select Category</label>
+										{% render_field form.mainhead class="form-control"%}
+									</div>
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="subhead_name">Select Sub Category</label>
+										{% render_field form.subhead class="form-control"%}
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<div id="example">
+											<div class="demo-section">
+												<label for="chapter_name">Chapters</label>
+												<input class="k-textbox form-control" id="c_search" class="form-control"
+													placeholder="Search Here" />
+												<div id="treeview"></div>
+												<input hidden type="text" name="chapterlist" id="chapterlist"
+													class="form-control" placeholder="chapter list">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="themecolor">Select Difficulty Level</label>
+										{% render_field form.themecolor class="form-control"%}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-xl-12">
+										<label for="whatlearn">What Student will Learn</label>
+
+										<textarea name="whatlearn" class="ckeditor"
+											required></textarea>
+										<script type="text/javascript">
+											CKEDITOR.replace('whatlearn');
+											CKEDITOR.add
+											CKEDITOR.instances['whatlearn'].setData('{{whatlearn}}');         
+										</script>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-xl-12">
+										<label for="includes">Course Include</label>
+										<textarea name="includes" style="height:40px;" class="ckeditor"
+											required></textarea>
+										<script type="text/javascript">
+											CKEDITOR.replace('includes');
+											CKEDITOR.add
+											CKEDITOR.instances['includes'].setData('{{includes}}');         
+										</script>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="tags">Tags</label>
+										<input type="text" name="tag-input" id="tag-input"
+											class="form-control list-unstyled" placeholder="Tags">
+										<input type="text" id="tag-output" name="tag-output" class="form-control"
+											readonly hidden>
+									</div>
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="image">Image Link</label>
+										<input type="text" name="image" id="image" class="form-control"
+											placeholder="Path to Image" required value={{image}}>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="banner">Banner Link</label>
+										<input type="text" name="banner" id="banner" class="form-control"
+											placeholder="Path to Banner Image" required value={{banner}}>
+									</div>
+									<div class="col-sm-12 col-md-6 col-xl-6">
+										<label for="price">Price</label>
+										<input type="number" name="price" id="price" class="form-control"
+											placeholder="Price" required value={{price}}>
+									</div>
+								</div>
+								<button class="btn btn-primary" type="submit"
+									onclick="return checkvalid(event);">Submit</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		$("#c_search").on("input", function () {
+			var query = this.value.toLowerCase();
+			var dataSource = $("#treeview").data("kendoTreeView").dataSource;
+
+			filter(dataSource, query);
+		});
+		$("#treeview").kendoTreeView({
+			checkboxes: {
+				checkChildren: true
+			},
+
+			check: onCheck,
+			dataSource: {{ js | safe }}
+        });
+
+		// Sets the "hidden" field on items that match the query.
+		function filter(dataSource, query) {
+			var hasVisibleChildren = false;
+			var data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
+
+			for (var i = 0; i < data.length; i++) {
+				var item = data[i];
+				var text = item.text.toLowerCase();
+				var itemVisible =
+					query === true // parent already matches
+					|| query === "" // query is empty
+					|| text.indexOf(query) >= 0; // item text matches query
+
+				var anyVisibleChildren = filter(item.children, itemVisible || query); // pass true if parent matches
+
+				hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
+
+				item.hidden = !itemVisible && !anyVisibleChildren;
+			}
+
+			if (data) {
+				// Re-apply the filter on the children.
+				dataSource.filter({ field: "hidden", operator: "neq", value: true });
+			}
+
+			return hasVisibleChildren;
+		}
+		// function that gathers IDs of checked nodes
+		function checkedNodeIds(nodes, checkedNodes) {
+			for (var i = 0; i < nodes.length; i++) {
+
+				if (nodes[i].checked || nodes[i].indeterminate) {
+					checkedNodes.push(nodes[i].id);
+				}
+
+				if (nodes[i].hasChildren) {
+					checkedNodeIds(nodes[i].children.view(), checkedNodes);
+				}
+			}
+		}
+
+		// show checked node IDs on datasource change
+		function onCheck() {
+			var checkedNodes = [],
+				treeView = $("#treeview").data("kendoTreeView"),
+				message;
+
+			checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+			if (checkedNodes.length > 0) {
+				message = checkedNodes.join(",");
+			}
+			document.getElementById("chapterlist").value = message;
+		}
+		$("#id_mainhead").change(function () {
+			var url = $("#moduleForm").attr("data-subheads-url");  // get the url of the `load_topics` view
+			var mainheadId = $(this).val();  // get the selected mainhead ID from the HTML input
+
+			$.ajax({                       // initialize an AJAX request
+				url: '{% url 'ajax_load_subheads' %}',                    // set the url of the request (= localhost:8000/hr/ajax/load-topics/)
+				data: {
+					'mainhead': mainheadId       // add the mainhead id to the GET parameters
+				},
+				success: function (data) {   // `data` is the return of the `load_topics` view function
+					$("#id_subhead").html(data);  // replace the contents of the topic input with the data that came from the server
+				}
+			});
+
+		});
+
+
+
+		var treeview = $("#treeview").data("kendoTreeView");
+		var mylist = {{ chapterlistbyid| safe}};
+		for (i = 0; i < mylist.length; i++) {
+
+			var bar = treeview.findByText(mylist[i].name);
+			treeview.select(bar);
+			treeview.dataItem(bar).set("checked", true);
+		};
+		var checkedNodes = [],
+			treeView = $("#treeview").data("kendoTreeView"),
+			message;
+
+		checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+		if (checkedNodes.length > 0) {
+			message = checkedNodes.join(",");
+		}
+		document.getElementById("chapterlist").value = message;
+
+	</script>
+	<script>
+		initSample();
+	</script>
+	<script>
+		var tagInput = document.getElementById("tag-input");
+		var tagOutput = document.getElementById("tag-output");
+		var tagsArray = [];
+
+		tagInput.addEventListener("keydown", function (event) {
+			if (event.code === "Space") {
+				event.preventDefault();
+				var tagText = tagInput.value.trim();
+				if (tagText !== "") {
+					if (!tagsArray.includes(tagText)) {
+						var tag = document.createElement("span");
+						tag.innerHTML = tagText;
+						tag.className = "tag";
+						var closeButton = document.createElement("span");
+						closeButton.innerHTML = "x";
+						closeButton.className = "close";
+						closeButton.onclick = function () {
+							this.parentElement.remove();
+							var tagIndex = tagsArray.indexOf(tagText);
+							if (tagIndex !== -1) {
+								tagsArray.splice(tagIndex, 1);
+								updateTagOutput();
+							}
+						};
+						tag.appendChild(closeButton);
+						tagInput.value = "";
+						tagInput.insertAdjacentElement("beforebegin", tag);
+						tagsArray.push(tagText);
+						updateTagOutput();
+					}
+				}
+			}
+		});
+
+		function updateTagOutput() {
+			tagOutput.value = tagsArray.join(", ");
+		}
+	</script>
+
+	<!-- Required vendors -->
+	<script src="/static/getskills/vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+	<script src="/static/getskills/vendor/swiper/js/swiper-bundle.min.js"></script>
+	<script src="/static/getskills/js/dlab.carousel.js"></script>
+	<script src="/static/getskills/js/custom.js"></script>
+	<script src="/static/getskills/js/dlabnav-init.js"></script>
+	<script src="/static/getskills/js/styleSwitcher.js"></script>
+</div>
+{% endblock content %}

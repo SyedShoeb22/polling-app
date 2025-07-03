@@ -1,0 +1,201 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+<div class="dlabnav" style="overflow:auto;">
+    <div class="settings-widget dash-profile">
+        <div class="settings-menu p-0">
+            <div class="profile-bg">
+                <img src="/static/dreamlms/img/instructor-profile-bg.jpg" alt="">
+                <div class="profile-img">
+                    {% if request.user.userprofile_set.first.profile_img %}
+                    <a href="{% url 'user-profile' %}"><img
+                            src="{{ request.user.userprofile_set.first.profile_img.url }}" alt=""></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-group">
+                <div class="profile-name text-center">
+                    <a href={% url 'user-profile' %}>{{request.user.first_name}} {{request.user.last_name}}</a>
+                    <h6><a href={% url 'user-profile' %}>({{request.user.username}})</a></h6>
+                    <h6>Mentor</h6>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{% url 'mentor-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-schedulerstatus-list' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Scheduler</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-schedulerstatus-create' %}">Add Scheduler Status</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-scheduler-calender' %}">View Calendar</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-schedulerstatus-list' %}">View Scheduler Status</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-material' %}" aria-expanded="false">
+                    <i class="bi bi-people"></i>
+                    <span class="nav-text">Study Material</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-material' %}">Add Study Material</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-material' %}">View Study Material</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-sessionmaterial' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Session Material</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-sessionmaterial' %}">Add Session Material</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-sessionmaterial' %}">View Session Material</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-k8sterminal' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Lab (K8S)</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-k8sterminal' %}">Add Lab (K8S)</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-k8sterminal' %}">View Lab (K8S)</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'mentor-pyton-terminal'%}" class="nav-link">
+                    <i class="feather-power"></i> Lab Pyton
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'mentor-linux-terminal'%}" class="nav-link">
+                    <i class="feather-power"></i> Lab linux
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://shell.cloud.google.com/?show=terminal" class="nav-link">
+                    <i class="feather-book"></i> Lab Cloud Shell
+                </a>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-chapterquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Chapter Wise MCQ</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-chapterquestion' %}">Add Chapter Wise MCQ</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-chapterquestion' %}">View Chapter Wise MCQ</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-mcqquestion-exams' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">MCQ Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-mcqquestion' %}">Add MCQ Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-mcqquestion-exams' %}">View MCQ Question</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-shortquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Short Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-shortquestion' %}">Add Short Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-shortquestion' %}">View Short Question</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'mentor-pending-short-exam-reuslt'%}" class="nav-link">
+                    <i class="feather-power"></i> Pending Exams
+                </a>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'mentor-view-ytexamquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Short Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'mentor-add-ytexamquestion' %}">Add Session Video Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mentor-view-ytexamquestion' %}">View Session Video Question</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'mentor-view-learner-video'%}" class="nav-link">
+                    <i class="feather-power"></i> Learner Videos
+                </a>
+            </li>
+            <div class="instructor-title">
+                <h4>ACCOUNT SETTINGS</h4>
+            </div>
+            <li class="nav-item">
+                <a href="{% url 'user-profile-update'%}" class="nav-link">
+                    <i class="feather-power"></i> Update Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-door-closed"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            <li>
+        </ul>
+    </div>
+</div>
+<!--**********************************
+            Sidebar end
+        ***********************************-->

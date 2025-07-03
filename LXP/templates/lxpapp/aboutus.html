@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>NubeEra Technologies</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/static/dreamlms/img/fvicon-logo.png">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/all.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/slick/slick.css">
+  <link rel="stylesheet" href="/static/dreamlms/plugins/slick/slick-theme.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/select2/css/select2.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/aos/aos.css">
+
+  <link rel="stylesheet" href="/static/getskills/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/dreamlms/fonts/style.css" />
+
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+
+    <header class="header">
+      <div class="header-fixed header-fixed-scroll">
+        <nav class="navbar navbar-expand-lg header-nav scroll-sticky ">
+          <div class="container">
+            <div class="navbar-header">
+              <a id="mobile_btn" href="javascript:void(0);">
+                <span class="bar-icon">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </a>
+              <a href="lxp-index.html" class="navbar-brand logo">
+                <img src="/static/dreamlms/img/logo.png" class="img-fluid" alt="Logo">
+              </a>
+            </div>
+            <div class="main-menu-wrapper">
+              <div class="menu-header">
+                <a href="lxp-index.html" class="menu-logo">
+                  <img src="/static/dreamlms/img/logo.png" class="img-fluid" alt="Logo">
+                </a>
+                <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
+              <ul class="main-nav">
+                <li class="active">
+                  <a href="/">Home</a>
+                </li>
+                <li class="">
+                  <a href="{% url 'course-list' %}">Courses </a>
+
+                </li>
+                <li class="has-submenu">
+                  <a href="#">More</a>
+                  <ul class="submenu">
+                    <li><a href="{% url 'careers' %}">Careers</a></li>
+                    <li><a href="{% url 'become-trainer' %}">Become Trainer</a></li>
+                    <li><a href="{% url 'blogs' %}">Blogs</a></li>
+                    <li><a href="{% url 'about-us' %}">About Us</a></li>
+
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <ul class="nav header-navbar-rht">
+              <li class="nav-item">
+                <a class="nav-link header-sign" href="{% url 'adminclick' %}">Signin</a>
+            </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+
+    <section class="section home-slide d-flex align-items-center">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class=" col-lg-5 col-md-6">
+            <div class="home-slide-face aos" data-aos="fade-up">
+              <div class="home-slide-text ">
+                <h2>Aboout Us</h2>
+                
+                <!-- <p>Own your future learning new skills online</p> -->
+              </div>
+              <div class="trust-user">
+                <p>Trusted by over 15K Users <br>worldwide since 2022</p>
+                <div class="trust-rating d-flex align-items-center">
+                  <div class="rate-head">
+                    <h2><span>1000</span>+</h2>
+                  </div>
+                  <div class="rating d-flex align-items-center">
+                    <h2 class="d-inline-block average-rating">4.4</h2>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-6 d-flex align-items-center">
+            <div class="img-fluid aos" data-aos="fade-up">
+              <img src="/static/dreamlms/img/banner-side.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!--Footer Section-->
+    <footer class="footer">
+      <div class="footer-top aos" data-aos="fade-up">
+        <div class="section-footer-top">
+          <div class="row p-0">
+            <div class="col-lg-3 col-md-6">
+
+              <div class="footer-widget footer-about">
+                <div class="footer-logo">
+                  <img style="width: 30%;;" src="/static/dreamlms/img/logo.png" alt="logo">
+                </div>
+                <div class="footer-about-content">
+                  <p class="justify-content-center"
+                    style="font-family:'Sofia Pro Light'; font-size: 15px; text-align: justify;">At NubeEra Technology, 
+                    we are dedicated to transforming the future of learning and development 
+                    with innovative training solutions tailored to meet the dynamic needs of today’s organizations and individuals.
+                     Our mission is to empower businesses and professionals with the skills and knowledge required to excel 
+                     in a rapidly evolving technological landscape.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info">
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><u> BRANCH ADDRESS</u></b></br><br>
+                    <b><a
+                        href="https://maps.app.goo.gl/LX4zL5QZbn9EgZTc7">
+                        NubeEra Technologies Pvt Ltd.</b></br>
+                    T9, Office Aids Building, STPI(Software Technology Park), MIDC Industrial Area, Chilkalthana,
+                    Aurangabad, Maharashtra 431007 </a>
+                  </p>
+                </div>
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><a
+                        href="https://maps.app.goo.gl/AVttZb1fWZXLdN796">
+                        NubeEra Technologies Pvt Ltd. (Bengaluru)</b></br>
+                    79/18, 1st Cross 6th Main, Gayathri Devi Park Extension, near Thirumala Temple, Vyalikaval,
+                    Bengaluru, Karnataka 560003.</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info">
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p><b><u> </u></b></br><br>
+                    <b><a href="https://maps.app.goo.gl/bmEkGDaXFYJE6Qj4A">  
+                      NubeEra Technologies Pvt Ltd. (USA)</b></br>
+                     6340 Security Blvd,Suite 100,Baltimore,MD,21207,USA.</a>
+                  </p>
+                </div>
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><a  href="https://maps.app.goo.gl/d325rz1Wzfa3kJvy7>">
+                      NubeEra Technologies Pvt Ltd. (Ghana)</b></br>
+                     Adenta municipal Assmebly, 2nd Nana Kanton Street, Accra, Ghana. </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info" >
+                <div class="footer-address">
+                  <h6><b><u>Contact Info</u></b></h6>
+                </div>
+                <div class="footer-address">                  
+                  <p> <img src="/static/dreamlms/img/icon/icon-19.svg" alt="" class="img-fluid">
+                    <a href="#" class="" >info@nubeera.com</a></p>
+              </div>
+                <div class="footer-address">                  
+                    <p><img src="/static/dreamlms/img/icon/icon-21.svg" alt="" class="img-fluid">+91 7219851089</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!-- End Footer section -->
+
+  
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3  border-top">
+      <ul class="nav col-md-4 ">
+        <li class="nav-item"><a href="term-condition.html" class="nav-link px-2 text-muted">Terms & Contdition</a></li>
+        <li class="nav-item"><a href="privacy-policy.html" class="nav-link px-2 text-muted">Privacy Policy</a></li>
+      </ul>
+      <p class="col-md-4 mb-0 text-muted">© 2024 NubeEra Technologies Pvt Ltd.</p>
+
+      <!-- Section: Social media -->
+      <section class="justify-content-end">
+        <!-- Facebook -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;"
+          href="https://www.facebook.com/NubeEra/" role="button"><i class="fab fa-facebook-f"></i></a>
+
+        <!-- Twitter -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #55acee;" href="#!"
+          role="button"><i class="fab fa-twitter"></i></a>
+
+        <!-- Google -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;"
+          href="https://g.co/kgs/fMaZqRq" role="button"><i class="fab fa-google"></i></a>
+
+        <!-- Instagram -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #ac2bac;"
+          href="https://www.instagram.com/nubeera.official/" role="button"><i class="fab fa-instagram"></i></a>
+
+        <!-- Linkedin -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #0082ca;"
+          href="https://in.linkedin.com/company/nubeera" role="button"><i class="fab fa-linkedin-in"></i></a>
+        <!-- Github -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #333333;"
+          href="https://github.com/NubeEra-Samples" role="button"><i class="fab fa-github"></i></a>
+      </section>
+      <!-- Section: Social media -->
+
+    </footer>
+  </footer>
+
+
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Need help in deciding the next career step?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+              </div>
+
+              <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+          </form>
+          <div id="emailHelp" class="form-text">Our Career Advisor will give you a call shortly.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script src="/static/dreamlms/js/jquery-3.6.0.min.js"></script>
+
+  <script src="/static/dreamlms/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/static/dreamlms/js/jquery.waypoints.js"></script>
+  <script src="/static/dreamlms/js/jquery.counterup.min.js"></script>
+
+  <script src="/static/dreamlms/plugins/select2/js/select2.min.js"></script>
+
+  <script src="/static/dreamlms/js/owl.carousel.min.js"></script>
+
+  <script src="/static/dreamlms/plugins/slick/slick.js"></script>
+
+  <script src="/static/dreamlms/plugins/aos/aos.js"></script>
+
+  <script src="/static/dreamlms/js/script.js"></script>
+  <!-- <script>
+    $(document).ready(function() { 
+      setTimeout(function() {
+        $('#exampleModal').modal('show');
+      }, 100000); // 2 minutes
+    });
+  </script> -->
+  <!-- <script src="//code.tidio.co/wyofzsoprspp9p5ucmtyqbsb21mlojoe.js" async></script> -->
+</body>
+
+
+</html>

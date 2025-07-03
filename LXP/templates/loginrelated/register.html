@@ -1,0 +1,196 @@
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>NubeEra (LXP)</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/static/dreamlms/img/favicon.svg">
+    <link rel="stylesheet" href="/static/getskills/css/style.css">
+</head>
+
+<body class="vh-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+									<div class="text-center mb-3">
+										<a href="index.html"><img src="/static/getskills/images/logo-full.png" alt=""></a>
+									</div>
+                                    <h4 class="text-center mb-4">Sign up your account</h4>
+                                    <form method="post" action="https://dreamslms.dreamguystech.com/html/login.html">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Full Name</strong></label>
+                                            <input type="text" class="form-control" placeholder="Enter your Full Name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Email</strong></label>
+                                            <input type="email" class="form-control" placeholder="Enter your email address">
+                                        </div>
+                                       <div class="form-group">
+                                         <label class="form-control-label">Password</label>
+                                             <div class="pass-group" id="passwordInput">
+                                             <input type="password" class="form-control pass-input"
+                                                 placeholder="Enter your password">
+                                            <span class="toggle-password feather-eye"></span>
+                                            <span class="pass-checked"><i class="feather-check"></i></span>
+                                        </div>
+                                        <div class="password-strength" id="passwordStrength">
+                                                <span id="poor"></span>
+                                                <span id="weak"></span>
+                                                <span id="strong"></span>
+                                                <span id="heavy"></span>
+                                        </div>
+                                        <div id="passwordInfo"></div>
+                                </div>
+                                <div class="form-check remember-me mt-3">
+                                    <label class="form-check-label mb-0 align-items-center">
+                                        <span><input class="form-check-input" type="checkbox" name="remember"></span> I agree to the 
+                                        <a href="../../../../termsandconditions">Terms of Service</a> and <a href="../../../../privacypolicy">Privacy Policy.</a>
+                                    </label>
+                                </div>
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign me up</button>
+                                        </div>
+
+                                        <div class="login-social">
+                                           <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn font-w800 d-block my-4"><i class="fab fa-google me-2 text-primary"></i>Sign in with Google</a>
+                                       </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        <p>Already have an account? <a class="text-primary" href="{% url 'userlogin' %}">Sign in</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="main-wrapper log-wrap">
+        <div class="row">
+
+            <div class="col-md-6 login-bg">
+                <div class="owl-carousel login-slide owl-theme">
+                    <div class="welcome-login">
+                        <div class="login-banner">
+                            <img src="/static/dreamlms/img/login-img.png" class="img-fluid" alt="Logo">
+                        </div>
+                        <div class="mentor-course text-center">
+                            <h2>Welcome to <br>NubeEra LXP Courses.</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                        </div>
+                    </div>
+                    <div class="welcome-login">
+                        <div class="login-banner">
+                            <img src="/static/dreamlms/img/login-img.png" class="img-fluid" alt="Logo">
+                        </div>
+                        <div class="mentor-course text-center">
+                            <h2>Welcome to <br>NubeEra LXP Courses.</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                        </div>
+                    </div>
+                    <div class="welcome-login">
+                        <div class="login-banner">
+                            <img src="/static/dreamlms/img/login-img.png" class="img-fluid" alt="Logo">
+                        </div>
+                        <div class="mentor-course text-center">
+                            <h2>Welcome to <br>NubeEra LXP Courses.</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 login-wrap-bg">
+                <div class="login-wrapper">
+                    <div class="loginbox">
+                        <div class="w-100">
+                            <h1>Create an Account</h1>
+                            <form method="post" action="https://dreamslms.dreamguystech.com/html/login.html">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="form-control-label">Full Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter your Full Name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Email</label>
+                                    <input type="email" class="form-control" placeholder="Enter your email address">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Password</label>
+                                    <div class="pass-group" id="passwordInput">
+                                        <input type="password" class="form-control pass-input"
+                                            placeholder="Enter your password">
+                                        <span class="toggle-password feather-eye"></span>
+                                        <span class="pass-checked"><i class="feather-check"></i></span>
+                                    </div>
+                                    <div class="password-strength" id="passwordStrength">
+                                        <span id="poor"></span>
+                                        <span id="weak"></span>
+                                        <span id="strong"></span>
+                                        <span id="heavy"></span>
+                                    </div>
+                                    <div id="passwordInfo"></div>
+                                </div>
+                                <div class="form-check remember-me">
+                                    <label class="form-check-label mb-0">
+                                        <input class="form-check-input" type="checkbox" name="remember"> I agree to the <a
+                                            href="../../../../termsandconditions">Terms of Service</a> and <a
+                                            href="../../../../privacypolicy">Privacy Policy.</a>
+                                    </label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-start" type="submit">Create Account</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="social-login">
+                            <a href="{% url 'social:begin' 'google-oauth2' %}">
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-start mt-3">
+                                        <img src="/static/dreamlms/img/net-icon-01.png" class="img-fluid" alt="Google Logo"> Sign In using Google
+                                    </button>
+                                </div>
+                                
+                            </a>
+                        </div>
+
+                        <div class="register-link">
+                            <p class="mb-0 mt-2">Already have an account? <a href="{% url 'userlogin' %}">Sign in</a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+
+    <script src="/static/dreamlms/js/jquery-3.6.0.min.js"></script>
+    <script src="/static/dreamlms/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/dreamlms/js/owl.carousel.min.js"></script>
+    <script src="/static/dreamlms/js/passwordvalidation.js"></script>
+    <script src="/static/dreamlms/js/script.js"></script>
+
+
+</body>
+
+</html>

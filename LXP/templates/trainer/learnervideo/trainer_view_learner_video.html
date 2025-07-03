@@ -1,0 +1,219 @@
+{% extends 'trainer/trainerbase.html' %}
+{% load lxpapp_filters %}
+{% block content %}
+{%load static%}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+<script>
+  function myFunction() {
+    var input = document.getElementById("Search");
+    var filter = input.value.toLowerCase();
+    var nodes = document.getElementsByClassName('target');
+
+    for (i = 0; i < nodes.length; i++) {
+      if (nodes[i].innerText.toLowerCase().includes(filter)) {
+        nodes[i].style.display = "block";
+      } else {
+        nodes[i].style.display = "none";
+      }
+    }
+  }
+</script>
+<div class="main-wrapper">
+  <div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class=""><a href="{% url 'trainer-dashboard' %}">Dashboard</a></li>
+        <li class="" aria-current="page">Learner List</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="showing-list">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="d-flex align-items-center">
+                    <td style="padding-right: 10px">
+                      <input type="text" id="Search" onkeyup="myFunction()" placeholder="Please enter a search term.."
+                        title="Type in a name">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="student-grid-blk">
+                {% for t in learner %}
+                {% if not forloop.counter|divisibleby:2 %}
+                <div class="row">
+                  {% endif %}
+                  <div class="col-md-6">
+                    <div class="student-list flex-fill target">
+                      <div class="student-img">
+                        <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                          <img class="img-fluid" alt="" src="{{t.pic}}" style="width:100px">
+                        </a>
+                      </div>
+                      <div class="student-content">
+                        <h5><a
+                            href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                            <b>{{t.user.first_name}} {{t.user.last_name}} </b>
+                          </a></h5>
+                        <h6>
+                          Learner
+                        </h6>
+                        <h5>
+                          <ul>
+                            {% for name in t.courseset_name|split_by:',' %}
+                            <li>{{ name }}</li>
+                            {% endfor %}
+                          </ul>
+                        </h5>
+                        <div class="student-info">
+                          <div class="loc-blk d-flex justify-content-center">
+                            <i class="fas fa-mobile-alt"></i>
+                            <p> {{t.mobile}}</p>
+                          </div>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {% endfor %}
+                  {% if not forloop.counter|divisibleby:2 %}
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="">
+    <div class="main-wrapper">
+      <div class="page-content">
+        <div class="row">
+
+          <div class="col-xl-12">
+            <div class="card students-list">
+              <div class="card-header border-0 flex-wrap pb-0">
+                <h4>Users List</h4>
+                <div class="input-group search-area w-auto">
+                  <span class="input-group-text"><a href="javascript:void(0)"><svg width="24" height="24"
+                        viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M27.414 24.586L22.337 19.509C23.386 17.928 24 16.035 24 14C24 8.486 19.514 4 14 4C8.486 4 4 8.486 4 14C4 19.514 8.486 24 14 24C16.035 24 17.928 23.386 19.509 22.337L24.586 27.414C25.366 28.195 26.634 28.195 27.414 27.414C28.195 26.633 28.195 25.367 27.414 24.586ZM7 14C7 10.14 10.14 7 14 7C17.86 7 21 10.14 21 14C21 17.86 17.86 21 14 21C10.14 21 7 17.86 7 14Z"
+                          fill="var(--primary)"></path>
+                      </svg>
+                    </a></span>
+                  <input type="text" id="Search" onkeyup="myFunction();" class="form-control"
+                    placeholder="Search here...">
+                </div>
+              </div>
+              <div class="card-body py-0">
+                <div class="table-responsive">
+                  <table
+                    class="table table-hover display mb-4 dataTablesCard order-table card-table text-black application"
+                    id="application-tbl1">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>User Type</th>
+                        <th>Mobile No.</th>
+                        <th>Course Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for t in learner %}
+                      {% if not forloop.counter|divisibleby:2 %}
+                      <tr>
+                        {% endif %}
+                          <td>
+                            <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                            <div class="d-flex align-items-center">
+                              <img src="{{t.pic}}" alt="">
+                              <h4 class="mb-0 fs-16 font-w500">{{t.user.first_name}} {{t.user.last_name}}</h4>
+
+                            </div>
+                          </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                              {{t.uid}}
+                            </a>
+                            </td>
+                          <td>
+                            <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                            {% if t.utype == 0 or t.utype == 2 %}
+                            Learner
+                            {% elif t.utype == 1 %}
+                            Trainer
+                            {% elif t.utype == 3 %}
+                            CTO
+                            {% elif t.utype == 4 %}
+                            CFO
+                            {% elif t.utype == 5 %}
+                            Mentor
+                            {% elif t.utype == 6 %}
+                            Staff
+                            {% endif %}
+                          </a>
+                          </td>
+                          <td>
+                            <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                              {{t.mobile}}
+                            </a>
+                            </td>
+
+                          <td>
+                            <a href="{% url 'trainer-learner-video-course-subject' t.user_id t.first_name t.last_name %}">
+                            {% for name in t.courseset_name|split_by:',' %}
+                            {{name}}
+                            {% endfor %}
+                          </a>
+                          </td>
+
+                      </tr>
+                      {% endfor %}
+                      {% if not forloop.counter|divisibleby:2 %}
+                    </tbody>
+                    {% endif %}
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function myFunction() {
+      console.log("searching");
+      var input = document.getElementById("Search");
+      var filter = input.value.toLowerCase();
+      var rows = document.querySelectorAll('table tbody tr');
+
+      rows.forEach(function (row) {
+        // Combine the text content of the entire row (including nested elements)
+        let rowText = row.innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+          row.style.display = ""; // Show row if it matches the filter
+        } else {
+          row.style.display = "none"; // Hide row if it doesn't match
+        }
+      });
+    }
+  </script>
+</div>
+
+{% endblock content %}

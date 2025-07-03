@@ -1,0 +1,212 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+<!-- <div class="dlabnav" style="overflow:auto; width: auto;">
+    <div class="text-center">
+        <img
+            src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            width="100"
+            class="img-fluid rounded-circle mb-4"
+            alt=""
+        >
+        <h4>
+            <a href="instructor-profile.html">{{request.user.first_name}} {{request.user.last_name}}</a>
+        </h4>
+        <h6>Learner</h6>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{% url 'learner-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-video-course-subject' %}" class="" aria-expanded="false">
+                    <i class="bi bi-list-ul"></i>
+                    <span class="nav-text">Session Recorded Videos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-studymaterial-course' %}" class="" aria-expanded="false">
+                    <i class="bi bi-list-check"></i>
+                    <span class="nav-text">My Enrolled Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-available-course' %}" class="" aria-expanded="false">
+                    <i class="bi bi-list"></i>
+                    <span class="nav-text">All Courses to Enrolled</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-check-k8sterminal' %}" target="_blank" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Lab (K8S)</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-linux-terminal' %}" target="_blank" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Lab Linux</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-pyton-terminal' %}" target="_blank" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Lab Python</span>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="https://shell.cloud.google.com/?show=terminal"
+                    target="_blank"
+                    class="nav-link"
+                    aria-expanded="false"
+                >
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Lab Cloud Shell</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-edit-Learner-details' request.user.id %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Edit Profile</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div> -->
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+<div class="dlabnav" style="overflow:auto ">
+    <div class="text-center">
+        <img
+            id="Profilepic"
+            src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"    
+            width="100"
+            height="100"
+            class="rounded-circle mb-4"
+            style="max-width: 70%; object-fit: cover;"
+            alt=""
+        >
+        
+        <h4>
+            <a id="name" href="#" style="font-size: 1rem;">{{user.user_full_name}} </a>
+        </h4>
+      
+        <h6>Learner</h6>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+       <li>
+                <a href="{% url 'learner-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-video-course-subject' %}" class="" aria-expanded="false">
+                    <i class="bi bi-camera-video"></i>
+                    <span class="nav-text">Recorded Videos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-polls-list' %}" class="" aria-expanded="false">
+                    <i class="fas fa-poll-h"></i>
+                    <span class="nav-text">Polls</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-studymaterial-course' %}" class="" aria-expanded="false">
+                    <i class="fa fa-book-reader"></i>
+                    <span class="nav-text">My Enrolled Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-available-course' %}" class="" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">All Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'learner-exam' %}" class="" aria-expanded="false">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span class="nav-text">Exams</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fa-solid fa-vial"></i>
+                    <span class="nav-text">Labs</span>
+                </a>
+                <ul aria-expanded="false">
+                    <a href="{% url 'learner-check-k8sterminal' %}"  class="nav-link">K8S</a>
+                    <a href="{% url 'learner-linux-terminal' %}" class="nav-link">
+                       Python
+                    </a>
+                    <a href="{% url 'learner-linux-terminal' %}" class="nav-link">
+                        linux
+                    </a>
+                    <a target="_blank" href="https://shell.cloud.google.com/?show=terminal" class="nav-link">
+                        Cloud Shell
+                    </a>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'learner-edit-Learner-details' request.user.id %}" class="" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="nav-text">Edit Profile</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-door-open"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+const profilePicPath = getCookie('learnerdetails');
+const imagesource = document.getElementById('Profilepic');
+const nameElement = document.getElementById('name');
+console.log("Profile picture path from cookie:", profilePicPath);
+if (profilePicPath) {
+  const regex = /<ImageFieldFile:\s([^>]+)>/;
+  const match = profilePicPath.match(regex);
+  const name = profilePicPath.match(/'([^']+)'/);
+
+  if (match) {
+    const filePath = match[1].trim(); // extracted path, e.g. 'profile_pics/Anhar_K_U2cUDaI.jpg'
+    imagesource.src = `/media/${filePath}`;
+    nameElement.textContent = name[1];
+    // console.log("Image path:", filePath);
+  } else {
+    console.log("No match found in cookie");
+    imagesource.src = 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'; // fallback image
+  }
+} else {
+  console.log("Cookie not found");
+  imagesource.src = 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'; // fallback image
+}
+
+</script>

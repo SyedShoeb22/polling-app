@@ -1,0 +1,343 @@
+{% extends 'learner/learnerbase.html' %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="/static/getskills/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded for the select box logic -->
+    <script type="text/javascript">
+      // Original jQuery logic for select boxes - preserved
+      $(document).ready(function () { // Changed $().ready to $(document).ready for clarity
+        $('#add').click(function () {
+          return !$('#select1 option:selected').remove().appendTo('#select2');
+        });
+    
+        $('#add1').click(function () {
+          return !$('#select3 option:selected').remove().appendTo('#select4');
+        });
+    
+        $('#remove').click(function () {
+          return !$('#select2 option:selected').remove().appendTo('#select1');
+        });
+    
+        $('#remove1').click(function () {
+          return !$('#select4 option:selected').remove().appendTo('#select3');
+        });
+      });
+    
+      // Original showError function for client-side validation messages
+      function showError(message) {
+        let errorDiv = document.getElementById('error-message'); // This is the div in your original form
+        if (!errorDiv) { // Should exist in your form
+          console.error("Error div with id 'error-message' not found!");
+          alert(message); // Fallback
+          return;
+        }
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+    
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 5000);
+      }
+
+      // Client-side validation, adapted from your original validateForm
+      // It now uses the showError function you provided.
+      function clientSideValidateForm() {
+        const form = document.getElementById('editLearnerForm'); // Target form by ID
+        let x = form["user_full_name"].value.trim();
+        if (x === "") {
+          showError("Please Enter Name");
+          return false;
+        }
+        x = form["mobile"].value.trim();
+        if (x.length !== 10 || !/^\d+$/.test(x)) { // Added regex for digit check
+          showError("Please Enter a valid 10 Digit Mobile No");
+          return false;
+        }
+        x = form["whatsappno"].value.trim();
+        // Allow empty or 10 digits. Your original logic was a bit complex here.
+        // This allows it to be blank OR exactly 10 digits.
+        if (x !== "" && (x.length !== 10 || !/^\d+$/.test(x))) {
+          showError("Please Enter a valid 10 Digit WhatsApp No. or leave it blank.");
+          return false;
+        }
+        return true; // All client-side checks passed
+      }
+
+      // --- AJAX Form Submission Logic ---
+      function getCSRFToken() {
+        const name = 'csrftoken';
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+
+      function showApiMessage(message, type = 'error') {
+        let messageDiv = document.getElementById('api-response-message');
+        if (!messageDiv) {
+          messageDiv = document.createElement('div');
+          messageDiv.id = 'api-response-message';
+          const formElement = document.getElementById('editLearnerForm');
+          if (formElement && formElement.parentNode) { // Insert after the form
+            formElement.parentNode.insertBefore(messageDiv, formElement.nextSibling);
+          } else { // Fallback if form or parentNode not found
+            const cardBody = document.querySelector('.card-body .basic-form');
+            if(cardBody) cardBody.appendChild(messageDiv);
+            else document.body.appendChild(messageDiv);
+          }
+        }
+        messageDiv.textContent = message;
+        messageDiv.className = type === 'success' ? 'alert alert-success mt-3' : 'alert alert-danger mt-3';
+        messageDiv.style.display = 'block';
+
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 7000);
+      }
+
+      function clearServerFormErrors() {
+        document.querySelectorAll('.server-field-error').forEach(el => el.remove());
+        const apiResponseMessageDiv = document.getElementById('api-response-message');
+        if (apiResponseMessageDiv) apiResponseMessageDiv.style.display = 'none';
+      }
+
+      function displayServerFormErrors(errors) {
+        clearServerFormErrors();
+        for (const field in errors) {
+          const errorList = errors[field];
+          const fieldInput = document.querySelector(`[name="${field}"]`); // Find input by name
+          let fieldElementContainer = fieldInput ? fieldInput.closest('.col-sm-9') : null; // Find container
+
+          if (fieldElementContainer) {
+            let errorDiv = fieldElementContainer.querySelector(`.server-field-error.${field}`);
+            if (!errorDiv) {
+              errorDiv = document.createElement('div');
+              errorDiv.className = `text-danger server-field-error ${field}`;
+              // Insert after the field input or at the end of the container
+              fieldInput.parentNode.insertBefore(errorDiv, fieldInput.nextSibling);
+            }
+            errorDiv.innerHTML = errorList.map(e => `<small>${e}</small>`).join(''); // Use <small> for less intrusive errors
+          } else if (field === '__all__') {
+            showApiMessage(errorList.join(', '), 'error');
+          } else {
+            // Log unplaced errors
+            console.warn(`Could not place error for field: ${field}`, errorList);
+            showApiMessage(`Error with ${field}: ${errorList.join(', ')}`, 'error');
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const editForm = document.getElementById('editLearnerForm');
+        if (editForm) {
+          editForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            clearServerFormErrors(); // Clear previous server-side errors
+            
+            // Hide client-side error message div before new validation
+            const clientErrorDiv = document.getElementById('error-message');
+            if(clientErrorDiv) clientErrorDiv.style.display = 'none';
+
+            if (!clientSideValidateForm()) { // Use your client-side validation
+              return;
+            }
+
+            const formData = new FormData(editForm);
+            const submitButton = editForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Saving...';
+            
+            const url = editForm.action;
+            const csrfToken = getCSRFToken();
+
+            if (!csrfToken) {
+                showApiMessage('CSRF token not found. Please refresh the page.', 'error');
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+                return;
+            }
+
+            try {
+              const response = await fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                  'X-CSRFToken': csrfToken,
+                  'X-Requested-With': 'XMLHttpRequest'
+                }
+              });
+
+              const result = await response.json();
+
+              if (response.ok && result.status === 'success') {
+                showApiMessage(result.message, 'success');
+                if (result.user_data) {
+                    if (result.user_data.profile_pic_url) {
+                        const imgElement = document.querySelector('.col-md-4 img.img-fluid.rounded'); // More specific selector
+                        if (imgElement) {
+                            imgElement.src = result.user_data.profile_pic_url + '?t=' + new Date().getTime();
+                        }
+                    }
+                    // Optionally update form fields if needed (though usually not for an edit form that stays on page)
+                    // if (result.user_data.user_full_name) editForm["user_full_name"].value = result.user_data.user_full_name;
+                    // if (result.user_data.mobile) editForm["mobile"].value = result.user_data.mobile;
+                    // if (result.user_data.whatsappno) editForm["whatsappno"].value = result.user_data.whatsappno;
+                }
+              } else {
+                if (result.errors) {
+                  displayServerFormErrors(result.errors); // Display field-specific errors from server
+                } else {
+                  showApiMessage(result.message || 'An unknown error occurred.', 'error');
+                }
+              }
+            } catch (error) {
+              console.error('Submission error:', error);
+              showApiMessage('An error occurred. Please check your connection and try again.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+          });
+        }
+      });
+    </script>
+</head>
+<body> <!-- Assuming body starts here or in base template -->
+
+<div>
+    <style>
+    ul.breadcrumb li+li:before {
+      content: '\f061'; /* Ensure FontAwesome is loaded if you use this */
+      display: inline-block;
+      font-family: 'fontAwesome';
+      padding: 0 10px;
+    }
+    .form-group { /* Style from your original code */
+      display: flex;
+      align-items: center;
+    }
+    .form-group img {
+        border-radius: .25rem;
+        border: 1px solid #ddd;
+    }
+    .form-group .custom-file {
+        margin-left: 20px;
+    }
+    /* Styles for server-side field errors */
+    .server-field-error small { 
+        display: block; 
+        margin-top: 0.25rem; 
+    }
+    </style>
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url 'learner-dashboard'%}">Dashboard</a>
+            </li>
+            <li aria-current="page">Edit Details</li>
+        </ul>
+    </nav>
+</div>
+<div class="container">
+    <div class="panel panel-primary">
+        {# The h1 was here, now part of the card header #}
+        <div class="card">
+          <div class="card-header">
+            <div class="row w-100">
+              <div class="col-sm-12 col-md-6 d-flex align-items-center">
+                <h4 class="card-title">Edit User {{ user.username }}</h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="basic-form">
+              <div class="row">
+                <div class="col-sm-12 col-md-4" style="max-height: 400px; overflow: hidden;">
+                  {% if user.profile_pic and user.profile_pic.url %}
+                    <img
+                      src="{{ user.profile_pic.url }}"
+                      class="img-fluid rounded"
+                      alt="Profile Picture"
+                      style="width: 100%; height: auto; object-fit: contain; max-height: 100%;">
+                  {% else %}
+                    <img
+                      src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" {# Corrected static path #}
+                      class="img-fluid rounded"
+                      alt="Default Profile Picture"
+                      style="width: 100%; height: auto; object-fit: contain; max-height: 100%;">
+                  {% endif %}
+                </div>
+                <div class="col-sm-12 col-md-8">
+ 
+                  <form id="editLearnerForm" 
+                        action="{% url 'learner-edit-Learner-details-api' user_id=user.learner_id %}" 
+                        method="POST" 
+                        autocomplete="off" 
+                        enctype="multipart/form-data">
+                    {% csrf_token %} {# Stays for security, also helps set the cookie #}
+                    
+                    <div class="mb-3 row">
+                      <label for="{{ form.user_full_name.id_for_label }}" class="col-sm-3 col-form-label">Full Name</label>
+                      <div class="col-sm-9">
+                        {{ form.user_full_name }}
+                        {% if form.user_full_name.errors %} {# Shows initial errors from Django if form is re-rendered by GET #}
+                        <div class="text-danger initial-server-error">{{ form.user_full_name.errors }}</div>
+                        {% endif %}
+                        {# Placeholder for server-side AJAX errors for this field will be added by JS #}
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="{{ form.mobile.id_for_label }}" class="col-sm-3 col-form-label">Mobile No.</label>
+                      <div class="col-sm-9">
+                        {{ form.mobile }}
+                        {% if form.mobile.errors %}
+                        <div class="text-danger initial-server-error">{{ form.mobile.errors }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="{{ form.whatsappno.id_for_label }}" class="col-sm-3 col-form-label">WhatsApp No.</label>
+                      <div class="col-sm-9">
+                        {{ form.whatsappno }}
+                        {% if form.whatsappno.errors %}
+                        <div class="text-danger initial-server-error">{{ form.whatsappno.errors }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="{{ form.profile_pic.id_for_label }}" class="col-sm-3 col-form-label">Profile Picture</label>
+                      <div class="col-sm-9">
+                        {{ form.profile_pic }}
+                        {% if form.profile_pic.errors %}
+                        <div class="text-danger initial-server-error">{{ form.profile_pic.errors }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Save Details</button>
+                      </div>
+                    </div>
+                    {# This div is for CLIENT-SIDE validation errors from your original showError function #}
+                    <div id="error-message" style="color: red; display: none;" class="mt-2"></div>
+                    {# API response messages (general success/error) will be added here by JS #}
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{# Removed extra </div> and <br> tags, use CSS/Bootstrap for spacing #}
+{% endblock content %}

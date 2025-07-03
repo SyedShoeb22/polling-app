@@ -1,0 +1,34 @@
+{% extends 'learner/learnerbase.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>🗳️ Available Polls</h2>
+    </div>
+    <p class="text-muted">Here are the polls you have not yet voted on.</p>
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% for poll in polls %}
+        <div class="card mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title mb-1">{{ poll.question }}</h5>
+                    <small class="text-muted">Created: {{ poll.created_at|date:"M. d, Y" }}</small>
+                </div>
+                <a href="{% url 'learner-poll-vote' poll.id %}" class="btn btn-primary">Vote Now →</a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">All Done!</h4>
+            <p>You have voted on all available polls. Thank you for your participation!</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

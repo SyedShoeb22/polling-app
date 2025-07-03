@@ -1,0 +1,189 @@
+{% extends 'mentor/mentorbase.html' %} 
+{% load widget_tweaks %}
+{% block content %}
+<style>
+  .modal-content {
+    text-align: center; /* Center text inside the modal */
+  }
+
+  /* Ensure calendar takes the full width */
+  .calendar-wrapper {
+    width: 100%;
+  }
+</style>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<link href="/static/dreamlms/vendor/fullcalendar/css/main.min.css" rel="stylesheet" />
+
+<div class="card">
+  <div class="card-body">
+    <!-- Flexbox container for calendar -->
+    <div class="calendar-wrapper mb-3">
+      <!-- Right side: Calendar -->
+      <div id="calendar" class="app-fullcalendar fc fc-media-screen fc-direction-ltr fc-theme-standard"></div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div class="modal fade" id="eventDetailsModal" tabindex="-1" role="dialog" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="eventDetailsModalLabel">Event Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Table to display event details -->
+            <table class="table table-bordered">
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Type:</strong></td>
+                <td id="eventType" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Title:</strong></td>
+                <td id="eventTitleDetails" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Start:</strong></td>
+                <td id="eventStartDetails" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>End:</strong></td>
+                <td id="eventEndDetails" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>mentor:</strong></td>
+                <td id="eventmentor" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Subject:</strong></td>
+                <td id="eventSubject" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Chapter:</strong></td>
+                <td id="eventChapter" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Topic:</strong></td>
+                <td id="eventTopic" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Details:</strong></td>
+                <td id="eventDetails" style="text-align: left;"></td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Meeting Link:</strong></td>
+                <td id="eventMeetingLink" style="text-align: left;">
+                  <a href="#" id="meetingLink" target="_blank">Join Meeting</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left; width: 30%;"><strong>Complete:</strong></td>
+                <td id="eventStatusSum" style="text-align: left;">0 %</td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Required vendors -->
+    <script src="/static/dreamlms/vendor/global/global.min.js"></script>
+    <script src="/static/dreamlms/vendor/moment/moment.min.js"></script>
+    <script src="/static/dreamlms/vendor/fullcalendar/js/main.min.js"></script>
+
+    <script>
+      "use strict";
+      
+      const typeMap = {
+        "1": "Session",
+        "2": "Interview",
+        "3": "Client Requirement",
+        "4": "Lab Call",
+        "5": "Meeting",
+        "6": "Others"
+      };
+
+      const schedulerEvents = [
+        {% for scheduler in schedulers %}
+        {
+          title: typeMap["{{ scheduler.type|escapejs }}"] + " of  {{ scheduler.mentor.first_name|escapejs }} {{ scheduler.mentor.last_name|escapejs }} ({{ scheduler.status_sum|default:0|escapejs }}%)",
+          start: "{{ scheduler.start|date:'Y-m-d\\TH:i:s'|escapejs }}",
+          end: "{{ scheduler.end|date:'Y-m-d\\TH:i:s'|escapejs }}",
+          extendedProps: {
+            Type: typeMap["{{ scheduler.type|escapejs }}"],
+            Subject: "{{ scheduler.subject.subject_name|escapejs }}",
+            Chapter: "{{ scheduler.chapter.chapter_name|escapejs }}",
+            Topic: "{{ scheduler.topic.topic_name|escapejs }}",
+            mentor: "{{ scheduler.mentor.first_name|escapejs }} {{ scheduler.mentor.last_name|escapejs }}",
+            StatusSum: "{{ scheduler.status_sum|default:0|escapejs }} %",
+            Details: "{{ scheduler.eventdetails|escapejs }}",
+            MeetingLink: "{{ scheduler.meeting_link|escapejs }}"
+          }
+        },
+        {% endfor %}
+      ];
+
+      function fullCalender() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          selectable: true,
+          editable: false,
+          initialDate: new Date().toISOString().slice(0, 10),
+          events: schedulerEvents,
+          eventClick: function(info) {
+            $('#eventTitleDetails').text(info.event.title);
+            $('#eventStartDetails').text(info.event.start.toLocaleString());
+            $('#eventEndDetails').text(info.event.end ? info.event.end.toLocaleString() : 'N/A');
+            $('#eventmentor').text(info.event.extendedProps.mentor);
+            $('#eventStatusSum').text(info.event.extendedProps.StatusSum);
+            $('#eventSubject').text(info.event.extendedProps.Subject || 'N/A');
+            $('#eventChapter').text(info.event.extendedProps.Chapter || 'N/A');
+            $('#eventTopic').text(info.event.extendedProps.Topic || 'N/A');
+            $('#eventDetails').text(info.event.extendedProps.Details || 'N/A');
+            $('#eventType').text(info.event.extendedProps.Type || 'N/A');
+            // Handle the meeting link
+            const meetingLink = info.event.extendedProps.MeetingLink || '#';  // Default to '#' if no link exists
+            $('#meetingLink').attr('href', meetingLink);
+            $('#eventMeetingLink').toggle(meetingLink !== '#');  // Hide the link row if there's no link
+
+
+            const eventType = info.event.extendedProps.Type;
+
+            if (eventType === "Session") {
+              $('#eventSubject').closest('tr').show();
+              $('#eventChapter').closest('tr').show();
+              $('#eventTopic').closest('tr').show();
+              $('#eventDetails').closest('tr').hide();
+            } else {
+              $('#eventSubject').closest('tr').hide();
+              $('#eventChapter').closest('tr').hide();
+              $('#eventTopic').closest('tr').hide();
+              $('#eventDetails').closest('tr').show();
+            }
+
+            $('#eventDetailsModal').modal('show');
+          }
+        });
+
+        calendar.render();
+        calendar.updateSize();
+      }
+
+      jQuery(window).on('load', fullCalender);
+    </script>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Meeting</title>
+    <script src="https://meet.jit.si/external_api.js"></script>
+</head>
+<body>
+    <div id="meet" style="height: 700px;"></div>
+    
+<script>
+  const domain = "3.95.231.203";  // Your server IP
+  const options = {
+      roomName: "{{ meeting_id }}",
+      jwt: "{{ token }}",
+      width: "100%",
+      height: 600,
+      parentNode: document.getElementById('meet'),
+      userInfo: {
+          displayName: "{{ request.user.username }}"
+      }
+  };
+  const api = new JitsiMeetExternalAPI(domain, options);
+</script>
+</body>
+</html>

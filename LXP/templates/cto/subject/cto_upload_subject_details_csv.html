@@ -1,0 +1,121 @@
+{% extends 'cto/ctobase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<script>
+  function validateForm() {
+
+    var fileInput =
+      document.getElementById('select_file');
+
+    var filePath = fileInput.value;
+    if (filePath == "") {
+      alert("Please CSV file to upload");
+      return false;
+    }
+    // Allowing file type
+    var allowedExtensions =
+      /(\.csv)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+      alert('Invalid file type');
+      fileInput.value = '';
+      return false;
+    }
+    $('#waiting').show();
+  }
+</script>
+</head>
+<div class="container">
+  <h4>Upload a Subject CSV File: </h4>
+  <form onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+    <input type="file" name="select_file" id="select_file" class="form-control">
+    <br><br>
+    <button type="submit" class="btn btn-primary btn-sm mb-4">Upload</button>
+    <BR>
+  </form>
+  <div id="waiting" style="display:none">
+    <img src="/static/image/processing-gif-image-5.gif">
+  </div>
+  <div class="card">
+    <div class="card-header">  
+    <h1>Sample CSV</h1>
+    </div>
+  <div class="card-body">
+    <table class="table table-hover ">
+    <thead class="">
+        <tr>
+            <th>Subject</th>
+            <th>Chapter</th>
+            <th>Topics</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Data Transfer Language</td>
+            <td>Apache Avro</td>
+            <td>Apache Avro</td>
+        </tr>
+        <tr>
+            <td>Data Transfer Language</td>
+            <td>Apache Parquet</td>
+            <td>Apache Parquet</td>
+        </tr>
+        <tr>
+            <td>Data Transfer Language</td>
+            <td>Groovey Scripting</td>
+            <td>Groovey Scripting</td>
+        </tr>
+        <tr>
+            <td>Data Transfer Language</td>
+            <td>JSon- BSon & YAML</td>
+            <td>JSon- BSon & YAML</td>
+        </tr>
+        <tr>
+            <td>Data Transfer Language</td>
+            <td>XML- XSLT- XSD</td>
+            <td>XML- XSLT- XSD</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>How automation change world</td>
+            <td>How automation change world</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>Types of Automation</td>
+            <td>Types of Automation</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>What is Automation?</td>
+            <td>What is Automation?</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>What is CloudOps?</td>
+            <td>What is CloudOps?</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>What is DevOps?</td>
+            <td>What is DevOps?</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>What is SysOps?</td>
+            <td>What is SysOps?</td>
+        </tr>
+        <tr>
+            <td>Industrial Automations</td>
+            <td>When to Use MLOps- AIOps?</td>
+            <td>When to Use MLOps- AIOps?</td>
+        </tr>
+    </tbody>
+</table>
+  </div>  
+  <div>
+</div>
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+{% endblock content %}

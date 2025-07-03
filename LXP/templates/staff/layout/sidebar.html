@@ -1,0 +1,217 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+<div class="dlabnav" style="overflow:auto;">
+    <div class="settings-widget dash-profile">
+        <div class="settings-menu p-0">
+            <div class="profile-bg">
+                
+                <div class="profile-img">
+                    {% if request.user.userprofile_set.first.profile_img %}
+                    <a href="{% url 'user-profile' %}"><img
+                            src="{{ request.user.userprofile_set.first.profile_img.url }}" alt=""></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-group">
+                <div class="profile-name text-center">
+                    <a href={% url 'user-profile' %}>{{request.user.first_name}} {{request.user.last_name}}</a>
+                    <h6><a href={% url 'user-profile' %}>({{request.user.username}})</a></h6>
+                    <h6>staff</h6>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{% url 'staff-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-exam' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Exam</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-exam' %}">Add Exam</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-exam' %}">View Exam</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'staff-upload-exam-csv' %}">Upload Exam Questions</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-material' %}" aria-expanded="false">
+                    <i class="bi bi-people"></i>
+                    <span class="nav-text">Study Material</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-material' %}">Add Study Material</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-material' %}">View Study Material</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-activity' %}" aria-expanded="false">
+                    <i class="bi bi-people"></i>
+                    <span class="nav-text">Activity</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-activity' %}">Add Activity</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-activity' %}">View Activity</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-sessionmaterial' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Session Material</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-sessionmaterial' %}">Add Session Material</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-sessionmaterial' %}">View Session Material</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- <li>
+                <a class="has-arrow " href="{% url 'staff-view-k8sterminal' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Lab (K8S)</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-k8sterminal' %}">Add Lab (K8S)</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-k8sterminal' %}">View Lab (K8S)</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'staff-pyton-terminal'%}" class="nav-link">
+                    <i class="feather-power"></i> Lab Pyton
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'staff-linux-terminal'%}" class="nav-link">
+                    <i class="feather-power"></i> Lab linux
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://shell.cloud.google.com/?show=terminal" class="nav-link">
+                    <i class="feather-book"></i> Lab Cloud Shell
+                </a>
+            </li> -->
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-chapterquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Chapter Wise MCQ</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-chapterquestion' %}">Add Chapter Wise MCQ</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-chapterquestion' %}">View Chapter Wise MCQ</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-mcqquestion-exams' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">MCQ Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-mcqquestion' %}">Add MCQ Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-mcqquestion-exams' %}">View MCQ Question</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-shortquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Short Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-shortquestion' %}">Add Short Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-shortquestion' %}">View Short Question</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'staff-pending-short-exam-reuslt'%}" class="nav-link">
+                    <i class="feather-power"></i> Pending Exams
+                </a>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'staff-view-ytexamquestion' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Session Video Question</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'staff-add-ytexamquestion' %}">Add Session Video Question</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'staff-view-ytexamquestion' %}">View Session Video Question</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'staff-view-learner-video'%}" class="nav-link">
+                    <i class="feather-power"></i> Learner Videos
+                </a>
+            </li>
+            <div class="instructor-title">
+                <h4>ACCOUNT SETTINGS</h4>
+            </div>
+            <li class="nav-item">
+                <a href="{% url 'user-profile-update'%}" class="nav-link">
+                    <i class="feather-power"></i> Update Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-door-closed"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            <li>
+        </ul>
+    </div>
+</div>
+<!--**********************************
+            Sidebar end
+        ***********************************-->

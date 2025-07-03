@@ -1,0 +1,329 @@
+{% extends 'trainer/trainerbase.html' %}
+{% block content %}
+{% load static %}
+<style>
+    ol.breadcrumb li+li:before {
+        content: "\f061";
+        display: inline-block;
+        font-family: "fontAwesome";
+        padding: 0 10px;
+    }
+
+    #player {
+        display: none;
+    }
+
+    /* .question-item h5 {
+    font-size: 32px; 
+  }
+
+  .form-check-label {
+    font-size: 28px; 
+  } */
+</style>
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'trainer-dashboard' %}">Dashboard</a>
+            </li>
+            <li aria-current="page">Update Activity Marks</li>
+        </ol>
+    </nav>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">STEAM Education</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ message }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Show the modal when the DOM is ready
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+            keyboard: false
+        });
+        // Show the modal
+        successModal.show();
+
+        // Hide the modal after 5 seconds
+        setTimeout(function () {
+            successModal.hide();
+        }, 3000);
+    });
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-8 col-xxl-7">
+            <div class="card">
+                <div id="lesson-details" class="card-body">
+                    <iframe id="myIframe" width="100%" height="300px"></iframe>
+                    <div class="d-flex justify-content-between align-items-center" id="mymarks">
+                        <h4 class="card-title">Marks</h4>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center" id="mystatus">
+                        <h4 class="card-title">Status</h4>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center" id="myremarks">
+                        <h4 class="card-title">Remarks</h4>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-xxl-5">
+            <div class="custome-accordion">
+                {% for t in activity %}
+                <div class="accordion-item card">
+                    <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                        <button class="accordion-button d-flex justify-content-between align-items-center collapsed"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}"
+                            aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                            <span class="acc-heading">{{ t.activity__description }}</span>
+                            <span class="ms-auto">Total Answers : ({{ activity|length }})</span>
+                        </button>
+                    </h2>
+                    <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                        aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body card-body pt-0">
+                            <div class="acc-courses">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <span class="acc-icon">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M4 13C3.817 13 3.635 12.95 3.474 12.851C3.32918 12.7611 3.20965 12.6358 3.12671 12.4869C3.04378 12.338 3.00016 12.1704 3 12V4C3 3.653 3.18 3.331 3.474 3.149C3.61914 3.05976 3.7846 3.00891 3.95481 3.00121C4.12502 2.99351 4.29439 3.02923 4.447 3.105L12.447 7.105C12.6131 7.1882 12.7528 7.31599 12.8504 7.47405C12.948 7.63212 12.9997 7.81423 12.9997 8C12.9997 8.18578 12.948 8.36789 12.8504 8.52595C12.7528 8.68402 12.6131 8.8118 12.447 8.895L4.447 12.895C4.307 12.965 4.152 13 4 13Z"
+                                                    fill="var(--primary)"></path>
+                                            </svg>
+                                        </span>
+                                        <h4 class="m-0 lesson-heading" data-lesson-id="{{ t.id }}"
+                                            data-file-url="{{ t.file_url }}" data-id="{{ t.id }}"
+                                            data-marks="{{ t.marks }}" data-status="{{ t.status }}"
+                                            data-remarks="{{ t.remarks }}">
+                                            {{ t.submitted_on }} {{ t.id }}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const GITHUB_TOKEN = "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"; // Replace with your token
+    const OWNER = "NubeEra-ImranAli"; // Replace with your username
+    const REPO = "study_kit"; // Replace with your repository name
+
+    // Function to fetch and display the PDF in the iframe
+    async function displayPdf(fileUrl) {
+        try {
+            // Extract the relative file path from the GitHub URL
+            const filePath = extractFilePath(fileUrl);
+            if (!filePath) {
+                alert("Invalid file path.");
+                return;
+            }
+
+            // GitHub API URL to fetch the file content (Base64)
+            const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${filePath}`;
+
+            // Fetch file details from the GitHub API
+            const response = await fetch(apiUrl, {
+                headers: {
+                    Authorization: `token ${GITHUB_TOKEN}`,
+                    Accept: "application/vnd.github.v3+json"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Decode Base64 content
+                const base64Content = data.content;
+                const binaryData = atob(base64Content);
+
+                // Convert binary data to a Blob
+                const byteArray = new Uint8Array(binaryData.length);
+                for (let i = 0; i < binaryData.length; i++) {
+                    byteArray[i] = binaryData.charCodeAt(i);
+                }
+                const blob = new Blob([byteArray], { type: "application/pdf" });
+
+                // Create an object URL and assign it to the iframe
+                const pdfUrl = URL.createObjectURL(blob);
+                const iframe = document.getElementById("myIframe");
+                iframe.src = pdfUrl; // Load the PDF into iframe
+                iframe.style.display = "block"; // Make the iframe visible if hidden
+            } else {
+                console.error("Failed to fetch PDF:", response.status, response.statusText);
+                alert("Could not fetch the PDF file.");
+            }
+        } catch (error) {
+            console.error("Error fetching PDF:", error);
+            alert("An error occurred while fetching the PDF.");
+        }
+    }
+
+    // Extract the relative file path from the GitHub URL
+    function extractFilePath(url) {
+        const urlParts = url.split("/blob/main/");
+        if (urlParts.length > 1) {
+            return urlParts[1]; // This is the relative file path
+        } else {
+            console.error("Invalid GitHub URL format");
+            return null;
+        }
+    }
+
+    // Event listener for dynamically loading the PDF on click
+    document.addEventListener("DOMContentLoaded", () => {
+        const lessonHeadings = document.querySelectorAll(".lesson-heading");
+        lessonHeadings.forEach(heading => {
+            heading.addEventListener("click", function () {
+                const fileUrl = this.getAttribute("data-file-url"); // Get the full GitHub API URL
+                displayPdf(fileUrl); // Pass the fileUrl to the function
+                const marks = this.getAttribute("data-marks");
+                const status = String(this.getAttribute("data-status"));
+                console.log("Status: ", status);
+                console.log("Checkbox checked:", (status === 'true' || status === true));
+                const remarks = this.getAttribute("data-remarks");
+                const lessonId = this.getAttribute("data-lesson-id"); // Get the lesson ID
+                const Id = this.getAttribute("data-id"); // Get the lesson ID
+                // Function to remove and recreate an element
+                function removeAndAddInput(elementId, parentElementId, inputAttributes) {
+                    const existingElement = document.getElementById(elementId);
+                    if (existingElement) {
+                        existingElement.remove();  // Remove the existing input field if it exists
+                    }
+
+                    const newInput = document.createElement("input");
+                    Object.keys(inputAttributes).forEach(key => {
+                        newInput.setAttribute(key, inputAttributes[key]);
+                    });
+                    
+                    document.getElementById(parentElementId).appendChild(newInput);
+                }
+
+                // Function to remove and add the update button
+                function removeAndAddButton(buttonId, parentElementId, buttonText) {
+                    const existingButton = document.getElementById(buttonId);
+                    if (existingButton) {
+                        existingButton.remove();  // Remove the existing button if it exists
+                    }
+
+                    const newButton = document.createElement("button");
+                    newButton.setAttribute("id", buttonId);
+                    newButton.textContent = buttonText;
+                    newButton.classList.add("btn", "btn-primary");
+                    
+                    document.getElementById(parentElementId).appendChild(newButton);
+                }
+
+                // Create and append the marks input
+                removeAndAddInput("marksInput", "mymarks", {
+                    type: "text",
+                    value: marks,
+                    id: "marksInput"
+                });
+                // Create and append the status input (checkbox)
+                removeAndAddInput("statusInput", "mystatus", {
+                    type: "checkbox",
+                    id: "statusInput"
+                });
+
+                // Explicitly set the checked property of the checkbox after creating it
+                const statusInput = document.getElementById("statusInput");
+                if (status === 'true' || status === true) {
+                    statusInput.checked = true;  // Manually check the box
+                } else {
+                    statusInput.checked = false;  // Uncheck the box
+                }
+
+                // Create and append the remarks input
+                removeAndAddInput("remarksInput", "myremarks", {
+                    type: "text",
+                    value: remarks,
+                    id: "remarksInput"
+                });
+
+                // Create and append the update button
+                removeAndAddButton("updateButton", "myremarks", "Update");
+
+                // Add click event listener for the update button
+                document.getElementById("updateButton").addEventListener("click", function() {
+                    // Collect the data from input fields
+                    const updatedMarks = document.getElementById("marksInput").value;
+                    const updatedStatus = document.getElementById("statusInput").checked;
+                    const updatedRemarks = document.getElementById("remarksInput").value;
+
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const updateUrl = "{% url 'trainer-activity-learner-batch-activity-update' %}";
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", updateUrl, true);  // Use the URL generated by Django
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("X-CSRFToken", csrfToken);  // Add the CSRF token here
+
+                    xhr.send(JSON.stringify({
+                        id: Id,
+                        marks: updatedMarks,
+                        status: updatedStatus,
+                        remarks: updatedRemarks
+                    }));
+
+                    // Handle response (if needed)
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            alert("Update successful!");
+                            // After the update, update the data attributes of the corresponding lesson heading
+        const updatedMarks = document.getElementById("marksInput").value;
+        const updatedStatus = document.getElementById("statusInput").checked ? 'true' : 'false';
+        const updatedRemarks = document.getElementById("remarksInput").value;
+        const lessonHeading = document.querySelector('.lesson-heading[data-id="' + Id + '"]'); // Select the lesson heading by data-id
+
+        if (lessonHeading) {
+            // Update the data attributes
+            lessonHeading.setAttribute("data-marks", updatedMarks);
+            lessonHeading.setAttribute("data-status", updatedStatus);
+            lessonHeading.setAttribute("data-remarks", updatedRemarks);
+        }
+                        } else {
+                            alert("Error updating data.");
+                        }
+                    };
+                });
+
+            });
+        });
+    });
+</script>
+
+{% endblock %}

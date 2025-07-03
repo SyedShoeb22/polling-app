@@ -1,0 +1,182 @@
+{% extends 'cfo/cfobase.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="/static/get/css/style.css">
+<style>
+  ol.breadcrumb li+li:before {
+    content: '\f061';
+    display: inline-block;
+    font-family: 'fontAwesome';
+    padding: 0 10px;
+  }
+</style>
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'cfo-dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'cfo-scheduler-create' %}">Create Scheduler</a></li>
+      <li aria-current="page">View Schedulers</li>
+    </ol>
+  </nav>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">LXP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ message }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Show the modal when the DOM is ready
+    var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+      keyboard: false
+    });
+
+    // Show the modal
+    successModal.show();
+
+    // Hide the modal after 5 seconds
+    setTimeout(function () {
+      successModal.hide();
+    }, 3000);
+  });
+</script>
+
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between w-100 align-items-center">
+      <h5>Scheduler Data</h5>
+      <!-- Export Dropdown -->
+      <div class="d-flex justify-content-end align-items-center gap-2">
+        <a href="{% url 'cfo-scheduler-create' %}" class="btn btn-primary btn-sm">Add Scheduler</a>
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Export
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+            <li><a class="dropdown-item" href="#" id="export-csv">Export as CSV</a></li>
+            <li><a class="dropdown-item" href="#" id="export-excel">Export as Excel</a></li>
+            <li><a class="dropdown-item" href="#" id="export-pdf">Export as PDF</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover table-responsive" id="dataTable" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Trainer</th>
+            <th>Subject</th>
+            <th>Chapter</th>
+            <th>Topic</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for scheduler in schedulers %}
+          <tr>
+            <td>{% if scheduler.type == '1' %}
+              Session
+              {% elif scheduler.type == '2' %}
+              Interview
+              {% elif scheduler.type == '3' %}
+              Client Requirment
+              {% elif scheduler.type == '4' %}
+              Lab Call
+              {% elif scheduler.type == '5' %}
+              Meeting
+              {% elif scheduler.type == '6' %}
+              Others
+              {% endif %}
+            </td>
+            <td>{{ scheduler.trainer.first_name }} {{ scheduler.trainer.last_name }} </td>
+            {% if scheduler.type == '1' %}
+            <td>{{ scheduler.subject.subject_name }}</td>
+            <td>{{ scheduler.chapter.chapter_name }}</td>
+            <td>{{ scheduler.topic.topic_name }}</td>
+            {% else %}
+            <td colspan="3"> {{ scheduler.eventdetails }}</td>
+            {% endif %}
+            <td>{{ scheduler.start }}</td>
+            <td>{{ scheduler.end }}</td>
+            <td><a class="btn btn-primary btn-xs" href="{% url 'cfo-update-scheduler' scheduler.id %}"><span
+                  class="far fa-edit"></span></a></td>
+            <td><a class="btn btn-danger btn-xs" href="{% url 'cfo-delete-scheduler' scheduler.id %}"
+                onclick="return confirm('Are you sure?')"><span class="far fa-trash-alt"></span></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+  document.getElementById('export-csv').addEventListener('click', () => exportCSV());
+  document.getElementById('export-excel').addEventListener('click', () => exportExcel());
+  document.getElementById('export-pdf').addEventListener('click', exportPDF);
+
+  function exportCSV() {
+    let csvContent = '';
+    const rows = document.querySelectorAll('#dataTable tr');
+    rows.forEach(row => {
+      const cols = row.querySelectorAll('th, td');
+      const csvRow = Array.from(cols).map(col => `"${col.innerText}"`).join(',');
+      csvContent += csvRow + '\n';
+    });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'scheduler_data.csv');
+  }
+
+  function exportExcel() {
+    const wb = XLSX.utils.table_to_book(document.getElementById('dataTable'), { sheet: "Sheet1" });
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), 'scheduler_data.xlsx');
+  }
+
+  function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.text("Scheduler Data", 14, 10);
+    pdf.autoTable({
+      html: '#dataTable',
+      startY: 20,
+      theme: 'grid',
+      headStyles: { fillColor: [22, 160, 133] },
+      styles: { fontSize: 8 }
+    });
+    pdf.save('scheduler_data.pdf');
+  }
+</script>
+
+
+
+{% endblock content %}

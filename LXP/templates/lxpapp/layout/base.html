@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta name="robots" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:description" content="GetSkills  : GetSkills Online Learning  Admin Bootstrap 5 Template" />
+	<meta property="og:image" content="social-image.html" />
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- PAGE TITLE HERE -->
+	<title>NubeEra (LXP)</title>
+
+	<!-- FAVICONS ICON -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+	<link href="/static/getskills/vendor/jquery-nice-select//static/getskills/css/nice-select.css" rel="stylesheet">
+	<link href="/static/getskills/vendor/swiper//static/getskills/css/swiper-bundle.min.css" rel="stylesheet">
+	<!-- Style css -->
+	<link href="/static/getskills/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!--*******************
+        Preloader start
+    ********************-->
+	<div id="preloader">
+		<div class="lds-ripple">
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<!--*******************
+        Preloader end
+    ********************-->
+
+	<!--**********************************
+        Main wrapper start
+    ***********************************-->
+	<div id="main-wrapper">
+
+		<!--**********************************
+            Nav header start
+        ***********************************-->
+		<div class="nav-header border-end border-none-sm">
+			<div class="nav-control">
+				<div class="hamburger">
+					<span class="line"></span><span class="line"></span><span class="line"></span>
+				</div>
+			</div>
+		</div>
+		<!--**********************************
+            Nav header end
+        ***********************************-->
+
+		<!--**********************************
+            Header start
+        ***********************************-->
+		<div class="header bg-white box-shadow">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+							<div class="dashboard_bar">
+                                Dashboard
+                            </div>
+                        </div>
+                        <!-- <div class="navbar-nav header-right">
+							<div class="nav-item d-flex align-items-center">
+								<div class="input-group search-area">
+									<span class="input-group-text"><a href="javascript:void(0)"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M27.414 24.586L22.337 19.509C23.386 17.928 24 16.035 24 14C24 8.486 19.514 4 14 4C8.486 4 4 8.486 4 14C4 19.514 8.486 24 14 24C16.035 24 17.928 23.386 19.509 22.337L24.586 27.414C25.366 28.195 26.634 28.195 27.414 27.414C28.195 26.633 28.195 25.367 27.414 24.586ZM7 14C7 10.14 10.14 7 14 7C17.86 7 21 10.14 21 14C21 17.86 17.86 21 14 21C10.14 21 7 17.86 7 14Z" fill="var(--secondary)"/>
+										</svg>
+										</a></span>
+									<input type="text" class="form-control" placeholder="Search here...">
+								</div>
+							</div>
+                        </div> -->
+                    </div>
+				</nav>
+			</div>
+		</div>
+		<!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+		<!--**********************************
+            Sidebar start
+        ***********************************-->
+		{% include "lxpapp/layout/sidebar.html" %}
+		<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+		<!--**********************************
+            Content body start
+        ***********************************-->
+		<div class="content-body h-100">
+			{% block body %}{% endblock %}
+		</div>
+		<!--**********************************
+            Content body end
+        ***********************************-->
+
+
+
+		<!--**********************************
+            Footer start
+        ***********************************-->
+		<div class="footer">
+			<div class="copyright">
+				<p>Copyright © Designed by <a href="https://nubeera.com"
+					target="_blank">Nubeera</a> 2022</p>
+			</div>
+		</div>
+		<!--**********************************
+            Footer end
+        ***********************************-->
+
+		<!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+		<!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+	</div>
+	<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!--**********************************
+        Scripts
+    ***********************************-->
+	<!-- Required vendors -->
+	<script src="/static/getskills/vendor/global/global.min.js"></script>
+	<script src="/static/getskills/vendor/jquery-nice-select//static/getskills/js/jquery.nice-select.min.js"></script>
+	<script src="/static/getskills/vendor/swiper//static/getskills/js/swiper-bundle.min.js"></script>
+	<script src="/static/getskills/js/dlab.carousel.js"></script>
+	<script src="/static/getskills/js/custom.js"></script>
+	<script src="/static/getskills/js/dlabnav-init.js"></script>
+	<script src="/static/getskills/js/demo.js"></script>
+	<script src="/static/getskills/js/styleSwitcher.js"></script>
+	<script>
+		$(document).ready(function () {
+			$(".pagination-down a").on('click', function () {
+				$(".pagination-down a").removeClass("active");
+				$(this).addClass("active");
+			});
+		});
+
+	</script>
+</body>
+
+
+
+</html>

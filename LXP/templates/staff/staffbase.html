@@ -1,0 +1,30 @@
+{% extends 'staff/layout/base.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+    ol.breadcrumb li+li:before {
+      content: '\f061';
+      display: inline-block;
+      font-family: 'fontAwesome';
+      padding: 0 10px;
+    }
+    .multiselect-dropdown {
+      width: 100% !important;
+      background: #fff !important;
+      color: #6e6e6e !important;
+      line-height: 2.4 !important;
+      font-size: 1rem !important;
+      border-radius: 0.625rem !important;
+
+    }
+  </style>
+<div id="content-wrapper">
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock content %}
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

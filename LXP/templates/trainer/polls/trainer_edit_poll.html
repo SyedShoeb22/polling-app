@@ -1,0 +1,112 @@
+{% extends "trainer/trainerbase.html" %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h4 class="mb-0">✏️ Edit Poll</h4>
+  </div>
+
+  <div class="card-body">
+    {% if poll_form.errors or option_formset.non_form_errors or messages %}
+    <div class="alert alert-danger">
+      <p class="mb-2">Please correct the errors below:</p>
+      {{ poll_form.errors }}
+      {{ option_formset.non_form_errors }}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'trainer-edit-polls' poll_form.instance.id %}">
+      {% csrf_token %}
+
+      <!-- Question field -->
+      <div class="mb-3">
+        <label for="{{ poll_form.question.id_for_label }}" class="form-label">
+          {{ poll_form.question.label }} <span class="text-danger">*</span>
+        </label>
+        {{ poll_form.question }}
+        <div class="form-text">Be clear and concise. Example: "What is your favorite programming language?"</div>
+      </div>
+
+      <!-- Poll type (read-only display) -->
+      <div class="mb-3">
+        <label class="form-label">Poll Type</label>
+        <p><strong>{{ poll_form.instance.get_poll_type_display }}</strong> <em>(Cannot be changed)</em></p>
+        <input type="hidden" name="poll_type" value="{{ poll_form.instance.poll_type }}">
+      </div>
+
+      <!-- Option inputs -->
+      <div class="mb-3" id="options-container">
+        <label class="form-label">Options <span class="text-danger">*</span></label>
+        {{ option_formset.management_form }}
+        <div id="options-list">
+          {% for form in option_formset %}
+          <div class="input-group mb-2 option-wrapper">
+            {{ form.option_text }}
+            <button type="button" class="btn btn-outline-danger" title="Remove option" onclick="removeOption(this)">🗑️</button>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-text" id="optionNote">Add at least two options.</div>
+        <button type="button" id="addOptionBtn" class="btn btn-outline-primary mt-2" onclick="addOption()">➕ Add Option</button>
+      </div>
+
+      <!-- Submit and cancel -->
+      <button type="submit" class="btn btn-primary">Update Poll</button>
+      <a href="{% url 'trainer-view-polls' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<!-- Empty form template used by JS -->
+<div id="empty-form-template" style="display: none;">
+  <div class="input-group mb-2 option-wrapper">
+    {{ option_formset.empty_form.option_text }}
+    <button type="button" class="btn btn-outline-danger" title="Remove option" onclick="removeOption(this)">🗑️</button>
+  </div>
+</div>
+
+<!-- JS Logic -->
+<script>
+  const optionsList = document.getElementById("options-list");
+  const addOptionBtn = document.getElementById("addOptionBtn");
+  const emptyFormTemplate = document.getElementById("empty-form-template");
+  const totalFormsInput = document.querySelector("#id_options-TOTAL_FORMS");
+
+  function addOption(value = "") {
+    const formIndex = parseInt(totalFormsInput.value);
+    const newFormHtml = emptyFormTemplate.innerHTML.replace(/__prefix__/g, formIndex);
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = newFormHtml;
+    const newFormDom = tempDiv.firstElementChild;
+    const input = newFormDom.querySelector("input");
+    if (input) {
+      input.value = value;
+      input.placeholder = "Option " + (optionsList.children.length + 1);
+    }
+    optionsList.appendChild(newFormDom);
+    totalFormsInput.value = formIndex + 1;
+  }
+
+  function removeOption(button) {
+    button.closest('.option-wrapper').remove();
+    const allOptions = optionsList.querySelectorAll('.option-wrapper');
+    allOptions.forEach((opt, index) => {
+      const input = opt.querySelector('input');
+      if (input) {
+        input.placeholder = "Option " + (index + 1);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const pollType = "{{ poll_form.instance.poll_type }}";
+    if (pollType === 'yesno') {
+      addOptionBtn.style.display = 'none';
+      document.querySelectorAll('.option-wrapper button').forEach(btn => btn.disabled = true);
+    }
+  });
+</script>
+{% endblock %}

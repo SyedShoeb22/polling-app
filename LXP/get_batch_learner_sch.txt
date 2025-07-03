@@ -1,0 +1,17 @@
+SELECT DISTINCT 
+  auth_user.username,
+  lxpapp_scheduler.eventdetails,
+  lxpapp_scheduler.meeting_link,
+  lxpapp_subject.subject_name,
+  lxpapp_chapter.chapter_name,
+  lxpapp_topic.topic_name
+FROM
+  lxpapp_scheduler
+  LEFT OUTER JOIN lxpapp_batchtrainer ON (lxpapp_scheduler.trainer_id = lxpapp_batchtrainer.trainer_id)
+  LEFT OUTER JOIN lxpapp_batchlearner ON (lxpapp_batchtrainer.batch_id = lxpapp_batchlearner.batch_id)
+  LEFT OUTER JOIN auth_user ON (lxpapp_batchlearner.learner_id = auth_user.id)
+  LEFT OUTER JOIN lxpapp_subject ON (lxpapp_scheduler.subject_id = lxpapp_subject.id)
+  LEFT OUTER JOIN lxpapp_chapter ON (lxpapp_scheduler.chapter_id = lxpapp_chapter.id)
+  LEFT OUTER JOIN lxpapp_topic ON (lxpapp_scheduler.topic_id = lxpapp_topic.id)
+WHERE
+  lxpapp_scheduler.type = 1

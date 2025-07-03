@@ -1,0 +1,56 @@
+{% extends "trainer/trainerbase.html" %}
+{% load utils %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-5 fs-2">🧠 Generate Poll Questions</h1>
+
+  <div class="card mb-5 shadow">
+    <div class="card-body p-5">
+      <form method="post" class="fs-5">
+        {% csrf_token %}
+
+        <div class="mb-4">
+          <label for="{{ form.topics.id_for_label }}" class="form-label fs-5">Topics</label>
+          {{ form.topics }}
+        </div>
+
+        <div class="mb-4">
+          <label for="{{ form.n_questions.id_for_label }}" class="form-label fs-5">Number of Questions</label>
+          {{ form.n_questions }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg px-5 py-3">🚀 Generate</button>
+      </form>
+    </div>
+  </div>
+
+  <p class="fs-5 text-muted">{{ questions|length }} question{{ questions|length|pluralize }} generated.</p>
+
+  {% if questions %}
+    <div class="card shadow">
+      <div class="card-body p-5">
+        <h2 class="card-title mb-4 fs-3">📋 Generated Questions</h2>
+        <ol class="list-group list-group-numbered fs-5">
+          {% for q in questions %}
+            <li class="list-group-item py-4">
+              <strong class="fs-5">{{ q.question }}</strong>
+              <ul class="list-unstyled mt-3">
+                {% with letter_list="A,B,C,D"|split:"," %}
+                  {% for opt in q.options %}
+                    <li>{{ letter_list|index:forloop.counter0 }}. {{ opt }}</li>
+                  {% endfor %}
+                {% endwith %}
+              </ul>
+                {% if q.answer_index is not None %}
+                  <p><em>✅ Correct Answer: {{ q.options|index:q.answer_index }}</em></p>
+                {% else %}
+                  <p><em>⚠️ Correct Answer: Not Available</em></p>
+                {% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

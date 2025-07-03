@@ -1,0 +1,279 @@
+{% extends 'cfo/cfobase.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="/static/get/css/style.css" />
+
+<style>
+  ol.breadcrumb li+li:before {
+    content: "\f061";
+    display: inline-block;
+    font-family: "fontAwesome";
+    padding: 0 10px;
+  }
+</style>
+
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'cfo-dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'cfo-scheduler-list' %}">Scheduler List</a></li>
+      <li aria-current="page">Update Scheduler</li>
+    </ol>
+  </nav>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">NubeEra LXP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ message }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Show the modal when the DOM is ready
+    var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+      keyboard: false
+    });
+
+    // Show the modal
+    successModal.show();
+
+    // Hide the modal after 5 seconds
+    setTimeout(function () {
+      successModal.hide();
+    }, 3000);
+  });
+</script>
+
+<form method="POST" action="">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-xl-12 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Update Scheduler</h4>
+        </div>
+        <div class="card-body">
+          <div class="basic-form">
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Scheduler Type</label>
+              <div class="col-sm-9">
+                <select name="type" id="type" class="form-control" required>
+                  <option value="">Select Scheduler Type</option>
+                  <option value="1" {% if scheduler.type == '1' %} selected {% endif %}>Session</option>
+                  <option value="2" {% if scheduler.type == '2' %} selected {% endif %}>Interview</option>
+                  <option value="3" {% if scheduler.type == '3' %} selected {% endif %}>Client Requirment</option>
+                  <option value="4" {% if scheduler.type == '4' %} selected {% endif %}>Lab Call</option>
+                  <option value="5" {% if scheduler.type == '5' %} selected {% endif %}>Meeting</option>
+                  <option value="6" {% if scheduler.type == '6' %} selected {% endif %}>Others</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Trainers</label>
+              <div class="col-sm-9">
+                <select name="trainer" id="trainer" class="form-control" required>
+                  <option value="">Select Trainer</option>
+                  {% for trainer in trainers %}
+                    <option value="{{ trainer.user_id }}" {% if trainer.user_id == scheduler.trainer_id %} selected {% endif %}>{{ trainer.user__first_name }} {{ trainer.user__last_name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Subject</label>
+              <div class="col-sm-9">
+                <select name="subject" id="subject" class="form-control" onchange="fetchChapters()" required>
+                  <option value="">Select Subject</option>
+                  {% for subject in subjects %}
+                  <option value="{{ subject.id }}" {% if subject.id == scheduler.subject.id %} selected {% endif %}>{{ subject.subject_name }} 
+
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Chapter</label>
+              <div class="col-sm-9">
+                <select
+                  name="chapter"
+                  id="chapter"
+                  class="form-control"
+                  onchange="fetchTopics()"
+                  required
+                >
+                  <option value="">Select Chapter</option>
+                  {% for chapter in chapters %}
+                  <option value="{{ chapter.chapter__id }}" {% if chapter.chapter__id == scheduler.chapter_id %} selected {% endif %}>{{ chapter.chapter__chapter_name }} 
+
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Topic</label>
+              <div class="col-sm-9">
+                <select
+                  name="topic"
+                  id="topic"
+                  class="form-control"
+                  required
+                >
+                  <option value="">Select Topic</option>
+                  {% for topic in topics %}
+                  <option value="{{ topic.topic__id }}" {% if topic.topic__id == scheduler.topic_id %} selected {% endif %}>{{ topic.topic__topic_name }} 
+
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Start Date</label>
+              <div class="col-sm-9">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  name="start"
+                  id="start"
+                  placeholder="Select Start Date"
+                  value="{{ scheduler.start|date:'Y-m-d\TH:i' }}"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">End Date</label>
+              <div class="col-sm-9">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  name="end"
+                  id="end"
+                  placeholder="Select End Date"
+                  value="{{ scheduler.end|date:'Y-m-d\TH:i' }}"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-sm-3 col-form-label">Event Details</label>
+              <div class="col-sm-9">
+                <textarea id="eventdetail" class="form-control" name="eventdetail" rows="4" cols="50">{{ scheduler.eventdetails }}</textarea>
+
+              </div>
+            </div>
+            
+            <div class="mb-3 row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Update Scheduler</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>
+<script>
+  function fetchChapters() {
+    var subjectId = document.getElementById("subject").value;
+    if (subjectId) {
+      fetch("{% url 'get_chapters' subject_id=0 %}".replace("0", subjectId)) // Replace '0' with the actual subjectId
+        .then((response) => response.json())
+        .then((data) => {
+          let chapterSelect = document.getElementById("chapter");
+          chapterSelect.innerHTML = "<option value=''>Select Chapter</option>";
+          data.forEach((chapter) => {
+            chapterSelect.innerHTML += `<option value="${chapter.id}">${chapter.name}</option>`;
+          });
+        });
+    }
+  }
+
+  function fetchTopics() {
+    var chapterId = document.getElementById("chapter").value;
+    if (chapterId) {
+      fetch("{% url 'get_topics' chapter_id=0 %}".replace("0", chapterId)) // Replace '0' with the actual chapterId
+        .then((response) => response.json())
+        .then((data) => {
+          let topicSelect = document.getElementById("topic");
+          topicSelect.innerHTML = "<option value=''>Select Topic</option>";
+          data.forEach((topic) => {
+            topicSelect.innerHTML += `<option value="${topic.id}">${topic.name}</option>`;
+          });
+        });
+    }
+  }
+
+
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const schedulerTypeSelect = document.getElementById("type");
+    const subjectRow = document.querySelector(".row select#subject").closest(".row");
+    const chapterRow = document.querySelector(".row select#chapter").closest(".row");
+    const topicRow = document.querySelector(".row select#topic").closest(".row");
+    const eventDetailsRow = document.querySelector(".row textarea#eventdetail").closest(".row");
+
+    function toggleFields() {
+      // Check if the selected value is "1"
+      if (schedulerTypeSelect.value === "1") {
+        // Show relevant fields and set them as required
+        subjectRow.style.display = "flex";
+        chapterRow.style.display = "flex";
+        topicRow.style.display = "flex";
+        eventDetailsRow.style.display = "none";
+    
+        // Add 'required' to subject, chapter, and topic fields
+        subjectRow.setAttribute('required', 'required');
+        chapterRow.setAttribute('required', 'required');
+        topicRow.setAttribute('required', 'required');
+        
+      } else {
+        // Default state if no valid option is selected
+        subjectRow.style.display = "none";
+        chapterRow.style.display = "none";
+        topicRow.style.display = "none";
+        eventDetailsRow.style.display = "flex";
+    
+        // Remove 'required' from subject, chapter, and topic fields
+        subjectRow.removeAttribute('required');
+        chapterRow.removeAttribute('required');
+        topicRow.removeAttribute('required');
+      }
+    }
+
+    // Add event listener for when the Scheduler Type changes
+    schedulerTypeSelect.addEventListener("change", toggleFields);
+
+    // Initialize the form with the correct field visibility
+    toggleFields();
+  });
+</script>
+{% endblock content %}

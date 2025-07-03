@@ -1,0 +1,159 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+
+        <div class="dlabnav overflow-auto">
+            <div class="text-center">
+                <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                    width="100" class="rounded-circle mb-4" style="max-width: 70%;" alt="">
+                <h4>
+                    <a href="#" style="font-size: 1rem;">{{request.user.first_name}} {{request.user.last_name}}</a>
+                </h4>
+                <h6>CTO</h6>
+            </div>
+            <div class="dlabnav-scroll">
+                <ul class="metismenu overflow-auto" id="menu">
+                    <li>
+                        <a href="{% url 'cto-dashboard' %}" class="" aria-expanded="false">
+                            <i class="bi bi-grid"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="has-arrow " href="{% url 'cto-view-course' %}" aria-expanded="false">
+                            <i class="bi bi-card-list"></i>
+                            <span class="nav-text">Courses</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'cto-add-course' %}">Add Courses</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cto-view-course' %}">View Courses</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false">
+                            <i class="bi bi-card-list"></i>
+                            <span class="nav-text">Manage Subjects</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'cto-view-subject' %}">Subjects</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cto-view-chapter' %}">Chapters</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cto-view-topic' %}">Topics</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class=" " href="{% url 'cto-sync-youtube' %}" class="" aria-expanded="false">
+                            <i class="bi bi-arrow-repeat"></i>
+                            <span class="nav-text">Sync Videos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false">
+                            <i class="bi bi-book"></i>
+                            <span class="nav-text">MASTER ENTRIES</span>
+                        </a>
+                        <ul aria-example="false">
+                            <li>
+                                <a class="has-arrow " href="{% url 'cto-add-subject' %}" aria-expanded="false">
+                                    <i class="bi bi-book"></i>
+                                    <span class="nav-text">Subjects</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li>
+                                        <a href="{% url 'cto-add-subject' %}">Add Subjects</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'cto-upload-subject-details-csv' %}">Upload Subject CSV</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow " href="{% url 'cto-add-chapter' %}" aria-expanded="false">
+                                    <i class="bi bi-book-half"></i>
+                                    <span class="nav-text">Chapters</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li>
+                                        <a href="{% url 'cto-add-chapter' %}">Add Chapters</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow " href="{% url 'cto-add-topic' %}" aria-expanded="false">
+                                    <i class="bi bi-book-half"></i>
+                                    <span class="nav-text">Topics</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li>
+                                        <a href="{% url 'cto-add-topic' %}">Add Topics</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow " href="{% url 'cto-view-mainhead' %}" aria-expanded="false">
+                                    <i class="bi bi-bookmark"></i>
+                                    <span class="nav-text">Main Headings</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li>
+                                        <a href="{% url 'cto-add-mainhead' %}">Add Main Headings</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'cto-view-mainhead' %}">View Main Headings</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow " href="{% url 'cto-view-subhead' %}" aria-expanded="false">
+                                    <i class="bi  bi-bookmark-dash"></i>
+                                    <span class="nav-text">Sub Headings</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li>
+                                        <a href="{% url 'cto-add-subhead' %}">Add Sub Headings</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'cto-view-subhead' %}">View Sub Headings</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false">
+                            <i class="bi bi-book"></i>
+                            <span class="nav-text">ACCOUNT SETTINGS</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li class="nav-item">
+                                <a href="{% url 'user-profile-update'%}" class="nav-link">
+                                    <i class="bi-person-circle"></i> Update Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                                    <i class="bi bi-door-closed"></i>
+                                    <span class="nav-text">Sign Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                </ul>
+            </div>
+        </div>
+
+<!--**********************************
+            Sidebar end
+    ***********************************-->

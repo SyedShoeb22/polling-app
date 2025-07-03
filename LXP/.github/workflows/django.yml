@@ -1,0 +1,52 @@
+# name: Deploy Django App to EC2
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     name: Deploy to EC2
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v3
+
+#     - name: Set up Python
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.9'
+
+#     - name: Install SSH Key
+#       uses: webfactory/ssh-agent@v0.5.3
+#       with:
+#         ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+#     - name: Deploy to EC2
+#       run: |
+#         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << EOF
+#           # Stop the current server process if running
+#           sudo pkill -f runserver || true
+          
+#           # Navigate to app directory
+#           cd /home/ubuntu/
+
+#           # Pull the latest changes
+#           git pull origin main
+
+#           # Set up virtual environment
+#           virtualenv .env
+#           source .env/bin/activate
+
+#           # Install dependencies
+#           pip install -r requirements.txt
+
+#           # Run migrations
+#           python manage.py makemigrations
+#           python manage.py migrate
+
+#           # Start the server
+#           sudo .env/bin/python3 manage.py runserver 0.0.0.0:7000 &
+#         EOF

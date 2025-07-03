@@ -1,0 +1,209 @@
+    {% extends "trainer/trainerbase.html" %}
+
+
+    {% block content %}
+ 
+  <div class="card">
+  <div class="card-header">
+    <h5>📝 Create a New Poll</h5>
+  </div>
+  <div class="card-body">
+    {% if poll_form.errors or option_formset.non_form_errors %}
+    <div class="alert alert-danger">
+      <p>Please correct the errors below:</p>
+      {{ poll_form.errors }}
+      {{ option_formset.non_form_errors }}
+    </div>
+    {% endif %}
+    <form method="POST" id="pollForm">
+
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ poll_form.question.id_for_label }}">{{ poll_form.question.label }} *</label>
+{{ poll_form.question }}
+
+        <span class="form-text text-muted">Be clear and concise (e.g. “What is your favourite programming language?”)</span>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ poll_form.poll_type.id_for_label }}">{{ poll_form.poll_type.label }} *</label>
+{{ poll_form.poll_type  }}
+
+        <span class="form-text text-muted">Use “Dynamic” for custom, or “Yes/No” for binary polls.</span>
+      </div>
+      <div class="lxp-form-group">
+          <label>{{ poll_form.eligible_groups.label }}</label>
+          {{ poll_form.eligible_groups }}
+          {% if poll_form.eligible_groups.errors %}
+              <div class="text-danger small">{{ poll_form.eligible_groups.errors.as_text }}</div>
+          {% endif %}
+          <small class="lxp-help">{{ poll_form.eligible_groups.help_text }}</small>
+      </div>
+
+      <div class="form-group" id="options-container">
+        <label>Options *</label>
+        {{ option_formset.management_form }}
+        <div id="options-list"></div>
+        <span id="optionNote" class="form-text text-muted">Add at least two options.</span>
+        <button type="button" id="addOptionBtn" class="btn btn-outline-primary mt-2" onclick="addOption()">➕ Add Option</button>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Poll</button>
+    </form>
+  </div>
+</div>
+<div id="pollStatusMessage" class="mb-3"></div>
+
+<div id="empty-form-template" style="display:none;">
+  <div class="input-group mb-2 option-wrapper">
+{{ option_formset.empty_form.option_text }}
+
+    <button type="button" class="btn btn-outline-danger" onclick="removeOption(this)">🗑️</button>
+  </div>
+</div>
+
+
+    <script>
+        // Get the DOM elements we'll need to work with
+        const optionsList = document.getElementById("options-list");
+        const addOptionBtn = document.getElementById("addOptionBtn");
+        const emptyFormTemplate = document.getElementById("empty-form-template");
+        // This input is part of the management_form and is critical
+        const totalFormsInput = document.querySelector("#id_options-TOTAL_FORMS");
+
+        function addOption(value = "") {
+            // Get the current number of forms. This will be our new form's index.
+            const formIndex = optionsList.children.length;
+
+            // Clone the template and replace the Django prefix
+            const newFormHtml = emptyFormTemplate.innerHTML.replace(/__prefix__/g, formIndex);
+            
+            // Create a temporary div to hold the new form's HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newFormHtml;
+            const newFormDom = tempDiv.firstElementChild;
+            tempDiv.firstElementChild.classList.add('option-wrapper');
+
+            // Find the input within the new form and set its value and placeholder
+            const input = newFormDom.querySelector("input");
+            if (input) {
+                input.value = value;
+                input.placeholder = "Option " + (formIndex + 1);
+            }
+            
+            // Add the new form to the list and update the total form count
+            optionsList.appendChild(newFormDom);
+            totalFormsInput.value = formIndex + 1;
+        }
+        
+        function removeOption(button) {
+            // Find the parent wrapper and remove it
+            button.closest('.option-wrapper').remove();
+            // NOTE: We don't decrement TOTAL_FORMS. Django handles gaps in form numbering.
+            // We simply need to re-index the placeholders for a better user experience.
+            const allOptions = optionsList.querySelectorAll('.option-wrapper');
+            allOptions.forEach((opt, index) => {
+                const input = opt.querySelector('input');
+                if(input) {
+                    input.placeholder = "Option " + (index + 1);
+                }
+            });
+        }
+
+        function onPollTypeChange() {
+            const pollType = document.getElementById("id_poll_type").value;
+            const optionNote = document.getElementById("optionNote");
+            
+            // Clear existing options
+            optionsList.innerHTML = '';
+            totalFormsInput.value = 0; // Reset count
+            
+            if (pollType === "yesno") {
+                optionNote.textContent = "Exactly two options required: Yes and No.";
+                addOption("Yes");
+                addOption("No");
+                // Disable add/remove buttons for Yes/No polls
+                addOptionBtn.style.display = 'none';
+                document.querySelectorAll('.option-wrapper button').forEach(btn => btn.disabled = true);
+            } else {
+                optionNote.textContent = "Add at least two options.";
+                addOption();
+                addOption();
+                // Ensure add/remove buttons are visible and enabled
+                addOptionBtn.style.display = 'inline-block';
+                document.querySelectorAll('.option-wrapper button').forEach(btn => btn.disabled = false);
+            }
+        }
+        
+        // Run the function once on page load to set the initial state
+        document.addEventListener("DOMContentLoaded", onPollTypeChange);
+        document.getElementById("pollForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+        const statusBox = document.getElementById("pollStatusMessage");
+
+        // Show animated "Creating..." message
+        statusBox.innerHTML = `
+            <div class="alert alert-info d-flex align-items-center" role="alert">
+                <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+                Creating poll...
+            </div>
+        `;
+
+        fetch("", {
+            method: "POST",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusBox.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ✅ ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                form.reset();
+                optionsList.innerHTML = '';
+                onPollTypeChange();
+            } else {
+                let errorHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <p>Please correct the errors below:</p>
+                `;
+
+                if (data.errors.poll_form) {
+                    for (let field in data.errors.poll_form) {
+                        errorHTML += `<strong>${field}:</strong> ${data.errors.poll_form[field]}<br>`;
+                    }
+                }
+
+                if (data.errors.option_formset && data.errors.option_formset.length) {
+                    errorHTML += `<strong>Options:</strong> ${data.errors.option_formset.join(', ')}<br>`;
+                }
+
+                errorHTML += '</div>';
+                statusBox.innerHTML = errorHTML;
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            statusBox.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    ❌ Something went wrong. Please try again.
+                </div>
+            `;
+        });
+    });
+
+
+</script>
+
+    {% endblock %}

@@ -1,0 +1,207 @@
+{% extends 'lxpapp/adminbase.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+  <link rel="stylesheet" href="/static/getskills/css/style.css">
+</head>
+<div class="">
+  <div class="panel panel-primary">
+    <!-- <div class="panel-heading">
+      <h6 class="panel-title">User : {{username}}</h6>
+    </div> -->
+    <!-- <table class="table table-hover" id="dev-table">
+      {% for entry in users %}
+      {% if entry.utype == 2 or entry.utype == 0 %}
+      {% for t in learnercourses %}
+      {% if forloop.counter == 1 %}
+      <thead>
+        <tr>
+          <th>Course Names</th>
+        </tr>
+      </thead>
+      <td> {{t.course_name}}</td>
+      {% else %}
+      <tr>
+        <td> {{t.course_name}}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
+    </table>
+    <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
+      {%csrf_token%}
+      <div class="form-group">
+        <label for="field2">Active</label>
+        {% for entry in users %}
+        {% if entry.status %}
+        <input type="checkbox" name="active" id="active" checked><br>
+        {% else %}
+        <input type="checkbox" name="active" id="active" value="{{entry.status}}"><br>
+        {% endif %}
+        <label for="field2">User Type</label>
+        <select class="singleselect" name="utype[]" id="field2" onchange="console.log(this.selectedOptions)">
+
+          {% if entry.utype == 1 %}
+          <option value="1" selected>Trainer</option>
+          {% else %}
+          <option value="1">Trainer</option>
+          {% endif %}
+
+          {% if entry.utype == 2 or entry.utype == 0 %}
+          <option value="2" selected>Learner</option>
+          {% else %}
+          <option value="2">Learner</option>
+          {% endif %}
+
+          {% if entry.utype == 3 %}
+          <option value="3" selected>CTO</option>
+          {% else %}
+          <option value="3">CTO</option>
+          {% endif %}
+
+          {% if entry.utype == 4 %}
+          <option value="4" selected>CFO</option>
+          {% else %}
+          <option value="4">CFO</option>
+          {% endif %}
+        </select>
+
+       
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form> -->
+    <div class="">
+
+      <div class="row justify-content-center h-100 align-items-center">
+        <div class="col-xl-12 col-lg-12">
+          <div class="card"><grammarly-extension data-grammarly-shadow-root="true"
+              style="position: absolute; top: 0px; left: 0px; pointer-events: none;"
+              class="dnXmp"></grammarly-extension><grammarly-extension data-grammarly-shadow-root="true"
+              style="position: absolute; top: 0px; left: 0px; pointer-events: none;"
+              class="dnXmp"></grammarly-extension>
+            <div class="card-header">
+              <h4 class="card-title">{{username}}</h4>
+            </div>
+            <div class="card-body">
+              {%csrf_token%}
+              <div class="basic-form">
+                <form  method="POST" autocomplete="off">
+                  <div class="row">
+                    {% for entry in users %}
+
+                    <div class="mb-3 col-md-3">
+                      <img src="{{entry.pic}}" class="img-fluid"  alt="">
+                    </div>
+
+
+                    <div class="row col-md-6">
+                      <!-- <div class=" col-md-6">
+                        <label class="form-label">First Name <span class="text-danger">*</span> </label>
+                        <input type="text" name="first_name" value="{{entry.first_name}}" placeholder="First Name"
+                          class="form-control"  id="id_first_name">
+                        <div class="text-danger w-100 d-block mt-1">
+
+                        </div>
+                      </div>
+                      <div class=" col-md-6">
+                        <label class="form-label">Last Name <span class="text-danger">*</span> </label>
+                        <input type="text" name="last_name" value="{{entry.last_name}}" placeholder="Last Name" class="form-control"
+                           id="id_last_name">
+                        <div class="text-danger w-100 d-block mt-1">
+
+                        </div>
+                      </div> -->
+                      <div class=" col-md-6">
+                        <label class="form-label">Email <span class="text-danger">*</span> </label>
+                        <input type="email" disabled name="email" value="{{entry.uid}}" maxlength="254" placeholder="Email"
+                          class="form-control" required="" id="id_email">
+                        <div class="text-danger w-100 d-block mt-1">
+
+                        </div>
+                      </div>
+
+                      <div class=" col-md-6">
+                        <label class="form-label">User Type <span class="text-danger">*</span> </label>
+                        <select class="singleselect form-select form-control" name="utype[]" id="field2" onchange="console.log(this.selectedOptions)">
+
+                          {% if entry.utype == 1 %}
+                          <option value="1" selected>Trainer</option>
+                          {% else %}
+                          <option value="1">Trainer</option>
+                          {% endif %}
+                
+                          {% if entry.utype == 2 or entry.utype == 0 %}
+                          <option value="2" selected>Learner</option>
+                          {% else %}
+                          <option value="2">Learner</option>
+                          {% endif %}
+                
+                          {% if entry.utype == 3 %}
+                          <option value="3" selected>CTO</option>
+                          {% else %}
+                          <option value="3">CTO</option>
+                          {% endif %}
+                
+                          {% if entry.utype == 4 %}
+                          <option value="4" selected>CFO</option>
+                          {% else %}
+                          <option value="4">CFO</option>
+                          {% endif %}
+
+                          {% if entry.utype == 5 %}
+                          <option value="5" selected>Mentor</option>
+                          {% else %}
+                          <option value="5">Mentor</option>
+                          {% endif %}
+
+                          {% if entry.utype == 6 %}
+                          <option value="6" selected>Staff</option>
+                          {% else %}
+                          <option value="6">Staff</option>
+                          {% endif %}
+                        </select>
+                        <div class="text-danger w-100 d-block mt-1">
+
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-check form-check-inline">
+                          {% if entry.status %}
+                          <input type="checkbox" name="active" checked="" class="form-check-input" id="active">
+                          {% else %}
+                          <input type="checkbox" name="active" value="{{entry.status}}" class="form-check-input" id="active">
+                          {% endif %}
+                          <label for="active" class="form-check-label">
+                            is active
+                          </label>
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    </div>
+
+
+
+
+                  </div>
+                  <button type="submit" class="btn btn-secondary mt-4 mb-5 ">Save</button>
+                  <a href="{% url 'admin-view-user-list' %}" class="btn btn-primary mt-4 mb-5">Cancel</a>
+                  {% endfor %}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+    {% endblock content %}

@@ -1,0 +1,275 @@
+{% extends 'trainer/trainerbase.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="/static/get/css/style.css">
+<style>
+  ol.breadcrumb li+li:before {
+    content: '\f061';
+  display: inline-block;
+  font-family: 'fontAwesome';
+  padding: 0 10px;
+  }
+</style>
+<!-- ckeditor -->
+<script src="/static/ckeditor/ckeditor.js"></script>
+<script src="/static/ckeditor/js/sample.js"></script>
+<link rel="stylesheet" href="/static/ckeditor/toolbarconfigurator/lib/codemirror/neo.css">
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'trainer-dashboard' %}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{% url 'trainer-schedulerstatus-create' %}">Create Scheduler Status</a>
+            </li>
+            <li>
+                <a href="{% url 'trainer-schedulerstatus-list' %}">Scheduler Status List</a>
+            </li>
+            <li aria-current="page">Updating Scheduler Status</li>
+        </ol>
+    </nav>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">STEAM Education</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ message }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Show the modal when the DOM is ready
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+            keyboard: false
+        });
+
+        // Show the modal
+        successModal.show();
+
+        // Hide the modal after 5 seconds
+        setTimeout(function() {
+            successModal.hide();
+        }, 3000);
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#grade').change(function() {
+            var gradeId = $(this).val();
+            $.ajax({
+                url: '{% url "get_exams" %}',
+                data: {
+                    'grade_id': gradeId
+                },
+                success: function(data) {
+                    var examSelect = $('#exam');
+                    examSelect.empty();  // Clear existing options
+                    examSelect.append('<option value="">Select a exam</option>');  // Default option
+                    $.each(data, function(index, exam) {
+                        examSelect.append('<option value="' + exam.id + '">' + exam.exam_name + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Create Scheduler Status</h4>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    <div class="basic-form">
+                        <div class="row">
+                            <div class="mb-12 col-md-12">
+                                <label class="col-form-label" for="serialno">Serial Number</label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="serialno"
+                                    id="serialno"
+                                    min="1"
+                                    value="{{ serialno }}"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-6 col-md-6">
+                                <label class="form-label" for="grade">Grade</label>
+                                <select
+                                    class="form-control"
+                                    id="grade"
+                                    name="grade"
+                                    required
+                                >
+                                    <option value="">Select a grade</option>
+                                    {% for t in grades %}
+                                    <option value="{{ t.id }}" {% if grade == t.id %}selected{% endif %}>{{ t.grade_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-6 col-md-6">
+                                <label class="form-label" for="exam">Exams</label>
+                                <select
+                                    class="form-control"
+                                    id="exam"
+                                    name="exam"
+                                    required
+                                >
+                                    <option value="">Select a exam</option>
+                                    {% for t in exams %}
+                                    <option value="{{ t.id }}" {% if exam == t.id %}selected{% endif %}>{{ t.exam_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-12 col-md-12">
+                                <label class="col-form-label" for="heading">Scheduler Status Heading</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="heading"
+                                    id="heading"
+                                    placeholder="Enter Scheduler Status Heading"
+                                    value="{{ heading }}"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-12">
+                                <label for="about">About</label>
+                                <textarea
+                                    name="about"
+                                    style="height:30px;"
+                                    class="ckeditor"
+                                    required
+                                    value="{{ about }}"
+                                ></textarea>
+                                <script type="text/javascript">
+                                    CKEDITOR.replace('about');
+                                    CKEDITOR.add
+                                    CKEDITOR.instances['about'].setData('{{about}}');
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-12">
+                                <label for="reqmaterial">Required Materials</label>
+                                <textarea
+                                    name="reqmaterial"
+                                    style="height:30px;"
+                                    class="ckeditor"
+                                    value="{{ reqmaterial }}"
+                                    required
+                                ></textarea>
+                                <script type="text/javascript">
+                                    CKEDITOR.replace('reqmaterial');
+                                    CKEDITOR.add
+                                    CKEDITOR.instances['reqmaterial'].setData('{{reqmaterial}}');
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-12 col-md-12">
+                                <label class="col-form-label" for="digram">Circuit Digram (if any)</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="digram"
+                                    id="digram"
+                                    placeholder="Enter digram image path"
+                                    value="{{ digram }}"
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-12 col-md-12">
+                                <label class="col-form-label" for="digram">Code (if any)</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="code"
+                                    id="code"
+                                    placeholder="Enter code file path"
+                                    value="{{ code }}"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-12 col-md-12">
+                                <label class="col-form-label" for="digram">Video Link</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="video"
+                                    id="video"
+                                    placeholder="Enter video path"
+                                    value="{{ video }}"
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-12">
+                                <label for="process">Procedure</label>
+                                <textarea
+                                    name="process"
+                                    style="height:30px;"
+                                    class="ckeditor"
+                                    required
+                                ></textarea>
+                                <script type="text/javascript">
+                                    CKEDITOR.replace('process');
+                                    CKEDITOR.add
+                                    CKEDITOR.instances['process'].setData('{{process}}');
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-12">
+                                <label for="process">What You Get</label>
+                                <textarea
+                                    name="get"
+                                    style="height:30px;"
+                                    class="ckeditor"
+                                    required
+                                ></textarea>
+                                <script type="text/javascript">
+                                    CKEDITOR.replace('get');
+                                    CKEDITOR.add
+                                    CKEDITOR.instances['get'].setData('{{get}}');
+                                </script>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

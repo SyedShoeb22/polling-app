@@ -1,0 +1,43 @@
+{% extends 'staff/staffbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class=""><a href="../../../../staff/staff-dashboard">Dashboard</a></li>
+      <li class=""><a href="../../../../staff/staff-add-exam">Add Exam</a></li>
+      <li class=""><a href="../../../../staff/staff-upload-exam-csv">Upload Exam CSV</a></li>
+      <li class="" aria-current="page">View Exams</li>
+    </ol>
+  </nav>
+</div>
+<div class="card-body">
+  <div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Exam Name</th>
+          <th>Batch Name</th>
+          <th>Exam Type</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in exams %}
+        <tr>
+          <td> {{t.exam_name}}</td>
+          <td> {{t.batch.batch_name}}</td>
+          <td> {{t.questiontpye}}</td>
+          <td><a class="btn btn-primary btn-xs" href="{% url 'staff-update-exam' t.id  %}"><span
+                class="	far fa-edit"></span></a></td>
+          <td><a class="btn btn-danger btn-xs" href="{% url 'staff-delete-exam' t.id  %}"
+              onclick="return confirm('Are you sure?')"><span class="far fa-trash-alt"></span></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

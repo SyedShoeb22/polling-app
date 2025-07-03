@@ -1,0 +1,36 @@
+{% extends 'staff/staffbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class=""><a href="../../../../staff/staff-dashboard">Dashboard</a></li>
+      <li class=""><a href="../../../../staff/staff-add-mcqquestion">Add Mcq Question</a></li>
+      <li class="" aria-current="page">View Mcq Question</li>
+    </ol>
+  </nav>
+</div>
+<div class="card-body">
+  <div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Exam Name</th>
+          <th>Show Questions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in exams %}
+        <tr>
+          <td> {{t.exam_name}}</td>
+          <td><a class="btn btn-success btn-xs" href="{% url 'staff-view-mcqquestion' t.id  %}"><span
+            class="	fas fa-binoculars"></span></a></td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

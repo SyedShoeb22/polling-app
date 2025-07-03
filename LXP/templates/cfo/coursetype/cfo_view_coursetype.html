@@ -1,0 +1,136 @@
+{% extends 'cfo/cfobase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div>
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+
+<style>
+  ol.breadcrumb li+li:before {
+    content: '\f061';
+    display: inline-block;
+    font-family: 'fontAwesome';
+    padding: 0 10px;
+  }
+</style>
+<div>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'cfo-dashboard'%}">Dashboard</a></li>
+      <li aria-current="page">View Course Type</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+          <div class="d-flex flex-md-row flex-sm-column w-100">
+            <div class="col-sm-12 col-md-6">
+              <h5>Course Type</h5>
+            </div>
+            <div class="col-sm-12 col-md-6 text-end d-flex align-items-center justify-content-end gap-2">
+              <a class="btn btn-primary btn-sm" href="{% url 'cfo-add-batch' %}">Add Course Type</a>
+              <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Export
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                  <li><a class="dropdown-item" href="#" id="export-csv">Export as CSV</a></li>
+                  <li><a class="dropdown-item" href="#" id="export-excel">Export as Excel</a></li>
+                  <li><a class="dropdown-item" href="#" id="export-pdf">Export as PDF</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="dataTable" class="table header-border table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>Course Type Name</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for t in coursetypes %}
+                        <tr>
+                            <td class="w-75">
+                              {{t.coursetype_name}}
+                            </td>
+                            <td>
+                              <a class="btn btn-primary btn-xs" href="{% url 'cfo-update-coursetype' t.id  %}"><span
+                                class="	far fa-edit"></span></a>
+                            </td>
+                            <td>
+                              <a class="btn btn-danger btn-xs" href="{% url 'cfo-delete-coursetype' t.id  %}"
+              onclick="return confirm('Are you sure?')"><span class="far fa-trash-alt"></span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Show the modal when the DOM is ready
+    var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+      keyboard: false
+    });
+
+    // Show the modal
+    successModal.show();
+
+    // Hide the modal after 5 seconds
+    setTimeout(function () {
+      successModal.hide();
+    }, 3000);
+  });
+
+  document.getElementById('export-csv').addEventListener('click', () => exportCSV());
+  document.getElementById('export-excel').addEventListener('click', () => exportExcel());
+  document.getElementById('export-pdf').addEventListener('click', exportPDF);
+
+  function exportCSV() {
+    let csvContent = '';
+    const rows = document.querySelectorAll('#dataTable tr');
+    rows.forEach(row => {
+      const cols = row.querySelectorAll('th, td');
+      const csvRow = Array.from(cols).map(col => `"${col.innerText}"`).join(',');
+      csvContent += csvRow + '\n';
+    });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'coursetype_data.csv');
+  }
+
+  function exportExcel() {
+    const wb = XLSX.utils.table_to_book(document.getElementById('dataTable'), { sheet: "Sheet1" });
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), 'coursetype_data.xlsx');
+  }
+
+  function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.text("Course Type Data", 14, 10);
+    pdf.autoTable({
+      html: '#dataTable',
+      startY: 20,
+      theme: 'grid',
+      headStyles: { fillColor: [22, 160, 133] },
+      styles: { fontSize: 8 }
+    });
+    pdf.save('coursetype_data.pdf');
+  }
+</script>
+
+{% endblock content %}

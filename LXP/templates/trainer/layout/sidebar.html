@@ -1,0 +1,192 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+<div class="dlabnav" style="overflow:auto">
+    <div class="text-center">
+        <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            width="100" class="rounded-circle mb-4" style="max-width: 70%;" alt="">
+        <h4>
+            <a href="#" style="font-size: 1rem;">{{request.user.first_name}} {{request.user.last_name}}</a>
+        </h4>
+        <h6>Trainer</h6>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{% url 'trainer-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'trainer-schedulerstatus-list' %}" aria-expanded="false">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="nav-text">Scheduler</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'trainer-schedulerstatus-create' %}">Add Scheduler Status</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'trainer-scheduler-calender' %}">View Calendar</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'trainer-schedulerstatus-list' %}">View Scheduler Status</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="{% url 'trainer-view-polls' %}" aria-expanded="false">
+                    <i class="fas fa-poll-h"></i>
+                    <span class="nav-text">Polls</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'trainer-create-poll' %}">Add Polls</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'trainer-view-polls' %}">View Polls</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'trainer-generate-polls' %}">Generate Polls</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'trainer-wheel' %}" class="" aria-expanded="false">
+                    <i class="fas fa-random"></i>
+                    <span class="nav-text">Wheel</span>
+                </a>
+            </li>    
+            <li>
+                <a class="has-arrow " href="#" aria-expanded="false">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="nav-text">Materials</span>
+                </a>
+                <ul aria-expanded="false">
+                    <a class="" href="{% url 'trainer-view-material' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">Study Material</span>
+                    </a>
+                    <a class="" href="{% url 'trainer-view-sessionmaterial' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">Session Material</span>
+                    </a>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="#" aria-expanded="false">
+                    <i class="fas fa-flask"></i>
+                    <span class="nav-text">Labs</span>
+                </a>
+                <ul aria-expanded="false">
+                    <a href="{% url 'trainer-add-k8sterminal' %}" target="_blank" class="nav-link">Add Lab (K8S)</a>
+                    <a href="{% url 'trainer-view-k8sterminal' %}" target="_blank"  class="nav-link">View Lab (K8S)</a>
+                    <a href="{% url 'trainer-pyton-terminal'%}" target="_blank" class="nav-link">
+                       Python
+                    </a>
+                    <a href="{% url 'trainer-linux-terminal'%}" target="_blank" class="nav-link">
+                        linux
+                    </a>
+                    <a target="_blank" href="https://shell.cloud.google.com/?show=terminal" class="nav-link">
+                        Cloud Shell
+                    </a>
+                </ul>
+            </li>
+
+            <li>
+                <a class="has-arrow " href="#" aria-expanded="false">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span class="nav-text">Evaluations</span>
+                </a>
+                <ul aria-expanded="false">
+                    <a href="{% url 'trainer-activity-learner-list'%}" class="nav-link">
+                        <i class=""></i> Learner Activity
+                    </a>
+                    <a href="{% url 'trainer-pending-short-exam-reuslt'%}" class="nav-link">
+                        <i class=""></i> Pending Exams
+                    </a>
+                    <a class="" href="{% url 'trainer-view-shortquestion' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">Short Question</span>
+                    </a>
+                    <a class="" href="{% url 'trainer-view-mcqquestion-exams' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">MCQ Question</span>
+                    </a> <a class="" href="{% url 'trainer-view-chapterquestion' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">Chapter Wise MCQ</span>
+                    </a>
+                    <a class="" href="{% url 'trainer-view-ytexamquestion' %}" aria-expanded="false">
+                        <i class=""></i>
+                        <span class="nav-text">Session Video Qn</span>
+                    </a>
+                </ul>
+            </li>
+
+            <!-- <li>
+                        <a class="has-arrow " href="{% url 'trainer-view-k8sterminal' %}" aria-expanded="false">
+                            <i class="bi bi-book"></i>
+                            <span class="nav-text">Lab (K8S)</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'trainer-add-k8sterminal' %}">Add Lab (K8S)</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'trainer-view-k8sterminal' %}">View Lab (K8S)</a>
+                            </li>
+                        </ul>
+                    </li> -->
+
+            <!-- <li class="nav-item">
+                        <a href="{% url 'trainer-pyton-terminal'%}" class="nav-link">
+                            <i class="bi bi-book"></i> Lab Pyton
+                        </a>
+                    </li>
+          
+                    <li class="nav-item">
+                        <a href="{% url 'trainer-linux-terminal'%}" class="nav-link">
+                            <i class="bi bi-book"></i> Lab linux
+                        </a>
+                    </li>
+          
+                    <li class="nav-item">
+                        <a href="https://shell.cloud.google.com/?show=terminal" class="nav-link">
+                            <i class="bi bi-book"></i> Lab Cloud Shell
+                        </a>
+                    </li> -->
+
+            <li aria-expanded="false">
+                <a href="{% url 'trainer-view-learner-video'%}" class="nav-link">
+                    <i class="fas fa-video"></i> 
+                    <span class="nav-text">Learner Videos</span>
+                </a>
+            </li>
+            <div class="instructor-title ps-5 mt-2">
+                <h6 class="nav-text">ACCOUNT SETTINGS</h6>
+            </div>
+            <li class="nav-item">
+                <a href="{% url 'user-profile-update'%}" class="nav-link">
+                    <i class="fa-solid fa-pen-to-square"></i> <span class="nav-text">Update Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-door-closed"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            <li>
+        </ul>
+        
+
+    </div>
+</div>

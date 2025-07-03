@@ -1,0 +1,199 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+<!-- <div class="dlabnav" style="overflow:auto;">
+    <div class="settings-widget dash-profile">
+        <div class="settings-menu p-0">
+            <div class="profile-bg">
+                <img src="/static/dreamlms/img/instructor-profile-bg.jpg" alt="">
+                <div class="profile-img">
+                    {% if userdetails.userprofile_set.first.profile_img %}
+                    <a href="{% url 'user-profile' %}"><img
+                            src="{{ request.user.userprofile_set.first.profile_img.url }}" alt=""></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-group">
+                <div class="profile-name text-center">
+                    <a href={% url 'user-profile' %}>{{request.user.first_name}} {{request.user.last_name}}</a>
+                    <h6><a href={% url 'user-profile' %}>({{request.user.username}})</a></h6>
+                    <h6>CFO</h6>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li>
+                <a href="{% url 'cfo-dashboard' %}" class="" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'cfo-view-coursetype' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Course Type</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'cfo-add-coursetype' %}">Add Course Type</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cfo-view-coursetype' %}">View Course Type</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'cfo-view-batch' %}" aria-expanded="false">
+                    <i class="bi bi-people"></i>
+                    <span class="nav-text">Batch</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'cfo-add-batch' %}">Add Batch</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cfo-view-batch' %}">View Batch</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow " href="{% url 'cfo-scheduler-list' %}" aria-expanded="false">
+                    <i class="bi bi-book"></i>
+                    <span class="nav-text">Scheduler</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a href="{% url 'cfo-scheduler-create' %}">Add Scheduler</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cfo-scheduler-list' %}">View Scheduler</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cfo-scheduler-calender' %}">Scheduler Calender</a>
+                    </li>
+                </ul>
+            </li>
+            <div class="instructor-title">
+                <h4>ACCOUNT SETTINGS</h4>
+            </div>
+
+            <li class="nav-item">
+                <a href="{% url 'user-profile-update'%}" class="nav-link">
+                    <i class="feather-power"></i> Update Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                    <i class="bi bi-door-closed"></i>
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            <li>
+            </li>
+            </li>
+        </ul>
+    </div>
+</div> -->
+<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <div class="dlabnav">
+            
+            <div class="text-center">
+                {% if userdetails.userprofile_set.first.profile_img %}
+                <img
+                    src="{{ request.user.userprofile_set.first.profile_img.url }}"
+                    width="100"
+                    class="rounded-circle mb-4"
+                    style="max-width: 70%;"
+                    alt=""
+                >
+                {% else %}
+                <img
+                    src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+                    width="100"
+                    class="rounded-circle mb-4"
+                    style="max-width: 70%;"
+                    alt=""
+                >
+                {% endif %}
+                <h4>
+                    <a href="{% url 'user-profile' %}" style="font-size: 1rem;">{{request.user.first_name}} {{request.user.last_name}}</a>
+                </h4>
+                <h6>CFO</h6>
+            </div>
+            <div class="dlabnav-scroll">
+				<ul class="metismenu" id="menu">
+                    <li>
+                        <a href="{% url 'cfo-dashboard' %}" class="" aria-expanded="false">
+                            <i class="bi bi-grid"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+					<li>
+                        <a class="has-arrow " href="{% url 'cfo-view-batch' %}" aria-expanded="false">
+                            <i class="bi bi-people"></i>
+                            <span class="nav-text">Batch</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'cfo-add-batch' %}">Add Batch</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cfo-view-batch' %}">View Batch</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="{% url 'cfo-scheduler-list' %}" aria-expanded="false">
+                            <i class="bi bi-alarm"></i>
+                            <span class="nav-text">Scheduler</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'cfo-scheduler-create' %}">Add Scheduler</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cfo-scheduler-list' %}">View Scheduler</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cfo-scheduler-calender' %}">Scheduler Calender</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="{% url 'cfo-view-coursetype' %}" aria-expanded="false">
+                            <i class="bi bi-book"></i>
+                            <span class="nav-text">Course Type</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li>
+                                <a href="{% url 'cfo-add-coursetype' %}">Add Course Type</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'cfo-view-coursetype' %}">View Course Type</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <div class="instructor-title">
+                        <h6 class="ps-5 mt-2">ACCOUNT SETTINGS</h6>
+                    </div>
+        
+                    <li class="nav-item">
+                        <a href="{% url 'user-profile-update'%}" class="nav-link">
+                            <i class="bi bi-person-circle"></i> Update Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" class="" aria-expanded="false">
+                            <i class="bi bi-door-closed"></i>
+                            <span class="nav-text">Sign Out</span>
+                        </a>
+                    <li>
+                </ul>
+                
+			</div>
+        </div>

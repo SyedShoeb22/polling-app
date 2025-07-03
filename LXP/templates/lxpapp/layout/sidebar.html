@@ -1,0 +1,49 @@
+<!--**********************************
+            Sidebar start
+        ***********************************-->
+
+
+<div class="dlabnav box-shadow-none border-end">
+    <div class="text-center">
+        <!-- <img
+            src="{{request.user.profile_pic}}"
+            width="100"
+            class="img-fluid rounded-circle"
+            alt=""
+        > -->
+        <img
+            src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            width="100"
+            class="rounded-circle mb-4"
+            style="max-width: 70%;"
+            alt=""
+        >
+        <h4>
+            <a href="">{{request.user.first_name}} {{request.user.last_name}}</a>
+        </h4>
+        <h6>({{request.user.username}})</h6>
+    </div>
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <!-- <li>
+                <a class=""  href="{% url 'admin-dashboard' %}" aria-expanded="false">
+                    <i class="bi bi-grid"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li> -->
+            <li><a class="" href="{% url 'admin-view-user-list' %}" aria-expanded="false">
+                <i class="bi bi-book"></i>
+
+                    <span class="nav-text">Users</span>
+                </a>
+            </li>
+            <li><a class="" href="{% url 'logout' %}" aria-expanded="false">
+                <i class="bi bi-book"></i>
+
+                    <span class="nav-text">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+</div>

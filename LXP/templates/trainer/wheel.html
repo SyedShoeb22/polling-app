@@ -1,0 +1,169 @@
+{% extends 'trainer/trainerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<style>
+    /* Custom style for our result "wheel" circle */
+    .result-circle {
+        font-size: 4.5rem;
+        font-weight: bold;
+        color: var(--bs-primary);
+        width: 150px;
+        height: 150px;
+        border: 8px solid var(--bs-primary);
+        border-radius: 50%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    /* Animation class for when it's "spinning" */
+    .result-circle.picking {
+        animation: pulse 0.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+        to {
+            transform: scale(1.1);
+            background-color: var(--bs-primary-bg-subtle);
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <main class="col-md-8 col-lg-6 col-xl-5">
+            <!-- Setup Screen -->
+            <div id="setup-container" class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="card-title text-center mb-4">Set Your Range</h1>
+                    <div class="mb-3">
+                        <label for="start-num" class="form-label">Start Number</label>
+                        <input type="number" class="form-control form-control-lg" id="start-num" value="1" placeholder="e.g., 1">
+                    </div>
+                    <div class="mb-4">
+                        <label for="end-num" class="form-label">End Number</label>
+                        <input type="number" class="form-control form-control-lg" id="end-num" value="20" placeholder="e.g., 50">
+                    </div>
+                    <div class="d-grid">
+                        <button id="start-game-btn" class="btn btn-primary btn-lg">Start Game</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wheel Screen -->
+            <div id="wheel-container" class="card shadow-sm" style="display: none;">
+                <div class="card-body p-4 text-center">
+                    <h1 class="card-title">Random Number Wheel</h1>
+                    <div id="result-display" class="result-circle mx-auto my-4 d-flex justify-content-center align-items-center">?</div>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-4">
+                        <button id="spin-btn" class="btn btn-success btn-lg px-4 gap-3">
+                            <i class="bi bi-arrow-repeat"></i> Spin!
+                        </button>
+                        <button id="reset-btn" class="btn btn-secondary btn-lg px-4">New Range</button>
+                    </div>
+                    <div class="border-top pt-3">
+                        <h3 class="h5 text-muted mb-3">Available Numbers:</h3>
+                        <div id="available-numbers-list" class="d-flex flex-wrap justify-content-center gap-2">
+                            <!-- Numbers will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const setupContainer = document.getElementById('setup-container');
+        const wheelContainer = document.getElementById('wheel-container');
+        const startNumInput = document.getElementById('start-num');
+        const endNumInput = document.getElementById('end-num');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const spinBtn = document.getElementById('spin-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const resultDisplay = document.getElementById('result-display');
+        const availableListContainer = document.getElementById('available-numbers-list');
+
+        let availableNumbers = [];
+
+        function initializeGame() {
+            const start = parseInt(startNumInput.value, 10);
+            const end = parseInt(endNumInput.value, 10);
+            if (isNaN(start) || isNaN(end) || start >= end) {
+                alert('Please enter a valid range where the start number is less than the end number.');
+                return;
+            }
+            if (end - start > 1000) {
+                alert('For performance, choose a range with fewer than 1000 numbers.');
+                return;
+            }
+
+            availableNumbers = [];
+            for (let i = start; i <= end; i++) {
+                availableNumbers.push(i);
+            }
+
+            resultDisplay.textContent = '?';
+            resultDisplay.classList.remove('picking');
+            spinBtn.disabled = false;
+
+            updateAvailableNumbersDisplay();
+
+            setupContainer.style.display = 'none';
+            wheelContainer.style.display = 'block';
+        }
+
+        function resetToSetup() {
+            wheelContainer.style.display = 'none';
+            setupContainer.style.display = 'block';
+        }
+
+        function updateAvailableNumbersDisplay() {
+            availableListContainer.innerHTML = '';
+            availableNumbers.forEach(num => {
+                const numberBadge = document.createElement('span');
+                numberBadge.className = 'badge bg-primary text-white rounded-pill fs-6';
+                numberBadge.textContent = num;
+                availableListContainer.appendChild(numberBadge);
+            });
+        }
+
+        function handleSpin() {
+            if (availableNumbers.length === 0) {
+                resultDisplay.textContent = 'End';
+                spinBtn.disabled = true;
+                return;
+            }
+
+            spinBtn.disabled = true;
+            resultDisplay.classList.add('picking');
+
+            const spinDuration = 2000;
+            const intervalTime = 100;
+            let spinInterval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * availableNumbers.length);
+                resultDisplay.textContent = availableNumbers[randomIndex];
+            }, intervalTime);
+
+            setTimeout(() => {
+                clearInterval(spinInterval);
+                const randomIndex = Math.floor(Math.random() * availableNumbers.length);
+                const winningNumber = availableNumbers[randomIndex];
+                resultDisplay.textContent = winningNumber;
+                resultDisplay.classList.remove('picking');
+                availableNumbers.splice(randomIndex, 1);
+                updateAvailableNumbersDisplay();
+
+                if (availableNumbers.length > 0) {
+                    spinBtn.disabled = false;
+                } else {
+                    setTimeout(() => resultDisplay.textContent = 'End', 1500);
+                }
+            }, spinDuration);
+        }
+
+        startGameBtn.addEventListener('click', initializeGame);
+        spinBtn.addEventListener('click', handleSpin);
+        resetBtn.addEventListener('click', resetToSetup);
+    });
+</script>
+{% endblock content %}

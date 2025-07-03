@@ -1,0 +1,151 @@
+{% extends 'learner/learnerbase.html' %}
+{% block content %}
+{%load static%}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+
+<style>
+  ul.breadcrumb li+li:before {
+    content: '\f061';
+  display: inline-block;
+  font-family: 'fontAwesome';
+  padding: 0 10px;
+  }
+  </style><div class="main-wrapper"> 
+  <div>
+    <nav aria-label="breadcrumb">
+      <ul class="breadcrumb">
+        <li ><a href="{% url 'learner-dashboard' %}">Dashboard</a></li>
+        <li aria-current="page">Available Courses</li>
+      </ul>
+    </nav>
+  </div>
+
+  <section class="course-content pt-1 pb-0 px-0">
+    <div class="container-fluid">
+      <div class="row">
+          {% for t in courses %}
+          <div class="col-xl-4 col-md-6 box-shadow">
+            <div class="card all-crs-wid">
+              <div class="card-body">
+                <div class="courses-bx">
+                  <div class="dlab-media">
+                    <img src="{{t.image}}" alt="">
+      
+                  </div>
+                  <div class="dlab-info">
+                    <div class="dlab-title d-flex justify-content-between">
+                      <div>
+                        <h4><a class="srv_title" data-value="{{t.course_name}}"
+                          href="{% url 'learner-available-course-chapter' t.course_name t.id %}">{{t.course_name}}</a></h4>
+      
+                      </div>
+                      <h4 class="text-primary">
+                        {% if t.price == 0 %}
+                        <h6 style="color: green;">FREE</h6>
+                      {% else %}
+                      <h6>Rs. {{t.price}}</h6>
+                      {% endif %}
+                      </h4>
+                    </div>
+                    <p>{{t.description}}</p>
+                    <div class="d-flex justify-content-between content align-items-center">
+                      <div class="student-percent">
+                        <a data-id="{{ t.id }}" class="btn btn btn-primary btn-sm" onclick="addToCart('{{ t.id }}')">Add To Cart</a>
+                        <a href="{% url 'learner-available-course-chapter' t.course_name t.id %}" class="btn btn-primary btn-sm">Details</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+    </div>
+  </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script>
+  const links = $('.link');
+  links.on('click', function (event) {
+      
+      // Make AJAX request to update model with selected ID
+      $.ajax({
+          url: "{% url 'ajax_save_cart' %}",
+          method: 'POST',
+          contentType: 'application/json',
+          data: {
+              id: selectedValue,
+              course_id: '{{course_id}}'
+          },
+          success: function (response) {
+              console.log('Updated model successfully');
+          },
+          error: function (error) {
+              console.log('Error updating model: ', error);
+          }
+      });
+  });
+</script> -->
+
+<script>
+
+  function addToCart(Id) {
+    $.ajax({
+      url: "{% url 'ajax_save_cart' %}",
+        type: 'POST',
+        data: { 'id': Id },
+        success: function(response) {
+            // Handle success response
+        },
+        error: function(xhr, status, error) {
+            // Handle error response
+        }
+    });
+}
+</script>
+
+{% endblock content %}
+
+<!-- <div class="row">
+  <div class="col-lg-12 col-md-12 d-flex">
+    <div class="course-box course-design list-course d-flex">
+
+      <div class="product">
+        <div class="product-img">
+          <a href="{% url 'learner-available-course-chapter' t.course_name t.id %}">
+            <img class="img-fluid" alt="" src="{{t.image}}">
+          </a>
+          <div class="price">
+            {% if t.price == 0 %}
+              <h3 style="color: green;">FREE</h3>
+            {% else %}
+            <h3>Rs. {{t.price}}</h3>
+            {% endif %}
+          </div>
+        </div>
+        <div class="product-content">
+          <div class="head-course-title">
+            <h3 class="title"><a href="{% url 'learner-available-course-chapter' t.course_name t.id %}">{{t.course_name}}</a></h3>
+            
+            <div class="all-btn all-category d-flex align-items-center">
+              <a data-id="{{ t.id }}" class="link btn btn-primary" onclick="addToCart('{{ t.id }}')">Add to Cart</a>
+            </div>
+          </div> 
+          <p>{{t.description}}</p>
+          <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+            <div class="rating-img d-flex align-items-center">
+              <img src="assets/img/icon/icon-01.svg" alt="">
+              <p>__+ Lesson</p>
+            </div>
+            <div class="course-view d-flex align-items-center">
+              <img src="assets/img/icon/icon-02.svg" alt="">
+              <p>__min</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

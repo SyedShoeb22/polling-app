@@ -1,0 +1,112 @@
+{% extends 'mentor/mentorbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="main-wrapper">
+    <div class="instructor-course-table">
+        <div class="dashboard-title">
+            <h4>Pending Schedule</h4>
+        </div>
+        <div class="table-responsive custom-table">
+
+            <!-- Referred Users-->
+            <table class="table table-nowrap mb-0">
+                <thead>
+                    <tr>
+                        <th>Schedule</th>
+                        <th>Mark Done</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in schedulers %}
+                    <tr>
+                        <td>
+                            <div class="table-course-detail">
+                                {% if t.type == '1' %}
+                                <span><img src="/static/image/lecture.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.subject}}<i class="fa fa-arrow-right" aria-hidden="true"></i>{{t.chapter}}<i class="fa fa-arrow-right" aria-hidden="true"></i>{{t.topic}}</p>
+                                {% elif t.type == '2' %}
+                                <span><img src="/static/image/event.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.eventdetails}}</p>
+                                {% elif t.type == '3' %}
+                                <span><img src="/static/image/event.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.eventdetails}}</p>
+                                {% elif t.type == '4' %}
+                                <span><img src="/static/image/event.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.eventdetails}}</p>
+                                {% elif t.type == '5' %}
+                                <span><img src="/static/image/event.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.eventdetails}}</p>
+                                {% elif t.type == '6' %}
+                                <span><img src="/static/image/event.png" height="30px" width="30px" alt="Img"></span>
+                                <p>{{ t.start|date:"d-m-Y g:i A" }} to {{ t.end|date:"d-m-Y g:i A" }}</p>
+                                <p>{{t.eventdetails}}</p>
+
+                {% endif %}
+                                    
+                                    
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            
+                            <p><a href="#" class="btn btn-success btn-xs mark-done" data-id="{{ t.id }}" data-status="{{ t.status }}">
+                                <span class="fa fa-check"></span></p></a>
+                            <p> {{t.status_sum}} </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".mark-done").forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();  // Prevent the default anchor action
+                const schedulerStatusId = this.dataset.id;
+                const currentStatus = parseInt(this.dataset.status);
+
+                if (currentStatus >= 100) {
+                    alert("Already marked as done.");
+                    return;
+                }
+
+                const csrfToken = '{{ csrf_token }}';  // CSRF token for AJAX security
+                const url = '{% url "mentor-schedulerstatus-mark-done" %}';
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ id: schedulerStatusId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.textContent = 'Done';
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-secondary');
+                        alert('Status marked as done!');
+                        location.reload();  // Refresh the page to show the updated status
+                    } else {
+                        alert('Failed to mark as done.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred.');
+                });
+            });
+        });
+    });
+</script>
+{% endblock content %}

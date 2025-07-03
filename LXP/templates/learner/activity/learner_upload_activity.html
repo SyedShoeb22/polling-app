@@ -1,0 +1,72 @@
+{% extends 'learner/learnerbase.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+</head>
+<style>
+  ul.breadcrumb li+li:before {
+    content: '\f061';
+  display: inline-block;
+  font-family: 'fontAwesome';
+  padding: 0 10px;
+  }
+  </style>
+<div>
+  <nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+      <li ><a href="{% url 'learner-dashboard' %}">Dashboard</a></li>
+      <li  aria-current="page">upload Activity</li>
+    </ul>
+  </nav>
+</div>
+{% if messages %}
+{% for message in messages %}
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">NubeEra LXP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ message }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Show the modal when the DOM is ready
+    var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+        keyboard: false
+    });
+
+    // Show the modal
+    successModal.show();
+
+    // Hide the modal after 5 seconds
+    setTimeout(function() {
+        successModal.hide();
+    }, 3000);
+});
+</script>
+<div class="container">
+  <div class="panel panel-primary">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="pdf_file" required>
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,53 @@
+
+{% extends 'cfo/cfobase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div>
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class=""><a href="{% url 'cfo-dashboard'%}">Dashboard</a></li>
+      <li class=""><a href="{% url 'cfo-add-batch'%}">Add Batch</a></li>
+      <li class=""><a href="{% url 'cfo-view-batch'%}">View Batch</a></li>
+      <li class="" aria-current="page">View Batch Details ({{batchname}})</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Batch Details</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Courses Name</th>
+            <th>Session Videos</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Trainers Name</th>
+            <th>Learners Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in batchs %}
+          <tr>
+            <td class="wrap-longtext"> {{t.course_name}}</td>
+            <td class="wrap-longtext"> {{t.video_name}}</td>
+          <td> {{t.stdate|date:"d-m-Y"}}</td>
+          <td> {{t.enddate|date:"d-m-Y"}}</td>
+          <td class="wrap-longtext"> {{t.trainer_name}}</td>
+          <td class="wrap-longtext"> {{t.learner_name}}</td>
+            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

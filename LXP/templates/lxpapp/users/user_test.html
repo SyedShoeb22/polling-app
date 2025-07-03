@@ -1,0 +1,71 @@
+<table>
+  {% cycle 'row1' 'row2' 'row3' as row_class silent %}
+  {% if row_class == 'row1' %}<tr>{% endif %}
+    <td>
+      <div class="instructor-box flex-fill target">
+        <div class="instructor-img">
+          <a href="{% url 'update-user' t.user.first_name t.user.last_name t.user_id t.id  %}">
+            <img src="{{t.pic}}">
+          </a>
+          <a href="#rate" class="rating-count"></a>
+        </div>
+        <div class="instructor-content">
+          <h5><a href="{% url 'update-user' t.user.first_name t.user.last_name t.user_id t.id  %}">
+            {% if t.status %}
+            <b>{{t.user.first_name}} {{t.user.last_name}} </b>
+            {% else %}
+            <b>
+              <font style="color:red;">{{t.user.first_name}} {{t.user.last_name}} (On Hold)
+             </font></b>
+            {% endif %}
+          </a></h5>
+        {{t.uid}}
+        <h6>{% if t.utype == 0 or t.utype == 2 %}
+          Learner
+          {% elif t.utype == 1 %}
+          Trainer
+          {% elif t.utype == 3 %}
+          CTO
+          {% elif t.utype == 4 %}
+          CFO
+          {% endif %}</h6>
+
+        <h5>
+          {% if t.utype == 0 or t.utype == 2 %}
+          {{t.course_name}}
+          {% endif %}
+        </h5>
+        <div class="info">
+          <div class="loc-blk d-flex justify-content-center">
+            <i class="fas fa-mobile-alt"></i>
+            <p> {{t.mobile}}</p>
+          </div>
+          </ul>
+          {% if t.status %}
+          <center>
+            <a class="btn btn-primary btn-xs" href="{% url 'inactive-user' t.id  %}"><span
+                class="far fa-eye"></span>
+              <B>Active</B></a>
+          </center>
+          {% else %}
+          <center>
+            <a class="btn btn-danger btn-xs" href="{% url 'active-user' t.user_id t.id  %}"><span
+                class="far fa-eye-slash"></span>
+              <B>On Hold</B></a>
+          </center>
+          {% endif %}
+          <div class="user-text">
+            <a href="{% url 'admin-view-user-log-details' t.user_id  %}">Check Login Details</a>
+          </div>
+          <div class="user-text">
+            <a href="{% url 'admin-view-user-activity-details' t.user_id  %}">Check Activity Details</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </td>
+    {% if row_class == 'row3' %}
+  </tr>{% endif %}
+  
+  {% if row_class != 'row3' %}</tr>{% endif %}
+</table>

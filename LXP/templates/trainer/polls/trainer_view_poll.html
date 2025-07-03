@@ -1,0 +1,141 @@
+<!-- polls/templates/polls/dashboard.html -->
+{% extends "trainer/trainerbase.html" %} {% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>View Polls</h2>
+    <div>
+      <a href="{% url 'trainer-create-poll' %}" class="btn btn-primary"
+        >Create a Poll</a
+      >
+    </div>
+  </div>
+  <hr />
+
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+  {% endfor %} {% endif %} {% for poll in polls_data %}
+  <div id="pollStatusMessage-{{ poll.id }}" class="mb-2"></div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        {# Access attributes directly from the poll model instance #}
+        <h5 class="mb-0">{{ poll.question }}</h5>
+        <div>
+            {# Use the correct URL names for your trainer routes #}
+            <a href="{% url 'trainer-edit-polls' poll.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
+                <form method="post" action="{% url 'trainer-delete-polls' poll.id %}"
+                    data-poll-id="{{ poll.id }}"
+                    class="delete-poll-form d-inline"
+                    onsubmit="return false;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+        </div>
+    </div>
+    <div class="card-body">
+        {# Use the annotated total_votes attribute from the view's query #}
+        <p><strong>Total Votes:</strong> {{ poll.total_votes }}</p>
+        
+        <ul class="list-group">
+            {# Loop through the prefetched options #}
+            {% for option in poll.options.all %}
+            <li class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <span>{{ option.option_text }}</span>
+                    {# The option.vote_count comes from the annotation in the view #}
+                    <span class="badge bg-primary rounded-pill">{{ option.vote_count }} votes</span>
+                </div>
+
+                <div class="progress mt-1" style="height: 10px;">
+                    {# The widthratio tag works perfectly with the annotated counts #}
+                    <div class="progress-bar" role="progressbar" style="width: {% widthratio option.vote_count poll.total_votes 100 %}%"></div>
+                </div>
+
+                {# Find all the users who voted for this specific option #}
+                <div class="mt-2">
+                    <small class="text-muted">Voted by:
+                        {# Loop through all votes for the poll and check if they match this option #}
+                        {% for vote in poll.votes.all %}
+                            {% if vote.option_id == option.id %}
+                                <span class="badge bg-secondary">{{ vote.user.username }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </small>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% empty %}
+    <div class="alert alert-info">No polls have been created yet.</div>
+{% endfor %}
+</div>
+<script>
+document.querySelectorAll('.delete-poll-form').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const pollId = form.dataset.pollId;
+        const statusBox = document.getElementById(`pollStatusMessage-${pollId}`);
+        const pollCard = form.closest('.card');
+
+        if (!confirm('Are you sure you want to delete this poll?')) {
+            return;
+        }
+
+        // Show spinner
+        statusBox.innerHTML = `
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Deleting poll...
+            </div>
+        `;
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Clear status box before removing
+                statusBox.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ✅ ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+
+                // Fade out and remove card after a delay
+                pollCard.classList.add('fade-out');
+                setTimeout(() => {
+                    pollCard.remove();
+                }, 500);
+            } else {
+                statusBox.innerHTML = `
+                    <div class="alert alert-danger">❌ ${data.error || 'Could not delete poll.'}</div>
+                `;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            statusBox.innerHTML = `
+                <div class="alert alert-danger">❌ Something went wrong. Please try again.</div>
+            `;
+        });
+    });
+});
+</script>
+
+<style>
+/* Fade out effect for poll card */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+</style>
+
+{% endblock %}

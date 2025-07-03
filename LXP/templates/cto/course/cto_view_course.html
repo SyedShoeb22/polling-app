@@ -1,0 +1,75 @@
+{% extends 'cto/ctobase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+<style>
+    ol.breadcrumb li+li:before {
+      content: '\f061';
+    display: inline-block;
+    font-family: 'fontAwesome';
+    padding: 0 10px;
+    }
+    </style>
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'cto-dashboard'%}">Dashboard</a></li>
+      <li><a href="../../../../cto/cto-add-course">Add Course</a></li>
+      <li aria-current="page">View Courses</li>
+    </ol>
+  </nav>
+</div>
+<div class="main-wrapper">
+<section class="course-content pt-1 pb-0 px-0">
+    <div class="container-fluid">
+        <div class="row">
+            {% for t in courses %}
+            <div class="col-xl-4 col-md-6 box-shadow">
+                <div class="card all-crs-wid">
+                    <div class="card-body">
+                        <div class="courses-bx">
+                            <div class="dlab-media">
+                                <img src="{{t.image}}" alt="">
+
+                            </div>
+                            <div class="dlab-info">
+                                <div class="dlab-title d-flex justify-content-between">
+                                    <div>
+                                        <h4><a class="srv_title" data-value="{{t.course_name}}"
+                                                href="{% url 'cto-update-course' t.id %}">{{t.course_name}}</a>
+                                        </h4>
+
+                                    </div>
+                                    <h4 class="text-primary">
+                                        {% if t.price == 0 %}
+                                        <h6 style="color: green;">FREE</h6>
+                                        {% else %}
+                                        <h6>Rs. {{t.price}}</h6>
+                                        {% endif %}
+                                    </h4>
+                                </div>
+                                <p>{{t.description}}</p>
+                                <div class="d-flex justify-content-between content align-items-center">
+                                    <div class="student-percent">
+                                        <!-- <a data-id="{{ t.id }}" class="btn btn btn-primary btn-sm"
+                                            onclick="addToCart('{{ t.id }}')">Add To Cart</a> -->
+                                        <a href="{% url 'cto-update-course' t.id %}"
+                                            class="btn btn-primary btn-sm">Details</a>
+                                        <a href="{% url 'cto-delete-course' t.id %}"
+                                            class="btn btn-danger btn-sm">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+</div>
+{% endblock content %}
+
+    

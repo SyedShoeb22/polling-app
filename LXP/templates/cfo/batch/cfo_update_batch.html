@@ -1,0 +1,531 @@
+{% extends 'cfo/cfobase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+  <link rel="stylesheet" href="/static/getskills/css/style.css">
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.2.6.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    a:link {
+      text-decoration: none;
+    }
+
+    .multiselect-dropdown {
+      width: 100% !important;
+      background: #fff !important;
+      color: #6e6e6e !important;
+      line-height: 2.4 !important;
+      font-size: 1rem !important;
+      border-radius: 0.625rem !important;
+
+    }
+  </style>
+  <style>
+    th {
+      text-align: center;
+    }
+
+
+
+    .approveTermsContainer {
+      display: flex;
+      justify-content: center;
+    }
+
+    .transferBtns {
+      margin-right: 30px;
+      margin-left: 30px;
+    }
+
+    .transferBtns {
+      float: left;
+      align-self: center;
+    }
+
+    input[type="date"]::-webkit-datetime-edit,
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-clear-button {
+      color: #fff;
+      position: relative;
+    }
+
+    input[type="date"]::-webkit-datetime-edit-year-field {
+      position: absolute !important;
+      border-left: 1px solid #8c8c8c;
+      padding: 2px;
+      color: #000;
+      left: 56px;
+    }
+
+    input[type="date"]::-webkit-datetime-edit-month-field {
+      position: absolute !important;
+      border-left: 1px solid #8c8c8c;
+      padding: 2px;
+      color: #000;
+      left: 26px;
+    }
+
+
+    input[type="date"]::-webkit-datetime-edit-day-field {
+      position: absolute !important;
+      color: #000;
+      padding: 2px;
+      left: 4px;
+
+    }
+  </style>
+
+  <script>
+    var products = [];
+    var jsonData = [];
+    function generateJSON(e) {
+      debugger;
+
+      let x = document.forms[0]["field1"].value;
+      if (x == "") {
+        alert("Trainers must be Selected");
+        e.preventDefault();
+        return false;
+      }
+
+      //Store HTML Table Values into Multidimensional Javascript Array Object
+      var TableData = new Array();
+      $('#tblData tr').each(function (row, tr) {
+        TableData[row] = {
+          "id": $(tr).find('td:eq(0)').text(),
+          "fee": $(tr).find('td:eq(2)').text()
+        }//tableData[row]
+      });
+      TableData.shift(); // first row will be empty - so remove
+      if (TableData == false) {
+        alert("Please Add Learners and Fee");
+        e.preventDefault();
+        return false;
+      }
+      JsonObject = JSON.parse(JSON.stringify(TableData));
+      const jsonString = JSON.stringify(Object.assign({}, TableData))
+      const json_obj = JSON.parse(jsonString);
+      var textbox3 = document.getElementById('myvalue');
+      textbox3.value = jsonString;
+      return true;
+    }
+
+    function addProduct() {
+      var productID = document.getElementById("productID").value;
+      var efield1 = document.getElementById("productID");
+      var field1 = efield1.options[efield1.selectedIndex].innerHTML;
+      var product_desc = document.getElementById("product_desc").value;
+      var newProduct = {
+        product_id: null,
+        product_name: null,
+        product_desc: null,
+      };
+      var subject_id = efield1.options[efield1.selectedIndex].value;
+      newProduct.product_id = productID;
+      newProduct.product_name = field1;
+      newProduct.product_desc = product_desc;
+      if (productID <= 0) {
+        alert('Please Select Learner Name')
+        return
+      }
+      if (product_desc <= 0) {
+        alert('Please Enter fee')
+        return
+      }
+      products.push(newProduct);
+      var html = "<table class='table table-responsive' id='tblData' border='1|1' >";
+      html += "<td hidden>ID</td>";
+      html += "<td>Name</td>";
+      html += "<td hidden>Fee</td>";
+      html += "<td>Action</td>";
+      for (var i = 0; i < products.length; i++) {
+        html += "<tr>";
+        html += "<td hidden>" + products[i].product_id + "</td>";
+        html += "<td>" + products[i].product_name + "</td>";
+        html += "<td hidden>" + products[i].product_desc + "</td>";
+        html += "<td><button class='btn btn-sm btn-danger' type='submit' onClick='deleteProduct(\"" + products[i].product_id + "\", this);'/><i class='fa-solid fa-trash'></i></button></td>";
+        html += "</tr>";
+      }
+      html += "</table>";
+      document.getElementById("demo").innerHTML = html;
+    }
+    function deleteProduct(product_id, e) {
+      e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].product_id == product_id) {
+          // DO NOT CHANGE THE 1 HERE
+          products.splice(i, 1);
+        }
+      }
+    }
+
+    function removeItem(product_id) {
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].product_id == product_id) {
+          // DO NOT CHANGE THE 1 HERE
+          products.splice(i, 1);
+        }
+      }
+    }
+  </script>
+  <script>
+    // Script for the first dropdown (vdolist)
+    document.addEventListener('DOMContentLoaded', function () {
+        const bPList = JSON.parse('{{ bPList|safe }}'); // First JSON data
+        const vdolist = document.getElementById('vdolist');
+        
+        bPList.forEach(item => {
+            const option = Array.from(vdolist.options).find(opt => opt.value == item.id);
+            if (option) {
+                option.selected = true;
+            }
+        });
+
+        // Initialize select2 for vdolist
+        $('#vdolist').select2();
+    });
+
+    // Script for the second dropdown (field3)
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectedCourse = JSON.parse('{{ selectedcourse|safe }}'); // Second JSON data
+      const field3 = document.getElementById('field3');
+      
+      selectedCourse.forEach(item => {
+          const option = Array.from(field3.options).find(opt => opt.value == item.id);
+          if (option) {
+              option.selected = true;
+          }
+      });
+
+      // Initialize select2 for field3
+      $('#field3').select2();
+  });
+  
+</script>
+  <script>
+    $('.multiselect-dropdown').addClass('form-control');
+  </script>
+</head>
+
+<body>
+  <nav aria-label="">
+    <ol class="breadcrumb">
+      <li class=""><a href="{% url 'cfo-dashboard'%}">Dashboard</a></li>
+      <li class=""><a href="{% url 'cfo-view-batch'%}">View Batch</a></li>
+      <li class="" aria-current="page">Update Batch</li>
+    </ol>
+  </nav>
+
+  <!-- <div class="card">
+    <div class="card-header">
+      <h2 style="text-align:center;">Update Batch</h2>
+    </div>
+    <div class="card-body">
+      <form onsubmit="return validateForm()" method="POST" autocomplete="off" style="margin: 50px 0;">
+        {% csrf_token %}
+        <input type="hidden" name="myvalue" id="myvalue" value="Sdf67Ghbsdf786afdsdf">
+
+        <div class="container">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="batch_name" class="form-label">Batch Name</label>
+              {% render_field batchForm.batch_name class="form-control" placeholder="Batch Name" value=sub %}
+            </div>
+            <div class="col-md-6">
+              <label for="coursetypeID" class="form-label">Course Type Name</label>
+              {% render_field batchForm.coursetypeID|attr:'required:true' value=coursetype class="form-control" %}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="stdate" class="form-label">Start Date</label>
+              {% render_field batchForm.stdate value=stdate type="date" class="form-control" %}
+            </div>
+            <div class="col-md-6">
+              <label for="enddate" class="form-label">End Date</label>
+              {% render_field batchForm.enddate value=enddate type="date" class="form-control" %}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="listbox3" class="form-label">Course</label>
+              <select class="form-control" name="listbox3" id="field3" multiple multiselect-search="true"
+                multiselect-select-all="true" multiselect-max-items="20" onchange="console.log(this.selectedOptions)">
+                {% for t in courses %}
+                <option value="{{ t.id }}">{{ t.course_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="vdolist" class="form-label">Recorded Video List</label>
+              <select class="form-control" name="vdolist" id="vdolist" multiple multiselect-search="true"
+                multiselect-select-all="true" multiselect-max-items="20" onchange="console.log(this.selectedOptions)">
+                {% for t in PList %}
+                <option value="{{ t.id }}">{{ t.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="listbox1" class="form-label">Trainers</label>
+              <select class="form-control" name="listbox1" id="field1" multiple multiselect-search="true"
+                multiselect-select-all="true" multiselect-max-items="20" onchange="console.log(this.selectedOptions)">
+                {% for t in trainers %}
+                <option value="{{ t.id }}">{{ t.first_name }} {{ t.last_name }} ({{ t.email }})</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <form name="order" id="order">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="productID" class="form-label">Learner Name</label>
+                <select class="form-control" id="productID" name="product">
+                  {% for t in learners %}
+                  <option value="{{ t.id }}">{{ t.first_name }} {{ t.last_name }} ({{ t.email }}) {{ t.user.last_name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <input id="product_desc" name="product" type="number" size="28" value="1" hidden />
+                <button type="button" id="btnAddProduct" class="btn btn-secondary" onclick="addProduct();">Add
+                  Learner</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">View
+                  Learners</button>
+                <button class="btn btn-primary" type="submit" onclick="return generateJSON(event);">Save</button>
+                <label for="product" hidden>Fee</label><BR>
+                <input id="product_desc" name="product" type="number" size="28" value="1" hidden />
+
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </form>
+
+    </div>
+
+  </div> -->
+
+  <div class="card">
+    <div class="card-header d-block">
+      <h4 class="card-title">Update Batch</h4>
+    </div>
+    <div class="card-body">
+      <div class="card-body">
+        <form onsubmit="return validateForm()" method="POST" autocomplete="off">
+          {% csrf_token %}
+          <input type="hidden" name="myvalue" id="myvalue" value="Sdf67Ghbsdf786afdsdf">
+          <div class="accordion accordion-no-gutter accordion-primary-solid" id="accordion-four">
+            <div class="accordion-item">
+              <div class="accordion-header rounded-lg" id="accord-4One" data-bs-toggle="collapse"
+                data-bs-target="#collapse4One" aria-controls="collapse4One" aria-expanded="true" role="button">
+                <span class="accordion-header-text">Batch Details</span>
+                <span class="accordion-header-indicator"></span>
+              </div>
+              <div id="collapse4One" class="accordion__body collapse show" aria-labelledby="accord-4One"
+                data-bs-parent="#accordion-four" style="">
+                <div class="accordion-body-text">
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="batch_name" class="form-label">Batch Name</label>
+                      {% render_field batchForm.batch_name class="form-control" placeholder="Batch Name" value=sub %}
+                    </div>
+                    <div class="col-md-6">
+                      <label for="coursetypeID" class="form-label">Course Type</label>
+                      {% render_field batchForm.coursetypeID|attr:'required:true' value=coursetype class="form-control" %}
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="stdate" class="form-label">Start Date</label>
+                      {% render_field batchForm.stdate value=stdate type="date" class="form-control" %}
+                    </div>
+                    <div class="col-md-6">
+                      <label for="enddate" class="form-label">End Date</label>
+                      {% render_field batchForm.enddate value=enddate type="date" class="form-control" %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header rounded-lg" id="accord-4Two" data-bs-toggle="collapse"
+                data-bs-target="#collapse4Two" aria-controls="collapse4Two" aria-expanded="flase" role="button">
+                <span class="accordion-header-text">Course Details</span>
+                <span class="accordion-header-indicator"></span>
+              </div>
+              <form name="order" id="order">
+                <div id="collapse4Two" class="accordion__body collapse" aria-labelledby="accord-4Two"
+                  data-bs-parent="#accordion-four" style="">
+                  <div class="accordion-body-text">
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="listbox3" class="form-label">Course</label>
+                        <select class="form-control" name="listbox3" id="field3" multiple multiselect-search="true"
+                          multiselect-select-all="true" multiselect-max-items="20"
+                          onchange="console.log(this.selectedOptions)">
+                          {% for t in courses %}
+                          <option value="{{ t.id }}">{{ t.course_name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="vdolist" class="form-label">Prerequisites</label>
+                        <select class="form-control" name="vdolist" id="vdolist" multiple multiselect-search="true"
+                          multiselect-select-all="true" multiselect-max-items="20"
+                          onchange="console.log(this.selectedOptions)">
+                          {% for t in PList %}
+                          <option value="{{ t.id }}">{{ t.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="listbox1" class="form-label">Trainers</label>
+                        <select class="form-control" name="listbox1" id="field1" multiple multiselect-search="true"
+                          multiselect-select-all="true" multiselect-max-items="20"
+                          onchange="console.log(this.selectedOptions)">
+                          {% for t in trainers %}
+                          <option value="{{ t.id }}">{{ t.first_name }} {{ t.last_name }} ({{ t.email }})</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="productID" class="form-label">Learner Name</label>
+                        <select class="form-control" id="productID" name="product">
+                          {% for t in learners %}
+                          <option value="{{ t.id }}">{{ t.first_name }} {{ t.last_name }}
+                          </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+  
+                    <div class="text-end">
+                      <input id="product_desc" name="product" type="number" size="28" value="1" hidden />
+                      <button type="button" id="btnAddProduct" class="btn btn-secondary" onclick="addProduct();">Add
+                        Learner</button>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#basicModal">View
+                        Learners</button>
+                    </div>
+  
+  
+                  </div>
+                </div>
+                <div class="row mb-3 mt-3">
+                  <div class="col-md-6">
+                    <button class="btn btn-primary" type="submit" onclick="return generateJSON(event);">Save</button>
+                    <a href="{% url 'cfo-view-batch' %}" class="btn btn-danger">Cancel</a>
+                    <label for="product" hidden>Fee</label><BR>
+                    <input id="product_desc" name="product" type="number" size="28" value="1" hidden />
+  
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="basicModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal">
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="demo" class="mt-2"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <form name="order" id="order">
+    <label for="productID">Learner Name</label>
+    <select class="form-control" id="productID" name="product">
+      {% for t in learners %}
+      <option value="{{ t.id }}">{{t.first_name}} {{t.last_name}} ({{t.email}})
+        {{t.user.last_name}}</option>
+      {% endfor %}
+    </select>
+    <label for="product" hidden>Fee</label><BR>
+    <input id="product_desc" name="product" type="number" size="28" value="1" hidden />
+    <input type="button" id="btnAddProduct" onclick="addProduct();" value="Add Learner">
+    <p id="demo"></p>
+    <button class="btn btn-primary form-control" type="submit"
+      onclick="return generateJSON(event);">SUBMIT</button>
+  </form> -->
+
+
+  <script>
+    var mylist = {{ blearner| safe}}; // Be aware that there are no quotes or double quotes. 
+    var html = "<table id='tblData' border='1|1' >";
+    html += "<td hidden>ID</td>";
+    html += "<td>Name</td>";
+    html += "<td hidden>Fee</td>";
+    html += "<td>Action</td>";
+    for (s of mylist) {
+      var newProduct = {
+        product_id: s.id,
+        product_name: s.first_name + " " + s.last_name + " " + "(" + s.email + ")",
+        product_desc: s.fee,
+      };
+      products.push(newProduct);
+      html += "<tr>";
+      html += "<td hidden>" + s.id + "</td>";
+      html += "<td>" + s.first_name + " " + s.last_name + " " + "(" + s.email + ")" + "</td>";
+      html += "<td hidden>" + s.fee + "</td>";
+      html += "<td><button type='submit' onClick='deleteProduct(\"" + s.id + "\", this);'/>Delete Item</button></td>";
+      html += "</tr>";
+    }
+
+    html += "</table>";
+    document.getElementById("demo").innerHTML = html;
+  </script>
+
+<script src="assests/vendor/global/global.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="/static/multiselect-dropdown.js"></script>
+  <script>
+    $(function () {
+      $("#productID").select2();
+      $('.multiselect-dropdown').addClass('form-control');
+    }); 
+  </script>
+  <br>
+
+  <br>
+  {% if messages %}
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+  {% endif %}
+  <br><br><br>
+</body>
+{% endblock content %}

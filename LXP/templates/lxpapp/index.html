@@ -1,0 +1,1213 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>NubeEra Technologies</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/static/dreamlms/img/fvicon-logo.png">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/all.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/slick/slick.css">
+  <link rel="stylesheet" href="/static/dreamlms/plugins/slick/slick-theme.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/select2/css/select2.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/aos/aos.css">
+
+  <link rel="stylesheet" href="/static/getskills/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/dreamlms/fonts/style.css" />
+
+</head>
+
+<body>
+
+  <div class="main-wrapper">
+
+    <header class="header">
+      <div class="header-fixed header-fixed-scroll">
+        <nav class="navbar navbar-expand-lg header-nav scroll-sticky ">
+          <div class="container">
+            <div class="navbar-header">
+              <a id="mobile_btn" href="javascript:void(0);">
+                <span class="bar-icon">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </a>
+              <a href="lxp-index.html" class="navbar-brand logo">
+                <img src="/static/dreamlms/img/logo.png" class="img-fluid" alt="Logo">
+              </a>
+            </div>
+            <div class="main-menu-wrapper">
+              <div class="menu-header">
+                <a href="lxp-index.html" class="menu-logo">
+                  <img src="/static/dreamlms/img/logo.png" class="img-fluid" alt="Logo">
+                </a>
+                <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
+              <ul class="main-nav">
+                <li class="active">
+                  <a href="/">Home</a>
+                </li>
+                <li class="">
+                  <a href="{% url 'course-list' %}">Courses </a>
+
+                </li>
+                <li class="has-submenu">
+                  <a href="#">More</a>
+                  <ul class="submenu">
+                    <li><a href="{% url 'careers' %}">Careers</a></li>
+                    <li><a href="{% url 'become-trainer' %}">Become Trainer</a></li>
+                    <li><a href="{% url 'blogs' %}">Blogs</a></li>
+                    <li><a href="{% url 'about-us' %}">About Us</a></li>
+
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <ul class="nav header-navbar-rht">
+              <li class="nav-item">
+                <a class="nav-link header-sign" href="{% url 'adminclick' %}">Signin</a>
+            </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+
+    <section class="section home-slide d-flex align-items-center">
+      <div class="container">
+        <div class="row ">
+          <div class=" col-lg-5 col-md-6">
+            <div class="home-slide-face aos" data-aos="fade-up">
+              <div class="home-slide-text ">
+                <h3>The Leader in Online Learning</h3>
+                <h1>Engaging & Accessible Online Courses For All</h1>
+                <!-- <p>Own your future learning new skills online</p> -->
+              </div>
+              <div class="trust-user">
+                <p>Trusted by over 15K Users <br>worldwide since 2022</p>
+                <div class="trust-rating d-flex align-items-center">
+                  <div class="rate-head">
+                    <h2><span>1000</span>+</h2>
+                  </div>
+                  <div class="rating d-flex align-items-center">
+                    <h2 class="d-inline-block average-rating">4.4</h2>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                    <i class="fas fa-star filled"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-6 d-flex align-items-center">
+            <div class="img-fluid aos" data-aos="fade-up">
+              <img src="/static/dreamlms/img/banner-side.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section student-course">
+      <div class="">
+        <div class="course-widget">
+          <div class="row">
+            <div class="col-lg-3 col-md-6">
+              <div class="course-full-width">
+                <div class="blur-border course-radius align-items-center aos" data-aos="fade-up">
+                  <div class="online-course d-flex align-items-center">
+                    <div class="course-img">
+                      <img src="/static/dreamlms/img/online-class-svgrepo-com.svg" alt="">
+                    </div>
+                    <div class="course-inner-content">
+                      <h4><span>10</span>+</h4>
+                      <p>Online Courses</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 d-flex">
+              <div class="course-full-width">
+                <div class="blur-border course-radius aos" data-aos="fade-up">
+                  <div class="online-course d-flex align-items-center">
+                    <div class="course-img">
+                      <img src="/static/dreamlms/img/cources-icon.svg" alt="">
+                    </div>
+                    <div class="course-inner-content">
+                      <h4><span>200</span>+</h4>
+                      <p>Expert Tutors</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 d-flex">
+              <div class="course-full-width">
+                <div class="blur-border course-radius aos" data-aos="fade-up">
+                  <div class="online-course d-flex align-items-center">
+                    <div class="course-img">
+                      <img src="/static/dreamlms/img/certificate-icon.svg" alt="">
+                    </div>
+                    <div class="course-inner-content">
+                      <h4><span>6</span>K+</h4>
+                      <p>Ceritified Courses</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 d-flex">
+              <div class="course-full-width">
+                <div class="blur-border course-radius aos" data-aos="fade-up">
+                  <div class="online-course d-flex align-items-center">
+                    <div class="course-img">
+                      <img src="/static/dreamlms/img/gratuate-icon.svg" alt="">
+                    </div>
+                    <div class="course-inner-content">
+                      <h4><span>60</span>K +</h4>
+                      <p>Online Students</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--End Section-->
+
+    <!-- section Rating -->
+    <section class="how-it-works">
+      <div class="rating-section">
+        <div class="section-header aos" data-aos="fade-up">
+          <div class="section-sub-head feature-head text-center">
+            <!-- <span>Experienced Instructors</span> -->
+            <h2>Rating & Review</h2>
+            <!-- <p>Our Traniner's Working on Companies</p> -->
+          </div>
+
+        </div>
+
+        <div class="owl-carousel mentoring-course owl-theme aos" data-aos="fade-up">
+
+          <div class="feature-box text-center ">
+            <div class="feature-bg">
+              <div class="feature-header">
+                <div class="feature-icon">
+                  <a href="https://www.glassdoor.co.in/Reviews/NubeEra-Reviews-E2905008.htm"> <img
+                      src="/static/dreamlms/img/icon/Glassdoor-Logo-2017.png" alt=""></a>
+                </div>
+                <div class="feature-cont">
+                  <!-- <div class="d-flex justify-content-center align-items-center">
+                    <h5 class="review-count"> 4.0 &nbsp </h5>
+                    <div class="ratings">
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                  </div> -->
+                  <div class="feature-text"><a href="https://www.glassdoor.co.in/Reviews/NubeEra-Reviews-E2905008.htm">
+                      <h4> Glassdoor</h4>
+                    </a></div>
+                </div>
+              </div>
+              <!-- <p>30 Instructors</p> -->
+            </div>
+          </div>
+
+          <div class="feature-box text-center ">
+            <div class="feature-bg">
+              <div class="feature-header">
+                <div class="feature-icon">
+                  <a href="https://www.trustpilot.com/review/nubeera.com"> <img
+                      src="/static/dreamlms/img/icon/Trustpilot_logo.png" alt=""></a>
+                </div>
+                <div class="feature-cont">
+                  <!-- <div class="d-flex justify-content-center  align-items-center">
+                    <h5 class="review-count"> 4.4 &nbsp </h5>
+                    <div class="ratings">
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                  </div> -->
+
+                  <div class="feature-text"><a href="https://www.trustpilot.com/review/nubeera.com">
+                      <h4> Trustpilot </h4>
+                    </a></div>
+                </div>
+              </div>
+              <!-- <p>40 Instructors</p> -->
+            </div>
+          </div>
+          <div class="feature-box text-center ">
+            <div class="feature-bg">
+              <div class="feature-header">
+                <div class="feature-icon">
+                  <a
+                    href="https://www.google.com/maps/place/NubeEra+Technologies+Pvt.+Ltd./@19.8884702,75.3686532,15z/data=!4m6!3m5!1s0x3bdb99abb90823bb:0x42d539a18a8a2cc6!8m2!3d19.8884702!4d75.3686532!16s/g/11h4db_wy6?entry=ttu>">
+                    <img src="/static/dreamlms/img/icon/Google_2015_logo.svg.png" alt=""></a>
+                </div>
+                <!-- <div class="feature-cont">
+                  <div class="d-flex justify-content-center  align-items-center">
+                    <h5 class="review-count">4.9 &nbsp</h5>
+                    <div class="ratings">
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                    </div>
+                  </div>
+                </div> -->
+                  <div class="feature-text"><a
+                      href="https://www.google.com/maps/place/NubeEra+Technologies+Pvt.+Ltd./@19.8884702,75.3686532,15z/data=!4m6!3m5!1s0x3bdb99abb90823bb:0x42d539a18a8a2cc6!8m2!3d19.8884702!4d75.3686532!16s%2Fg%2F11h4db_wy6?entry=ttu>">
+                      <h4> Google </h4>
+                    </a>
+                  </div>
+              </div>
+              <!-- <p>45 Instructors</p> -->
+            </div>
+          </div>
+          <div class="feature-box text-center ">
+            <div class="feature-bg">
+              <div class="feature-header">
+                <div class="feature-icon">
+                  <a href="https://www.ambitionbox.com/reviews/nubeera-reviews"> <img
+                      src="/static/dreamlms/img/icon/ambition-box_logo.png" alt=""></a>
+                </div>
+                <!-- <div class="feature-cont">
+                  <div class="d-flex justify-content-center  align-items-center">
+                    <h5 class="review-count">5.0 &nbsp</h5>
+                    <div class="ratings">
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                      <i class="fa fa-star rating-color"></i>
+                    </div>
+                  </div>
+                  </div> -->
+                  <div class="feature-text">
+                    <a href="https://www.ambitionbox.com/reviews/nubeera-reviews">
+                      <h4> AmbitionBox </h4>
+                    </a>
+                   </div>
+              </div>
+              <!-- <p>45 Instructors</p> -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+
+    <!--End Section-->
+    <section class=" trend-course">
+      <div class="section">
+        <div class="section-header aos" data-aos="fade-up">
+          <div class="section-sub-head">
+            <span>What’s New</span>
+            <h2>Trending Courses</h2>
+          </div>
+          <div class="all-btn all-category d-flex align-items-center">
+            <a href="course-list.html" class="btn btn-primary">All Courses</a>
+          </div>
+        </div>
+        <div class="section-text aos" data-aos="fade-up">
+          <p class="mb-0">Explore top courses and programs in Trading. Enhance your skills with expert-led lessons from
+            industry leaders. Start your learning journey today!.</p>
+        </div>
+
+        <div class="owl-carousel trending-course owl-theme aos" data-aos="fade-up">
+          <div class="course-box trend-box">
+            <div class="product trend-product">
+              <div class="product-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/devops.jpg">
+                </a>
+                <!-- <div class="price">
+                  <h3>Free <span>$99.00</span></h3>
+                </div> -->
+              </div>
+              <div class="product-content">
+                <div class="course-group d-flex">
+                  <div class="course-group-img d-flex">
+                    <a href="instructor-profile.html"><img src="/static/dreamlms/img/user/Mujahed-syed.png" alt=""
+                        class="img-fluid"></a>
+                    <div class="course-name">
+                      <h4><a href="#">Mujahed Hussaini</a></h4>
+                      <p>Trainer</p>
+                    </div>
+                  </div>
+                  <div class="course-share d-flex align-items-center justify-content-center">
+                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+                  </div>
+                </div>
+                <h3 class="title"><a href="#">DevOps Certification Training Course</a></h3>
+                <div class="course-info d-flex align-items-center">
+                  <div class="rating-img d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-01.svg" alt="" class="img-fluid">
+                    <p>13+ Lesson</p>
+                  </div>
+                  <div class="course-view d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-02.svg" alt="" class="img-fluid">
+                    <p>10hr 30min</p>
+                  </div>
+                </div>
+                <!-- <div class="rating">
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                </div> -->
+                <!-- <div class="all-btn all-category d-flex align-items-center">
+                  <a href="#" class="btn btn-primary">BUY NOW</a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="course-box trend-box">
+            <div class="product trend-product">
+              <div class="product-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/Bigdata-and-Hadoop-Course-Training-in-Jalandhar.png">
+                </a>
+                <!-- <div class="price">
+                  <h3>Free <span>$99.00</span></h3>
+                </div> -->
+              </div>
+              <div class="product-content">
+                <div class="course-group d-flex">
+                  <div class="course-group-img d-flex">
+                    <a href="instructor-profile.html"><img src="/static/dreamlms/img/user/Mujahed-syed.png" alt=""
+                        class="img-fluid"></a>
+                    <div class="course-name">
+                      <h4><a href="#">Mujahed Hussaini</a></h4>
+                      <p>Trainer</p>
+                    </div>
+                  </div>
+                  <div class="course-share d-flex align-items-center justify-content-center">
+                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+                  </div>
+                </div>
+                <h3 class="title"><a href="#">Big Data Certification Training Course</a></h3>
+                <div class="course-info d-flex align-items-center">
+                  <div class="rating-img d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-01.svg" alt="" class="img-fluid">
+                    <p>10+ Lesson</p>
+                  </div>
+                  <div class="course-view d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-02.svg" alt="" class="img-fluid">
+                    <p>11hr 30min</p>
+                  </div>
+                </div>
+                <!-- <div class="rating">
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                </div>
+                <div class="all-btn all-category d-flex align-items-center">
+                  <a href="#" class="btn btn-primary">BUY NOW</a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="course-box trend-box">
+            <div class="product trend-product">
+              <div class="product-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/cloud-computing-courses1s-2.jpg">
+                </a>
+                <!-- <div class="price">
+                  <h3>Free <span>$99.00</span></h3>
+                </div> -->
+              </div>
+              <div class="product-content">
+                <div class="course-group d-flex">
+                  <div class="course-group-img d-flex">
+                    <a href="#"><img src="/static/dreamlms/img/user/Mujahed-syed.png" alt="" class="img-fluid"></a>
+                    <div class="course-name">
+                      <h4><a href="#">Mujahed Hussaini </a></h4>
+                      <p>Trainer</p>
+                    </div>
+                  </div>
+                  <div class="course-share d-flex align-items-center justify-content-center">
+                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+                  </div>
+                </div>
+                <h3 class="title"><a href="#">Cloud Training (AWS, GCP, Azure)</a></h3>
+                <div class="course-info d-flex align-items-center">
+                  <div class="rating-img d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-01.svg" alt="" class="img-fluid">
+                    <p>8+ Lesson</p>
+                  </div>
+                  <div class="course-view d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-02.svg" alt="" class="img-fluid">
+                    <p>8hr 30min</p>
+                  </div>
+                </div>
+                <!-- <div class="rating">
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                </div>
+                <div class="all-btn all-category d-flex align-items-center">
+                  <a href="#" class="btn btn-primary">BUY NOW</a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="course-box trend-box">
+            <div class="product trend-product">
+              <div class="product-img">
+                <a href="#">
+                  <img class="img-fluid" alt=""
+                    src="/static/dreamlms/img/artificial-intelligence-and-machine-learning-training-500x500.jpeg">
+                </a>
+                <div class="price">
+                  <h3>Free <span>$99.00</span></h3>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="course-group d-flex">
+                  <div class="course-group-img d-flex">
+                    <a href="instructor-profile.html"><img src="/static/dreamlms/img/user/Mujahed-syed.png" alt=""
+                        class="img-fluid"></a>
+                    <div class="course-name">
+                      <h4><a href="#">Mujahed Hussaini</a></h4>
+                      <p>Trainer</p>
+                    </div>
+                  </div>
+                  <div class="course-share d-flex align-items-center justify-content-center">
+                    <a href="#"><i class="fa-regular fa-heart"></i></a>
+                  </div>
+                </div>
+                <h3 class="title"><a href="#">Certification in Artificial Intelligence And Machine Learning</a></h3>
+                <div class="course-info d-flex align-items-center">
+                  <div class="rating-img d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-01.svg" alt="" class="img-fluid">
+                    <p>10+ Lesson</p>
+                  </div>
+                  <div class="course-view d-flex align-items-center">
+                    <img src="/static/dreamlms/img/icon/icon-02.svg" alt="" class="img-fluid">
+                    <p>11hr 30min</p>
+                  </div>
+                </div>
+                <!-- <div class="rating">
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                </div>
+                <div class="all-btn all-category d-flex align-items-center">
+                  <a href="#" class="btn btn-primary">BUY NOW</a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-instructors">
+          <div class="section-header aos" data-aos="fade-up">
+            <div class="section-sub-head feature-head text-center">
+              <h2>Featured Trainer</h2>
+              <div class="section-text aos" data-aos="fade-up">
+                <p class="mb-0">Top Trainer and programs in Trading. Enhance your skills with expert-led lessons from
+                  industry leaders. Start your learning journey today!.</p>
+              </div>
+            </div>
+          </div>
+          <div class="owl-carousel instructors-course owl-theme aos" data-aos="fade-up">
+            <div class="instructors-widget">
+              <div class="instructors-img ">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Mujahed H</a></h5>
+                <!-- <p>Cloud & AI</p> -->
+                <div class="student-count d-flex justify-content-center">
+                  <!-- <i class="fa-solid fa-user-group"></i> -->
+                  <!-- <span>50 Students</span> -->
+                </div>
+              </div>
+            </div>
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Richard A</a></h5>
+                <!-- <p>Python </p> -->
+                <div class="student-count d-flex justify-content-center">
+                  <!-- <i class="fa-solid fa-user-group yellow"></i> -->
+                  <!-- <span>50 Students</span> -->
+                </div>
+              </div>
+            </div>
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Jain S</a></h5>
+                <!-- <p>Cyber Security</p> -->
+                <div class="student-count d-flex justify-content-center">
+                  <!-- <i class="fa-solid fa-user-group violet"></i> -->
+                  <!-- <span>50 Students</span> -->
+                </div>
+              </div>
+            </div>
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Kunal S</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">S Jain</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img ">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Naim P</a></h5>
+                <!-- <p>DevOps</p> -->
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Sam A </a></h5>
+                <!-- <p>Management</p> -->
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Poonam S</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Dr. Almas</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Amruta S</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Anand K</a></h5>
+
+              </div>
+            </div>
+
+            <div class="instructors-widget">
+              <div class="instructors-img">
+                <a href="#">
+                  <img class="img-fluid" alt="" src="/static/dreamlms/img/user/dummy-profile-pic.jpg">
+                </a>
+              </div>
+              <div class="instructors-content text-center">
+                <h5><a href="#">Kashish K</a></h5>
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </section>
+
+
+
+    <!-- section new-course -->
+    <!--End Section-->
+
+
+
+    <!-- section Mster-Skill -->
+    <section class=" master-skill">
+      <div class="section">
+        <div class="row">
+          <div class="col-lg-7 col-md-12">
+            <div class="section-header aos" data-aos="fade-up">
+              <div class="section-sub-head">
+                <span>What’s New</span>
+                <h2>Master the skills to drive your career</h2>
+              </div>
+            </div>
+            <div class="section-text aos" data-aos="fade-up">
+              <p>Get certified, master modern tech skills, and level up your career — whether you’re starting out or a
+                seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.</p>
+            </div>
+            <div class="career-group aos" data-aos="fade-up">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 d-flex">
+                  <div class="certified-group blur-border d-flex">
+                    <div class="get-certified d-flex align-items-center">
+                      <div class="blur-box">
+                        <div class="certified-img ">
+                          <img src="/static/dreamlms/img/icon/books-study-learning-education-reading-library-svgrepo-com.svg"
+                            alt="" class="img-fluid">
+                        </div>
+                      </div>
+                      <p>Stay motivated with engaging Trainer</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex">
+                  <div class="certified-group blur-border d-flex">
+                    <div class="get-certified d-flex align-items-center">
+                      <div class="blur-box">
+                        <div class="certified-img ">
+                          <img src="/static/dreamlms/img/icon/cloud-arrow-up-svgrepo-com.svg" alt="" class="img-fluid">
+                        </div>
+                      </div>
+                      <p>Keep up with in the latest in cloud</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex">
+                  <div class="certified-group blur-border d-flex">
+                    <div class="get-certified d-flex align-items-center">
+                      <div class="blur-box">
+                        <div class="certified-img ">
+                          <img src="/static/dreamlms/img/icon/certify-svgrepo-com.svg" alt="" class="img-fluid">
+                        </div>
+                      </div>
+                      <p>Get certified with 100+ certification courses</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 d-flex">
+                  <div class="certified-group blur-border d-flex">
+                    <div class="get-certified d-flex align-items-center">
+                      <div class="blur-box">
+                        <div class="certified-img ">
+                          <img src="/static/dreamlms/img/icon/certificate-star-svgrepo-com.svg" alt="" class="img-fluid">
+                        </div>
+                      </div>
+                      <p>Build skills your way, from labs to courses</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 col-md-12 d-flex align-items-end">
+            <div class="career-img aos" data-aos="fade-up">
+              <img src="/static/dreamlms/img/join.png" alt="" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--End Section-->
+
+    <!-- section Trend Course -->
+    <!--End Section-->
+
+    <!-- section Led-compnies -->
+    <section class=" lead-companies">
+      <div class="section">
+        <div class="section-header aos" data-aos="fade-up">
+          <div class="section-sub-head feature-head text-center">
+            <!-- <span>Trusted By</span> -->
+            <h3>Our Trainee are working with</h3>
+            <p>Our Trainee have place in this Companies</p>
+          </div>
+        </div>
+        <div class="lead-group aos" data-aos="fade-up">
+          <div class="lead-group-slider owl-carousel owl-theme">
+
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/Capgemini.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/Cognizant.png">
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/Incedo.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/ITC.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/ZenSar.jpg">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/ltiM.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/johnDeere.avif">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/vodafone.jpg">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/tataPower.jpg">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/shell.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/Nokia-Logo.wine.png">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--End Section-->
+
+    <!-- section shre-knowledge -->
+    <section class=" share-knowledge">
+      <div class="section">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="knowledge-img aos" data-aos="fade-up">
+              <img src="/static/dreamlms/img/share.png" alt="" class="img-fluid">
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="join-mentor aos" data-aos="fade-up">
+              <h2>Want to share your knowledge? Join us a Mentor</h2>
+              <p>High-definition video is video of higher resolution and quality than standard-definition. While there
+                is no standardized meaning for high-definition, generally any video.</p>
+              <ul class="course-list">
+                <li><i class="fa-solid fa-circle-check"></i>Best Courses</li>
+                <li><i class="fa-solid fa-circle-check"></i>Top rated Trainer</li>
+              </ul>
+              <div class="all-btn all-category d-flex align-items-center">
+                <a href="instructor-list.html" class="btn btn-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- section Trainer's -->
+    <section class=" lead-companies">
+      <div class="section">
+        <div class="section-header aos" data-aos="fade-up">
+          <div class="section-sub-head feature-head text-center">
+            <span>Experienced Trainer's</span>
+            <h3>INDUSTRIAL WORKING EXPERIENCE</h3>
+            <p>Our Trainer's Working on This Companies</p>
+          </div>
+        </div>
+        <div class="lead-group aos" data-aos="fade-up">
+          <div class="lead-group-slider owl-carousel owl-theme">
+
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/discovery-channel.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/disney.png">
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/appatura.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/ait-global.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/mtdata.jpg">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/nihilent.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" src="/static/dreamlms/img/client-logo/crompton.png">
+              </div>
+            </div>
+            <div class="item">
+              <div class="lead-img">
+                <img class="img-fluid" alt="" style="background-color: black;"
+                  src="/static/dreamlms/img/client-logo/vtestcrop-logo.png">
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+    </section>
+    <!--End Section-->
+
+    <section class=" become-instructors aos" data-aos="fade-up">
+      <div class="section">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 d-flex">
+            <div class="student-mentor cube-instuctor ">
+              <h4><a href="become-trainer.html"> Become An Trainer</a></h4>
+              <div class="row">
+                <div class="col-lg-7 col-md-12">
+                  <div class="top-instructors">
+                    <p>Top Trainers from around the world teach millions of students on Mentoring.</p>
+                  </div>
+                  <a href="become-trainer.html" class="btn btn-secondary">Become Trainer</a>
+                </div>
+                <div class="col-lg-5 col-md-12">
+                  <div class="mentor-img">
+                    <img class="img-fluid" alt="" src="/static/dreamlms/img/become-02.png">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 d-flex">
+            <div class="student-mentor yellow-mentor">
+              <h4><a href="#"> Transform Access To Education</a></h4>
+              <div class="row">
+                <div class="col-lg-8 col-md-12">
+                  <div class="top-instructors">
+                    <p>Create an account to receive our newsletter, course recommendations and promotions.</p>
+                  </div>
+                  <a href="register.html" class="btn btn-secondary">Create Account</a>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                  <div class="mentor-img">
+                    <img class="img-fluid" alt="" src="/static/dreamlms/img/become-01.png">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--Footer Section-->
+    <footer class="footer">
+      <div class="footer-top aos" data-aos="fade-up">
+        <div class="section-footer-top">
+          <div class="row p-0">
+            <div class="col-lg-3 col-md-6">
+
+              <div class="footer-widget footer-about">
+                <div class="footer-logo">
+                  <img style="width: 30%;;" src="/static/dreamlms/img/logo.png" alt="logo">
+                </div>
+                <div class="footer-about-content">
+                  <p class="justify-content-center"
+                    style="font-family:'Sofia Pro Light'; font-size: 15px; text-align: justify;">At NubeEra Technology, 
+                    we are dedicated to transforming the future of learning and development 
+                    with innovative training solutions tailored to meet the dynamic needs of today’s organizations and individuals.
+                     Our mission is to empower businesses and professionals with the skills and knowledge required to excel 
+                     in a rapidly evolving technological landscape.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info">
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><u> BRANCH ADDRESS</u></b></br><br>
+                    <b><a
+                        href="https://maps.app.goo.gl/LX4zL5QZbn9EgZTc7">
+                        NubeEra Technologies Pvt Ltd.</b></br>
+                    T9, Office Aids Building, STPI(Software Technology Park), MIDC Industrial Area, Chilkalthana,
+                    Aurangabad, Maharashtra 431007 </a>
+                  </p>
+                </div>
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><a
+                        href="https://maps.app.goo.gl/AVttZb1fWZXLdN796">
+                        NubeEra Technologies Pvt Ltd. (Bengaluru)</b></br>
+                    79/18, 1st Cross 6th Main, Gayathri Devi Park Extension, near Thirumala Temple, Vyalikaval,
+                    Bengaluru, Karnataka 560003.</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info">
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p><b><u> </u></b></br><br>
+                    <b><a href="https://maps.app.goo.gl/bmEkGDaXFYJE6Qj4A">  
+                      NubeEra Technologies Pvt Ltd. (USA)</b></br>
+                     6340 Security Blvd,Suite 100,Baltimore,MD,21207,USA.</a>
+                  </p>
+                </div>
+                <div class="footer-address">
+                  <img src="/static/dreamlms/img/icon/icon-20.svg" alt="" class="img-fluid">
+                  <p>
+                    <b><a  href="https://maps.app.goo.gl/d325rz1Wzfa3kJvy7>">
+                      NubeEra Technologies Pvt Ltd. (Ghana)</b></br>
+                     Adenta municipal Assmebly, 2nd Nana Kanton Street, Accra, Ghana. </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-contact-info" >
+                <div class="footer-address">
+                  <h6><b><u>Contact Info</u></b></h6>
+                </div>
+                <div class="footer-address">                  
+                  <p> <img src="/static/dreamlms/img/icon/icon-19.svg" alt="" class="img-fluid">
+                    <a href="#" class="" >info@nubeera.com</a></p>
+              </div>
+                <div class="footer-address">                  
+                    <p><img src="/static/dreamlms/img/icon/icon-21.svg" alt="" class="img-fluid">+91 7219851089</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+  </div>
+  <!-- End Footer section -->
+ 
+  
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3  border-top">
+      <ul class="nav col-md-4 ">
+        <li class="nav-item"><a href="term-condition.html" class="nav-link px-2 text-muted">Terms & Contdition</a></li>
+        <li class="nav-item"><a href="privacy-policy.html" class="nav-link px-2 text-muted">Privacy Policy</a></li>
+      </ul>
+      <p class="col-md-4 mb-0 text-muted">© 2024 NubeEra Technologies Pvt Ltd.</p>
+
+      <!-- Section: Social media -->
+      <section class="justify-content-end">
+        <!-- Facebook -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;"
+          href="https://www.facebook.com/NubeEra/" role="button"><i class="fab fa-facebook-f"></i></a>
+
+        <!-- Twitter -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #55acee;" href="#!"
+          role="button"><i class="fab fa-twitter"></i></a>
+
+        <!-- Google -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;"
+          href="https://g.co/kgs/fMaZqRq" role="button"><i class="fab fa-google"></i></a>
+
+        <!-- Instagram -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #ac2bac;"
+          href="https://www.instagram.com/nubeera.official/" role="button"><i class="fab fa-instagram"></i></a>
+
+        <!-- Linkedin -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #0082ca;"
+          href="https://in.linkedin.com/company/nubeera" role="button"><i class="fab fa-linkedin-in"></i></a>
+        <!-- Github -->
+        <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #333333;"
+          href="https://github.com/NubeEra-Samples" role="button"><i class="fab fa-github"></i></a>
+      </section>
+      <!-- Section: Social media -->
+
+    </footer>
+  </footer>
+
+
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Need help in deciding the next career step?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+              </div>
+
+              <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+          </form>
+          <div id="emailHelp" class="form-text">Our Career Advisor will give you a call shortly.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script src="/static/dreamlms/js/jquery-3.6.0.min.js"></script>
+
+  <script src="/static/dreamlms/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/static/dreamlms/js/jquery.waypoints.js"></script>
+  <script src="/static/dreamlms/js/jquery.counterup.min.js"></script>
+
+  <script src="/static/dreamlms/plugins/select2/js/select2.min.js"></script>
+
+  <script src="/static/dreamlms/js/owl.carousel.min.js"></script>
+
+  <script src="/static/dreamlms/plugins/slick/slick.js"></script>
+
+  <script src="/static/dreamlms/plugins/aos/aos.js"></script>
+
+  <script src="/static/dreamlms/js/script.js"></script>
+  <!-- <script>
+    $(document).ready(function() { 
+      setTimeout(function() {
+        $('#exampleModal').modal('show');
+      }, 100000); // 2 minutes
+    });
+  </script> -->
+  <!-- <script src="//code.tidio.co/wyofzsoprspp9p5ucmtyqbsb21mlojoe.js" async></script> -->
+</body>
+
+
+</html>

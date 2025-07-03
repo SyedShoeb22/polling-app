@@ -1,0 +1,195 @@
+{% extends 'mentor/mentorbase.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="/static/get/css/style.css">
+<style>
+  ol.breadcrumb li+li:before {
+    content: '\f061';
+  display: inline-block;
+  font-family: 'fontAwesome';
+  padding: 0 10px;
+  }
+  #status {
+        width: 100%;
+    }
+    #status_sum_display {
+        font-size: 14px;
+        color: #666;
+    }
+</style>
+	<!-- ckeditor -->
+	<script src="/static/ckeditor/ckeditor.js"></script>
+	<script src="/static/ckeditor/js/sample.js"></script>
+	<link rel="stylesheet" href="/static/ckeditor/toolbarconfigurator/lib/codemirror/neo.css">
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'mentor-dashboard' %}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{% url 'mentor-schedulerstatus-list' %}">Scheduler Status List</a>
+            </li>
+            <li aria-current="page">Creating Scheduler Status</li>
+        </ol>
+    </nav>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered class -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">STEAM Education</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ message }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Show the modal when the DOM is ready
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+            keyboard: false
+        });
+
+        // Show the modal
+        successModal.show();
+
+        // Hide the modal after 5 seconds
+        setTimeout(function() {
+            successModal.hide();
+        }, 3000);
+    });
+</script>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Create Scheduler Status</h4>
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <div class="row">
+                            <div class="mb-6 col-md-6">
+                                <label class="form-label" for="tdate">Date</label>
+                                <input type="text" class="form-control" name="tdate" id="tdate" placeholder="Select Date" value="{{ tdate }}">
+                            </div>
+                            <div class="mb-6 col-md-6">
+                                <label class="form-label" for="scheduler">Scheduler</label>
+                                <select class="form-control" id="scheduler" name="scheduler" required>
+                                    <option value="">Select a scheduler</option>
+                                    {% for t in schedulers %}
+                                    {% if t.type == '1'%}
+                                    <option value="{{ t.id }}">Lecture ({{t.topic.topic_name}})</option>
+                                    {% elif t.type == '2'%}
+                                    <option value="{{ t.id }}">Event - {{ t.eventdetails }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-6 col-md-6">
+                                <label class="form-label" for="status">Status</label>
+                                <input type="range" class="form-control" id="status" value="0" name="status" min="0" max="100" required>
+                                <p id="status_sum_display">Previous Sum: 0</p>
+                                <p id="current_status_display">Current Value: 0</p>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Include Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // Initialize Flatpickr for the date input with format dd-mm-yyyy
+    flatpickr("#tdate", {
+        dateFormat: "d-m-Y", // Format date as dd-mm-yyyy
+        allowInput: false, // Disable text input, only allow date selection
+        defaultDate: "today", // Default to today's date
+        locale: {
+            firstDayOfWeek: 1 // Start the calendar on Monday (optional)
+        }
+    });
+
+    // Track the previous value of the slider
+    let previousValue = 0;
+
+    // Handle slider change event
+    document.getElementById('status').addEventListener('input', function() {
+        const slider = document.getElementById('status');
+        const currentValue = slider.value;
+
+        // Update the previous value display
+        document.getElementById('current_status_display').innerText = `Current Value: ${currentValue}`;
+
+        // Update the previous value to current for the next time
+        previousValue = currentValue;
+    });
+
+    // Handle scheduler selection change
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('scheduler').addEventListener('change', function() {
+            var schedulerId = this.value;
+
+            if (schedulerId) {
+                var url = "{% url 'get-scheduler-status-sum' %}";  // Django's URL tag to get the correct URL
+                fetch(`${url}?scheduler_id=${schedulerId}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status_sum !== undefined) {
+                        var statusSum = data.status_sum;
+                        document.getElementById('status_sum_display').innerText = `Previous Sum: ${statusSum}`;
+                        document.getElementById('status').value = statusSum;
+                        
+                        
+                        document.getElementById('current_status_display').innerText = `Current Value: ${statusSum}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching status sum:', error);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#tdate').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock content %}

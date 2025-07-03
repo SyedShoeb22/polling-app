@@ -1,0 +1,43 @@
+{% extends 'mentor/mentorbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<link rel="stylesheet" href="/static/getskills/css/style.css">
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class=""><a href="../../../../mentor/mentor-dashboard">Dashboard</a></li>
+      <li class=""><a href="../../../../mentor/mentor-add-shortquestion">Add Short Question</a></li>
+      <li class="" aria-current="page">View Short Question</li>
+    </ol>
+  </nav>
+</div>
+<div class="card-body">
+  <div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Exam Name</th>
+            <th>Short Question Name</th>
+            <th>Marks</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in shortquestions %}
+        <tr>
+          <td> {{t.exam.exam_name}}</td>
+          <td> {{t.question}}</td>
+          <td> {{t.marks}}</td>
+            <td><a class="btn btn-primary btn-xs" href="{% url 'mentor-update-mcqquestion' t.id  %}"><span
+              class="	far fa-edit"></span></a></td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'mentor-delete-mcqquestion' t.id  %}"
+            onclick="return confirm('Are you sure?')"><span class="far fa-trash-alt"></span></a></td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

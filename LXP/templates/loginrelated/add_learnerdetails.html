@@ -1,0 +1,198 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>NubeEra (LXP)</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/static/dreamlms/img/favicon.svg">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/plugins/fontawesome/css/all.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/static/dreamlms/css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="/static/dreamlms/plugins/feather/feather.css">
+
+  <link rel="stylesheet" href="/static/getskills/css/style.css">
+</head>
+
+<body>
+  <script type="text/javascript">
+
+    function showError(message) {
+      // Create an error message element or use an existing one
+      // let errorDiv = document.getElementById('error-message');
+      // if (!errorDiv) {
+      //   errorDiv = document.createElement('div');
+      //   errorDiv.id = 'error-message';
+      //   errorDiv.style.color = 'red';
+      //   document.body.appendChild(errorDiv);
+      // }
+      // errorDiv.textContent = message;
+      // errorDiv.style.display = 'block';
+
+      // // Hide the error message after 5 seconds
+      // setTimeout(() => {
+      //   errorDiv.style.display = 'none';
+      // }, 5000);
+      alert("Error ", message);
+    }
+
+    function validateForm() {
+      let x = document.forms[0]["user_full_name"].value;
+      if (x == "") {
+        showError("Please Enter Name");
+        return false;
+      }
+      x = document.forms[0]["mobile"].value;
+      if (x.length != 10) {
+        showError("Please Enter 10 Digit Mobile No");
+        return false;
+      }
+      x = document.forms[0]["whatsappno"].value;
+      if (x.length != 10 && x.length != 1) {
+        showError("Please Enter 10 Digit WhatsApp No.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+
+  <div class="main-wrapper log-wrap h-100">
+
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+
+      <!-- <div class="col-md-12">
+
+        <div class="login-wrapper">
+          <div class="loginbox">
+            <h1>ADD DETAILS</h1>
+            <div class="img-logo">
+              <img src="/static/dreamlms/img/logo.png" class="img-fluid" alt="Logo">
+              <div class="back-home">
+                <a href="{% url 'logout'%}">Logout for now</a>
+              </div>
+            </div>
+            <form onsubmit="return validateForm()" method="POST" autocomplete="off" enctype="multipart/form-data">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+              <div class="form-group">
+                <label class="form-control-label">Full Name</label>
+                <input type="text" name="user_full_name" class="form-control" value="{{ username }}" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label">Mobile No.</label>
+                <input type="text" name="mobile" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label">If above No. is not a WhatsApp No., please provide WhatsApp No.</label>
+                <input type="text" name="whatsappno" class="form-control" value=" ">
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label">Profile Picture</label>
+                <input type="file" name="profile_pic" class="form-control" required> 
+                <div class="text-danger">
+                  {% if errors.profile_pic %}
+                    <p>{{ errors.profile_pic }}</p>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button class="btn btn-primary btn-start" type="submit">Save Details</button>
+              </div>
+
+              <div id="error-message" style="color: red; display: none;"></div>
+
+            </form>
+          </div>
+        </div>
+
+      </div> -->
+      <div class="col-xl-6 col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row w-100">
+              <div class="col-sm-12 col-md-6">
+                <h4 class="card-title">ADD DETAILS</h4>
+              </div>
+              <div class="col-sm-12 col-md-6 text-end">
+                <a class="btn btn-primary" href="{% url 'logout'%}">Logout for now</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="basic-form">
+              <form onsubmit="return validateForm()" method="POST" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label">Full Name</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="user_full_name" class="form-control" placeholder="Enter Full Name"
+                      required>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label">Mobile No.</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="mobile" class="form-control" placeholder="Enter Mobile No." required>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label">WhatsApp No.</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="whatsappno" class="form-control" placeholder="Enter WhatsApp No." required>
+                    <!-- <abbr class="ps-1" style="font-size: smaller;">If Mobile No. is not a WhatsApp No., please provide
+                      WhatsApp No.</abbr> -->
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label">Profile Picture</label>
+                  <div class="col-sm-9">
+                    <input type="file" name="profile_pic" class="form-control" placeholder="Browse Profile">
+                    <div class="text-danger">
+                      {% if errors.profile_pic %}
+                        <p>{{ errors.profile_pic }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save Details</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/dreamlms/js/jquery-3.6.0.min.js"></script>
+
+  <script src="/static/getskills/vendor/global/global.min.js"></script>
+
+  <script src="/static/getskills/js/dlabnav-init.js"></script>
+
+  <script src="/static/dreamlms/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/static/dreamlms/js/owl.carousel.min.js"></script>
+
+  <script src="/static/dreamlms/js/passwordvalidation.js"></script>
+
+  <script src="/static/dreamlms/js/script.js"></script>
+
+</body>
+
+</html>

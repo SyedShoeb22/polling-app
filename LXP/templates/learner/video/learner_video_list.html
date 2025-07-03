@@ -1,0 +1,359 @@
+{% extends 'learner/learnerbase.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'getskills/css/style.css' %}">
+
+<style>
+  ul.breadcrumb li + li:before {
+    content: '\f061'; /* FontAwesome angle-right */
+    display: inline-block;
+    font-family: 'FontAwesome';
+    padding: 0 10px;
+  }
+
+  /* Main content title always visible */
+  #main-content-title {
+    color: var(--bs-heading-color, inherit); /* Ensure it uses theme heading color */
+  }
+
+  /* Video Player Area Styling */
+  #video-player-container {
+    background-color: #000; /* Dark background for the player container */
+    border-radius: 0.375rem; /* Bootstrap default border radius */
+    overflow: hidden; /* Clips iframe corners if container is rounded */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    transition: width 0.35s ease-in-out, height 0.35s ease-in-out; 
+  }
+
+  #video-player-container iframe {
+    display: block; /* Removes any potential bottom space under iframe */
+    width: 100%;
+  }
+
+  /* Course Info Area */
+  #course-info-area .about-content {
+    line-height: 1.6;
+  }
+
+  /* Video List Styling */
+  .custome-accordion .accordion-body {
+    padding-top: 10px !important; 
+    padding-bottom: 5px !important; 
+  }
+
+  .video-list-item {
+    padding: 10px;
+    border-radius: 0.375rem; 
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    margin-bottom: 8px !important; 
+    border: 1px solid transparent; 
+  }
+  
+  .video-list-item .play-video-link .video-name-text,
+  .video-list-item .text-muted .video-name-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      display: inline-block; 
+      max-width: 100%; 
+  }
+
+  .video-list-item .play-video-link {
+    color: var(--bs-body-color); 
+    font-weight: 500;
+  }
+  .video-list-item .play-video-link:hover {
+    color: var(--primary, #007bff) !important;
+    text-decoration: none !important;
+  }
+  .video-list-item .play-video-link:hover .acc-icon svg path,
+  .video-list-item .play-video-link:hover .acc-icon svg rect { 
+    fill: var(--primary, #007bff) !important;
+  }
+
+  .video-list-item.active-video {
+    background-color: var(--primary-light, #e9f5ff); 
+    border-left: 4px solid var(--primary, #007bff); 
+    padding-left: calc(10px - 4px); 
+  }
+  .video-list-item.active-video .play-video-link {
+    color: var(--primary, #007bff) !important;
+    font-weight: 600; 
+  }
+  .video-list-item.active-video .acc-icon svg path,
+  .video-list-item.active-video .acc-icon svg rect { 
+    fill: var(--primary, #007bff) !important;
+  }
+
+  .acc-icon {
+    margin-right: 12px; 
+    display: inline-flex;
+    align-items: center; 
+    flex-shrink: 0; 
+  }
+  .acc-icon svg {
+    vertical-align: middle; 
+  }
+  .video-list-item .d-flex.gap-2 a.btn { 
+      padding: 0.2rem 0.4rem;
+      font-size: 0.8rem;
+  }
+  #left-video-panel, #right-playlist-panel {
+    transition: all 0.35s ease-in-out;
+  }
+</style>
+
+<div class="main-wrapper">
+  <nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+      <li><a href="{% url 'learner-dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'learner-video-course-subject' %}">Session Recorded Videos</a></li>
+      <li aria-current="page">Video List</li>
+    </ul>
+  </nav>
+</div>
+
+<section class="course-content bg-transparent pt-0 px-0">
+  <div class="row">
+    <!-- Left Panel: Video Player and Course Info -->
+    <div class="col-lg-9" id="left-video-panel"> 
+      <div class="card">
+        <div class="card-body">
+          <h3 id="main-content-title" class="mb-4">{{ subjectname }}</h3>
+
+          <div id="video-display-area" style="display: none;">
+            <div id="video-player-container" class="ratio ratio-16x9 mb-4">
+              <iframe id="youtube-video-player"
+                      width="560" height="315" src="" title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+
+          <div id="course-info-area">
+            <div class="course-details-tab style-2">
+              <nav>
+                <div class="nav nav-tabs tab-auto" id="nav-tab" role="tablist">
+                  <button class="nav-link active" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                    type="button" role="tab" aria-controls="nav-about" aria-selected="true">About This Course</button>
+                  </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                  <div class="about-content mt-3">
+                    <h4>About This Course</h4>
+                    <p>{{ about_course|default:"No course description available." }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Video List -->
+    <div class="col-lg-3" id="right-playlist-panel">
+      <div class="custome-accordion">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item card">
+            <h2 class="accordion-header border-0" id="headingOne">
+              <button class="accordion-button d-flex justify-content-between align-items-center" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+                <span class="acc-heading">Videos</span>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body card-body">
+                {% if list %}
+                  {% for t in list %}
+                    <div class="video-list-item">
+                      <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="flex-grow-1 me-2" style="min-width: 0;"> 
+                          {% if forloop.first or t.unlocked >= 0 %}
+                            <a href="javascript:void(0);"
+                                class="play-video-link text-decoration-none d-flex align-items-center"
+                                data-video-id="{{ t.video_id }}" data-id="{{ t.id }}" data-video-name="{{ t.name }}">
+                              <span class="acc-icon" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 13C3.8 13 3.6 12.95 3.47 12.85C3.33 12.76 3.21 12.63 3.13 12.49C3.04 12.34 3 12.17 3 12V4C3 3.65 3.18 3.33 3.47 3.15C3.62 3.06 3.78 3.01 3.95 3C4.12 2.99 4.29 3.03 4.45 3.11L12.45 7.11C12.61 7.19 12.75 7.32 12.85 7.47C12.95 7.63 13 7.81 13 8C13 8.19 12.95 8.37 12.85 8.53C12.75 8.68 12.61 8.81 12.45 8.89L4.45 12.89C4.31 12.96 4.15 13 4 13Z" fill="currentColor" />
+                                </svg>
+                              </span>
+                              <span class="video-name-text">{{ t.name }}</span>
+                            </a>
+                          {% else %}
+                            <span class="text-muted d-flex align-items-center">
+                              <i class="fas fa-lock me-2 acc-icon" aria-hidden="true"></i> 
+                              <span class="video-name-text">{{ t.name }}</span>
+                            </span>
+                          {% endif %}
+                        </div>
+                        <div class="d-flex gap-2 flex-shrink-0">
+                          {% if t.matid > 0 %}
+                            <a class="btn btn-sm btn-success" title="Session Materials" href="{% url 'learner-video-sesseionmaterial-list' subject_id t.id %}">
+                              <i class="far fa-lightbulb" aria-hidden="true"></i>
+                              <span class="visually-hidden">Materials</span>
+                            </a>
+                          {% endif %}
+                          {% if t.Actid > 0 %}
+                            <a class="btn btn-sm btn-info" title="Session Activities" href="{% url 'learner-video-activity-list' subject_id  t.id %}">
+                              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                              <span class="visually-hidden">Activities</span>
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="text-muted text-center mt-3">No videos available for this course.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const videoPlayerIframe = document.getElementById('youtube-video-player');
+    const mainContentTitle = document.getElementById('main-content-title');
+    const videoDisplayArea = document.getElementById('video-display-area');
+    const courseInfoArea = document.getElementById('course-info-area');
+    const videoLinks = document.querySelectorAll('.play-video-link');
+    const defaultSubjectName = "{{ subjectname|escapejs }}";
+    let currentActiveListItem = null;
+
+    const playIconSVG = `
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 13C3.8 13 3.6 12.95 3.47 12.85C3.33 12.76 3.21 12.63 3.13 12.49C3.04 12.34 3 12.17 3 12V4C3 3.65 3.18 3.33 3.47 3.15C3.62 3.06 3.78 3.01 3.95 3C4.12 2.99 4.29 3.03 4.45 3.11L12.45 7.11C12.61 7.19 12.75 7.32 12.85 7.47C12.95 7.63 13 7.81 13 8C13 8.19 12.95 8.37 12.85 8.53C12.75 8.68 12.61 8.81 12.45 8.89L4.45 12.89C4.31 12.96 4.15 13 4 13Z" fill="currentColor" />
+        </svg>`;
+    const pauseIconSVG = `
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="3" width="2" height="10" fill="currentColor"/>
+            <rect x="9" y="3" width="2" height="10" fill="currentColor"/>
+        </svg>`;
+
+    const leftVideoPanel = document.getElementById('left-video-panel');
+    // const rightPlaylistPanel = document.getElementById('right-playlist-panel'); // No longer directly manipulating its display property
+    const accordionCollapseElement = document.getElementById('collapseOne');
+
+    if (videoDisplayArea) videoDisplayArea.style.display = 'none';
+    if (courseInfoArea) courseInfoArea.style.display = 'block';
+    if (mainContentTitle) mainContentTitle.textContent = defaultSubjectName;
+    if (videoPlayerIframe) videoPlayerIframe.src = '';
+
+    function getCSRFToken() {
+        const name = 'csrftoken';
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return null;
+    }
+
+    function playVideo(videoId, videoName, clickedLinkElement) {
+        if (!videoPlayerIframe || !videoDisplayArea || !courseInfoArea || !mainContentTitle) {
+            console.error('Required HTML elements for video playback are missing.');
+            return;
+        }
+        videoDisplayArea.style.display = 'block';
+        courseInfoArea.style.display = 'none';
+        videoPlayerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        mainContentTitle.textContent = videoName;
+        const listItem = clickedLinkElement.closest('.video-list-item');
+        if (currentActiveListItem && currentActiveListItem !== listItem) {
+            currentActiveListItem.classList.remove('active-video');
+            const prevIconContainer = currentActiveListItem.querySelector('.play-video-link .acc-icon');
+            if (prevIconContainer) prevIconContainer.innerHTML = playIconSVG;
+        }
+        if (listItem) {
+            if (currentActiveListItem !== listItem || !currentActiveListItem) {
+                 listItem.classList.add('active-video');
+                 const currentIconContainer = clickedLinkElement.querySelector('.acc-icon');
+                 if (currentIconContainer) currentIconContainer.innerHTML = pauseIconSVG;
+            }
+            currentActiveListItem = listItem;
+        } else {
+             if (currentActiveListItem) {
+                 currentActiveListItem.classList.remove('active-video');
+                 const prevIconContainer = currentActiveListItem.querySelector('.play-video-link .acc-icon');
+                 if (prevIconContainer) prevIconContainer.innerHTML = playIconSVG;
+            }
+            currentActiveListItem = null;
+        }
+    }
+
+    videoLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const videoId = this.dataset.videoId;
+            const videoName = this.dataset.videoName;
+            const videoListItemId = this.dataset.id;
+            playVideo(videoId, videoName, this);
+            const csrfToken = getCSRFToken();
+            if (csrfToken && videoListItemId) {
+                fetch("{% url 'learner-video-watched-saved-view' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: new URLSearchParams({ 'id': videoListItemId })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok: " + response.statusText);
+                    return response.json(); 
+                })
+                .then(data => console.log('Video watch saved:', data))
+                .catch(error => console.error('Error saving video watch:', error));
+            } else {
+                if(!csrfToken) console.error('CSRF token not found.');
+                if(!videoListItemId) console.error('Video List Item ID not found for AJAX.');
+            }
+        });
+    });
+
+    if (leftVideoPanel && accordionCollapseElement) {
+        accordionCollapseElement.addEventListener('hidden.bs.collapse', function () {
+            // When the video list accordion body is hidden (collapsed)
+            if (leftVideoPanel.classList.contains('col-lg-9')) {
+                leftVideoPanel.classList.remove('col-lg-9');
+                leftVideoPanel.classList.add('col-lg-12');
+            }
+            // The right-playlist-panel (col-lg-3) will wrap to the next line automatically
+            // because left-video-panel is now col-lg-12. No need to add d-none.
+        });
+
+        accordionCollapseElement.addEventListener('shown.bs.collapse', function () {
+            // When the video list accordion body is shown (expanded)
+            if (leftVideoPanel.classList.contains('col-lg-12')) {
+                leftVideoPanel.classList.remove('col-lg-12');
+                leftVideoPanel.classList.add('col-lg-9');
+            }
+            // The right-playlist-panel (col-lg-3) will now fit beside the left-video-panel.
+        });
+
+        // Initial check - useful if the accordion might start collapsed
+        if (!accordionCollapseElement.classList.contains('show')) {
+            if (leftVideoPanel.classList.contains('col-lg-9')) {
+                leftVideoPanel.classList.remove('col-lg-9');
+                leftVideoPanel.classList.add('col-lg-12');
+            }
+        }
+    } else {
+        console.warn('Panel resizing elements (left-video-panel or collapseOne) not found.');
+    }
+});
+</script>
+
+{% endblock %}
