@@ -1,0 +1,25 @@
+<!-- polls/templates/polls/poll_detail.html -->
+
+{% extends "trainer/trainerbase.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>{{ poll.title }}</h2>
+    <p><strong>Created by:</strong> {{ poll.created_by.username|default:"Anonymous" }}</p>
+
+    <ol>
+      {% for question in poll.questions.all %}
+        <li>
+          <p><strong>{{ question.question_text }}</strong></p>
+          <ul>
+            {% for opt in question.options %}
+              <li>{{ opt }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ol>
+
+    <a href="{% url 'trainer_generate_polls' %}" class="btn btn-primary">Generate More Polls</a>
+  </div>
+{% endblock %}

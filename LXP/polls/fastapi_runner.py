@@ -4,7 +4,7 @@ import subprocess
 
 def start_fastapi():
     # Absolute path to the Django project root
-    project_root = "/workspaces/polling-app/LXP"
+    project_root = "/workspaces/polling-app/poll-AI-api/LXP"
     os.chdir(project_root)  # Ensure we are in Django context
 
     module_path = "polls.poll_api_service"  # This should match your file structure

@@ -1,5 +1,9 @@
 from django.urls import path
 from learner import views
+from polls.views import poll_detail
+from django.contrib import admin  # ✅ This line fixes the NameError
+from django.urls import path, include
+
 urlpatterns = [
     path('learner-dashboard', views.learner_dashboard_view,name='learner-dashboard'),
     path('learner-edit-Learner-details/<int:user_id>', views.learner_edit_Learner_details_view,name='learner-edit-Learner-details'),
@@ -9,6 +13,9 @@ urlpatterns = [
     path('learner-start-exam/<int:pk>', views.learner_start_exam_view,name='learner-start-exam'),
     path('learner-show-exam-reuslt/<int:pk>', views.learner_show_exam_reuslt_view,name='learner-show-exam-reuslt'),
     path('learner-show-exam-reuslt-details/<int:pk>', views.learner_show_exam_reuslt_details_view,name='learner-show-exam-reuslt-details'),
+    path('poll/<int:poll_id>/', poll_detail, name='poll_detail'),
+    path('admin/', admin.site.urls),
+    path('trainer/polls/', include('polls.urls')),   
 
     path('learner-short-exam', views.learner_short_exam_view,name='learner-short-exam'),
     path('learner-take-short-exam/<int:pk>', views.learner_take_short_exam_view,name='learner-take-short-exam'),

@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .forms import PollGenerateForm
 from .fastapi_runner import start_fastapi  # import this
+from polls.models import Question  # adjust 'polls' based on your app name
 
 _fastapi_started = False
 def ensure_fastapi_running():
@@ -39,22 +40,41 @@ def trainer_generate_polls(request):
     })
 
 
-
 def save_selected_polls(request):
     if request.method == "POST":
         selected_indexes = request.POST.getlist("selected_questions")
+        generated_questions = request.session.get("generated_questions", [])
+        
+        user = request.user if request.user.is_authenticated else None  # 🟢 Add this line here
 
-        # You would typically retrieve questions again (e.g., from session or cache)
-        questions = request.session.get("generated_questions", [])
+        # ✅ Create the Poll (you can let user give a name, here hardcoded for demo)
+        poll = Poll.objects.create(
+            title="AI Generated Poll",
+            created_by=user,
+        )
 
-        selected_questions = [questions[int(idx)] for idx in selected_indexes]
+        # ✅ Create Questions under that Poll
+        for i in selected_indexes:
+            try:
+                q = generated_questions[int(i)]
+                Question.objects.create(
+                    poll=poll,
+                    question=q["question"],
+                    options=q["options"],
+                    answer_index=q["answer_index"],
+                )
+            except (IndexError, KeyError, ValueError) as e:
+                print("Skipping malformed question:", e)
+                continue
 
-        # TEMP: For debugging or demo, store in session or print
-        request.session['selected_polls'] = selected_questions
+        # Redirect to poll list/detail etc.
+        return redirect("poll_detail", poll_id=poll.id)
 
-        # For now, redirect to a success or confirmation page
-        return render(request, "trainer/polls/poll_selection_success.html", {
-            "selected_questions": selected_questions
-        })
+    return redirect("trainer_generate_polls")
 
-    return redirect("trainer-generate-polls")  # fallback if not POST
+from django.shortcuts import render, get_object_or_404
+from .models import Poll
+
+def poll_detail(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    return render(request, "trainer/polls/poll_detail.html", {"poll": poll})

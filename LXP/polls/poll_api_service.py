@@ -42,7 +42,8 @@ def build_prompt(topics: List[str], n_questions: int) -> str:
     return (
         f"Generate {n_questions} multiple choice questions about {', '.join(topics)}. "
         "Each question should have 4 options labeled A, B, C, and D. Provide the correct answer after each question in the format:\n"
-        "Q: Question?\nA. ...\nB. ...\nC. ...\nD. ...\nAnswer: B"
+        "Q: Question?\nA. ...\nB. ...\nC. ...\nD. ...\nAnswer: B, Dont include any explanations or additional text."
+        
     )
 
 # Call OpenRouter
@@ -63,41 +64,49 @@ def ask_openrouter(prompt: str) -> str:
 
 # Parse LLM output
 import re
-
 def parse_mcqs(raw: str) -> List[PollQuestion]:
     questions = []
-    blocks = re.split(r"\nQ\d+:\s*", "\n" + raw.strip())  # Split on Q1:, Q2:, etc.
+
+    # split on either “1.”  …  or “Q1:”  …  etc.
+    blocks = re.split(r"\n\s*(?:\d+\.\s*|Q\d+:)\s*", "\n" + raw.strip())
 
     for block in blocks:
         if not block.strip():
             continue
 
         lines = block.strip().split("\n")
-        if len(lines) < 6:
-            continue
-
-        question = lines[0].strip()
+        question = None
         options = []
-        for line in lines[1:5]:
-            if ". " in line:
-                options.append(line.split(". ", 1)[1].strip())
+        answer_index = -1
 
-        # Find answer line
-        answer_line = next((l for l in lines if l.lower().startswith("answer")), "")
-        answer_match = re.match(r"Answer:\s*([A-Da-d])", answer_line)
+        for line in lines:
+            line = line.strip()
 
-        if answer_match and len(options) == 4:
-            answer_letter = answer_match.group(1).upper()
-            answer_index = {"A": 0, "B": 1, "C": 2, "D": 3}.get(answer_letter, -1)
+            # first non‑option line becomes the question text
+            if not question and not re.match(r"^[A-Da-d][).]\s+", line):
+                question = line
+            # option lines “A. …” / “B) …”
+            elif re.match(r"^[A-Da-d][).]\s+", line):
+                options.append(line[3:].strip())
+            # answer line – pick first A‑D letter, ignore extra text
+            elif line.lower().startswith("answer"):
+                m = re.search(r"Answer:\s*([A-Da-d])\b", line)
+                if m:
+                    answer_index = "ABCD".index(m.group(1).upper())
 
-            if 0 <= answer_index < 4:
-                questions.append(PollQuestion(
+        if question and len(options) == 4 and 0 <= answer_index < 4:
+            questions.append(
+                PollQuestion(
                     question=question,
                     options=options,
-                    answer_index=answer_index
-                ))
+                    answer_index=answer_index,
+                )
+            )
 
     return questions
+
+
+
 
 # Endpoint
 @app.post("/generate-poll", response_model=PollResponse)
